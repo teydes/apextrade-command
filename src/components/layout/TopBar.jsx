@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Bell, Clock, TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import { Clock, TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import NotificationCenter from '@/components/shared/NotificationCenter';
 
 export default function TopBar() {
   const [time, setTime] = useState(new Date());
@@ -54,10 +55,7 @@ export default function TopBar() {
         <span>{time.toLocaleTimeString('fr-FR')}</span>
       </div>
 
-      <button className="relative p-1.5 rounded hover:bg-muted">
-        <Bell className="w-4 h-4 text-muted-foreground" />
-        <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-primary rounded-full" />
-      </button>
+      <NotificationCenter />
     </div>
   );
 }

@@ -19,6 +19,7 @@ import Reports from '@/pages/Reports';
 import Bank from '@/pages/Bank';
 import Fiscal from '@/pages/Fiscal';
 import SettingsPage from '@/pages/SettingsPage';
+import Council from '@/pages/Council';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -52,6 +53,7 @@ const AuthenticatedApp = () => {
         <Route path="/reports" element={<Reports />} />
         <Route path="/bank" element={<Bank />} />
         <Route path="/fiscal" element={<Fiscal />} />
+        <Route path="/council" element={<Council />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

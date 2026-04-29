@@ -45,15 +45,16 @@ export default function Snowball() {
   const monthsToTarget = data.findIndex(d => d.balance >= targetAmount);
   const totalProfit = finalBalance - startCapital;
 
-  // MFF specific plan
+  // MFF plan — compte 50K SANS évaluation, objectif 3000€ puis boule de neige
   const mffPlan = [
-    { step: 1, action: 'Passer la qualification MFF 50K', duration: '~10 jours', capital: '50K', pnl: '3000€+' },
-    { step: 2, 'action': 'Recevoir 1er payout (90%)', duration: 'J+30', capital: '50K', pnl: '~2 250€' },
-    { step: 3, action: 'Ouvrir 2e compte MFF 50K', duration: 'M2', capital: '100K', pnl: '~4 500€/m' },
-    { step: 4, action: 'Ajouter Apex 50K', duration: 'M3', capital: '150K', pnl: '~6 750€/m' },
-    { step: 5, action: 'Ajouter TopStep + TradeDay', duration: 'M4-5', capital: '250K', pnl: '~11 250€/m' },
-    { step: 6, action: '10 comptes actifs', duration: 'M6', capital: '500K', pnl: '~22 500€/m' },
-    { step: 7, action: 'Objectif 1M€ atteint', duration: 'M10-12', capital: '1M+', pnl: 'OBJECTIF' },
+    { step: 1, action: '🟢 Ouvrir compte MFF 50K (SANS évaluation)', duration: 'J0', capital: '50K', pnl: '480€', highlight: true },
+    { step: 2, action: '⚡ Atteindre 3 000€ de profit (objectif interne)', duration: 'J1–J10', capital: '50K', pnl: '3 000€', highlight: true },
+    { step: 3, action: '💰 1er payout MFF (90% = 2 700€) — LIBERTÉ TOTALE', duration: 'J+14', capital: '50K', pnl: '~2 700€', highlight: true },
+    { step: 4, action: 'Ouvrir 2e compte MFF 50K + Tradefy 25K (copy)', duration: 'M2', capital: '125K', pnl: '~5 400€/m' },
+    { step: 5, action: 'Ajouter Lucid 50K + UFunded 25K (4 comptes)', duration: 'M3', capital: '250K', pnl: '~9 000€/m' },
+    { step: 6, action: 'Scaling 6 comptes copy (MFF ×2, Tradefy ×2, Lucid ×2)', duration: 'M4', capital: '400K', pnl: '~15 000€/m' },
+    { step: 7, action: '10 comptes actifs en copy trading simultané', duration: 'M6', capital: '600K', pnl: '~22 000€/m' },
+    { step: 8, action: '15 comptes actifs — Objectif 1M€ atteint', duration: 'M10-12', capital: '900K+', pnl: 'OBJECTIF 🎯' },
   ];
 
   return (
@@ -140,23 +141,27 @@ export default function Snowball() {
 
       {/* MFF 10-day strategy */}
       <div className="card-trading">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
           <Target className="w-4 h-4 text-primary" />
-          <span className="text-sm font-semibold">Stratégie 1er Payout MFF — Objectif 10 Jours</span>
-          <span className="text-xs text-muted-foreground ml-auto">Qualification: 3 000€ · DD Max: 2 000€</span>
+          <span className="text-sm font-semibold">Plan Boule de Neige — MFF 50K Sans Évaluation</span>
+          <span className="ml-auto text-xs px-2 py-0.5 rounded bg-primary/20 text-primary font-bold">SANS ÉVAL · Objectif 3 000€</span>
+        </div>
+        <div className="p-2 mb-3 rounded bg-yellow-400/5 border border-yellow-400/20 text-xs text-yellow-400">
+          ⚡ Le compte MFF 50K ne nécessite <strong>aucune évaluation</strong> — accès direct au capital. 
+          Après 3 000€ de profit, le 2e jour consécutif de gains revient entièrement. Objectif : 1er payout en J+14.
         </div>
         <div className="space-y-2">
           {mffPlan.map(step => (
-            <div key={step.step} className="flex items-center gap-3 p-3 rounded-lg bg-secondary/40 text-sm">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 ${step.step <= 2 ? 'bg-primary text-background' : 'bg-secondary text-muted-foreground'}`}>
+            <div key={step.step} className={`flex items-center gap-3 p-3 rounded-lg text-sm transition-all ${step.highlight ? 'bg-primary/10 border border-primary/20' : 'bg-secondary/40'}`}>
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 ${step.highlight ? 'bg-primary text-background' : 'bg-secondary text-muted-foreground'}`}>
                 {step.step}
               </div>
               <div className="flex-1">
-                <div className={`font-medium ${step.step <= 2 ? 'text-foreground' : 'text-muted-foreground'}`}>{step.action}</div>
+                <div className={`font-medium ${step.highlight ? 'text-foreground' : 'text-muted-foreground'}`}>{step.action}</div>
               </div>
               <div className="text-right text-xs">
                 <div className="text-muted-foreground">{step.duration}</div>
-                <div className="font-mono text-primary">{step.pnl}</div>
+                <div className={`font-mono font-bold ${step.highlight ? 'text-primary' : 'text-muted-foreground'}`}>{step.pnl}</div>
               </div>
             </div>
           ))}
