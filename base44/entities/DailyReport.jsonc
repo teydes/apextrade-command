@@ -1,0 +1,80 @@
+{
+  "name": "DailyReport",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "account_id": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "backtest_local",
+        "demo",
+        "live"
+      ]
+    },
+    "total_trades": {
+      "type": "number"
+    },
+    "wins": {
+      "type": "number"
+    },
+    "losses": {
+      "type": "number"
+    },
+    "breakevens": {
+      "type": "number"
+    },
+    "gross_pnl": {
+      "type": "number"
+    },
+    "net_pnl": {
+      "type": "number"
+    },
+    "max_drawdown": {
+      "type": "number"
+    },
+    "win_rate": {
+      "type": "number"
+    },
+    "avg_rr": {
+      "type": "number"
+    },
+    "best_trade": {
+      "type": "number"
+    },
+    "worst_trade": {
+      "type": "number"
+    },
+    "daily_target_hit": {
+      "type": "boolean",
+      "default": false
+    },
+    "consistency_ok": {
+      "type": "boolean",
+      "default": true
+    },
+    "market_conditions": {
+      "type": "string"
+    },
+    "analysis": {
+      "type": "string",
+      "description": "Analyse IA du jour"
+    },
+    "improvements": {
+      "type": "string"
+    },
+    "phase_ready_for_next": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "date",
+    "phase"
+  ]
+}

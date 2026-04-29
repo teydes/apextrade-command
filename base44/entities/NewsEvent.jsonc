@@ -1,0 +1,75 @@
+{
+  "name": "NewsEvent",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "FOMC",
+        "CPI",
+        "NFP",
+        "GDP",
+        "PPI",
+        "PMI",
+        "Fed Speech",
+        "Geopolitical",
+        "Earnings",
+        "Other"
+      ]
+    },
+    "impact": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium"
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actual": {
+      "type": "string"
+    },
+    "forecast": {
+      "type": "string"
+    },
+    "previous": {
+      "type": "string"
+    },
+    "market_reaction": {
+      "type": "string",
+      "enum": [
+        "bullish",
+        "bearish",
+        "neutral",
+        "volatile"
+      ]
+    },
+    "trading_blocked": {
+      "type": "boolean",
+      "default": false
+    },
+    "block_minutes_before": {
+      "type": "number",
+      "default": 5
+    },
+    "block_minutes_after": {
+      "type": "number",
+      "default": 10
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "event_time"
+  ]
+}

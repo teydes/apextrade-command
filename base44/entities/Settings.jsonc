@@ -1,0 +1,29 @@
+{
+  "name": "Settings",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "webhook",
+        "risk",
+        "notification",
+        "system",
+        "propfirm"
+      ]
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ]
+}

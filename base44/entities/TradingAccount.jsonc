@@ -1,0 +1,78 @@
+{
+  "name": "TradingAccount",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du compte"
+    },
+    "propfirm": {
+      "type": "string",
+      "description": "Nom de la PropFirm"
+    },
+    "account_size": {
+      "type": "number",
+      "description": "Taille du compte en \u20ac"
+    },
+    "current_balance": {
+      "type": "number",
+      "description": "Balance actuelle"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "backtest_local",
+        "demo",
+        "live"
+      ],
+      "default": "backtest_local"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "blown",
+        "passed"
+      ],
+      "default": "active"
+    },
+    "daily_drawdown_limit": {
+      "type": "number"
+    },
+    "max_drawdown_limit": {
+      "type": "number"
+    },
+    "daily_profit_target": {
+      "type": "number"
+    },
+    "overall_profit_target": {
+      "type": "number"
+    },
+    "consistency_rule": {
+      "type": "number",
+      "description": "% max d'un seul trade sur le total"
+    },
+    "login": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "quantower",
+        "mt4",
+        "mt5",
+        "ninjatrader",
+        "other"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "propfirm",
+    "account_size"
+  ]
+}

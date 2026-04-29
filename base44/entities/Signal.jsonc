@@ -1,0 +1,76 @@
+{
+  "name": "Signal",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "enum": [
+        "tradingview",
+        "manual",
+        "agent"
+      ],
+      "default": "tradingview"
+    },
+    "symbol": {
+      "type": "string",
+      "default": "NQ1!"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "LONG",
+        "SHORT",
+        "CLOSE_ALL"
+      ]
+    },
+    "entry": {
+      "type": "number"
+    },
+    "stop_loss": {
+      "type": "number"
+    },
+    "take_profit_1": {
+      "type": "number"
+    },
+    "take_profit_2": {
+      "type": "number"
+    },
+    "take_profit_3": {
+      "type": "number"
+    },
+    "strategy": {
+      "type": "string"
+    },
+    "timeframe": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "description": "Score 0-100"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "executed",
+        "rejected",
+        "expired"
+      ],
+      "default": "pending"
+    },
+    "raw_payload": {
+      "type": "string"
+    },
+    "rejection_reason": {
+      "type": "string"
+    },
+    "checklist_passed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "symbol",
+    "direction"
+  ]
+}

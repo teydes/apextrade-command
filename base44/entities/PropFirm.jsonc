@@ -1,0 +1,85 @@
+{
+  "name": "PropFirm",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "account_sizes": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "daily_drawdown_pct": {
+      "type": "number"
+    },
+    "max_drawdown_pct": {
+      "type": "number"
+    },
+    "profit_target_pct": {
+      "type": "number"
+    },
+    "consistency_rule_pct": {
+      "type": "number",
+      "description": "Max % d'un jour sur le total"
+    },
+    "allows_bots": {
+      "type": "boolean",
+      "default": false
+    },
+    "news_trading": {
+      "type": "boolean",
+      "default": true
+    },
+    "trailing_drawdown": {
+      "type": "boolean",
+      "default": false
+    },
+    "payout_frequency": {
+      "type": "string",
+      "enum": [
+        "weekly",
+        "biweekly",
+        "monthly"
+      ]
+    },
+    "payout_split": {
+      "type": "number",
+      "description": "% trader (ex: 80)"
+    },
+    "validation_score": {
+      "type": "number",
+      "description": "Score de compatibilit\u00e9 0-100"
+    },
+    "traps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pi\u00e8ges identifi\u00e9s"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "testing",
+        "validated",
+        "avoided",
+        "active"
+      ],
+      "default": "testing"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "name": "SnowballPlan",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "start_capital": {
+      "type": "number"
+    },
+    "monthly_growth_target_pct": {
+      "type": "number",
+      "default": 10
+    },
+    "daily_target": {
+      "type": "number",
+      "default": 500
+    },
+    "reinvestment_pct": {
+      "type": "number",
+      "default": 80
+    },
+    "target_amount": {
+      "type": "number",
+      "default": 1000000
+    },
+    "nb_accounts": {
+      "type": "number",
+      "default": 1
+    },
+    "propfirms_selected": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "number"
+          },
+          "projected_balance": {
+            "type": "number"
+          },
+          "nb_accounts": {
+            "type": "number"
+          },
+          "achieved": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "start_capital"
+  ]
+}
