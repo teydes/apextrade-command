@@ -230,8 +230,10 @@ Donne une analyse critique et des recommandations concrètes:
         </div>
       )}
 
-      {/* Equity curve (journal tab only) */}
-      {activeTab === 'journal' && <div className="card-trading">
+      {/* Equity curve + journal (journal tab only) */}
+      {activeTab === 'journal' && (
+      <div className="space-y-4">
+      <div className="card-trading">
         <span className="text-sm font-semibold block mb-3">Courbe d'Équité — Backtest Local</span>
         <ResponsiveContainer width="100%" height={150}>
           <AreaChart data={mockEquity}>
@@ -248,8 +250,6 @@ Donne une analyse critique et des recommandations concrètes:
           </AreaChart>
         </ResponsiveContainer>
       </div>
-
-      {activeTab === 'journal' && (
       <div className="card-trading">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold">Journal des Trades</span>
@@ -331,6 +331,7 @@ Donne une analyse critique et des recommandations concrètes:
             </tbody>
           </table>
         </div>
+      </div>
       </div>
       )}
     </div>
