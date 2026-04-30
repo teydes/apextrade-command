@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Newspaper, AlertTriangle, Clock, RefreshCw, Zap, Plus } from 'lucide-react';
+import { Newspaper, AlertTriangle, RefreshCw, Zap, Plus, TrendingUp, TrendingDown, Minus, Globe, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -42,10 +42,24 @@ function timeUntil(dateStr) {
   return `dans ${m}m`;
 }
 
+// Contexte macro global
+const MACRO_CONTEXT = {
+  biais: 'bearish',
+  fedRate: '5.25-5.50%',
+  inflationTrend: 'declining',
+  nqWeeklyBias: 'distribution',
+  vix: 18.4,
+  dxy: 104.2,
+  sp500Trend: 'sideways',
+  keyLevels: ['19 450 (support majeur)', '19 900 (résistance)', '20 200 (ATH zone)'],
+  weeklyNote: 'Semaine FOMC — réduction de taille recommandée. Éviter NY Afternoon.',
+};
+
 export default function News() {
   const [aiAnalysis, setAiAnalysis] = useState('');
   const [loadingAI, setLoadingAI] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
+  const [activeTab, setActiveTab] = useState('calendar');
   const [newEvent, setNewEvent] = useState({ title: '', category: 'FOMC', impact: 'high', event_time: '' });
   const qc = useQueryClient();
 
@@ -83,20 +97,32 @@ export default function News() {
     setLoadingAI(false);
   };
 
+  const biasBadge = MACRO_CONTEXT.biais === 'bearish'
+    ? { icon: TrendingDown, cls: 'text-destructive bg-destructive/10 border-destructive/30', label: 'BEARISH' }
+    : MACRO_CONTEXT.biais === 'bullish'
+    ? { icon: TrendingUp, cls: 'text-primary bg-primary/10 border-primary/30', label: 'BULLISH' }
+    : { icon: Minus, cls: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/30', label: 'NEUTRE' };
+  const BiasIcon = biasBadge.icon;
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h1 className="text-xl font-bold flex items-center gap-2">
             <Newspaper className="w-5 h-5 text-yellow-400" />
             Actualités & Macro
           </h1>
-          <p className="text-xs text-muted-foreground">Calendrier économique · Analyse IA · Blocages automatiques</p>
+          <p className="text-xs text-muted-foreground">Calendrier économique · Contexte macro · Analyse IA</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center flex-wrap">
+          {/* Biais global rapide */}
+          <div className={`flex items-center gap-1.5 px-2 py-1 rounded border text-xs font-bold ${biasBadge.cls}`}>
+            <BiasIcon className="w-3.5 h-3.5" /> {biasBadge.label}
+          </div>
+          <div className="text-xs text-muted-foreground font-mono">VIX {MACRO_CONTEXT.vix} · DXY {MACRO_CONTEXT.dxy}</div>
           {anyBlocked && (
             <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-destructive/20 border border-destructive/30 text-destructive text-xs font-bold animate-pulse">
-              <AlertTriangle className="w-3.5 h-3.5" /> TRADING BLOQUÉ — NEWS
+              <AlertTriangle className="w-3.5 h-3.5" /> TRADING BLOQUÉ
             </div>
           )}
           <Dialog open={showAdd} onOpenChange={setShowAdd}>
@@ -129,6 +155,82 @@ export default function News() {
         </div>
       </div>
 
+      {/* Tabs */}
+      <div className="flex gap-1 border-b border-border">
+        {[
+          { id: 'calendar', label: '📅 Calendrier' },
+          { id: 'macro', label: '🌍 Contexte Macro' },
+          { id: 'ai', label: '🤖 Analyse IA' },
+        ].map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
+            className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === t.id ? 'tab-active' : 'text-muted-foreground hover:text-foreground'}`}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* TAB MACRO */}
+      {activeTab === 'macro' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: 'Fed Rate', value: MACRO_CONTEXT.fedRate, note: 'Stable depuis Nov 2023', color: 'text-yellow-400' },
+              { label: 'Inflation', value: MACRO_CONTEXT.inflationTrend === 'declining' ? '↘ Déclin' : '↗ Hausse', note: 'CPI sous 3.5%', color: 'text-primary' },
+              { label: 'VIX', value: MACRO_CONTEXT.vix, note: 'Volatilité modérée', color: MACRO_CONTEXT.vix > 20 ? 'text-destructive' : 'text-primary' },
+              { label: 'DXY', value: MACRO_CONTEXT.dxy, note: 'Dollar fort', color: 'text-yellow-400' },
+            ].map(m => (
+              <div key={m.label} className="card-trading text-center">
+                <div className="text-[10px] text-muted-foreground mb-1">{m.label}</div>
+                <div className={`text-xl font-bold font-mono ${m.color}`}>{m.value}</div>
+                <div className="text-[10px] text-muted-foreground mt-1">{m.note}</div>
+              </div>
+            ))}
+          </div>
+          <div className="card-trading">
+            <div className="flex items-center gap-2 mb-3">
+              <Globe className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold">Niveaux clés NQ — Semaine</span>
+            </div>
+            <div className="space-y-2">
+              {MACRO_CONTEXT.keyLevels.map((lvl, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs">
+                  <div className={`w-2 h-2 rounded-full flex-shrink-0 ${i === 0 ? 'bg-primary' : i === 1 ? 'bg-yellow-400' : 'bg-destructive'}`} />
+                  <span className="font-mono text-foreground">{lvl}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 p-2 bg-yellow-400/10 border border-yellow-400/20 rounded text-xs text-yellow-400">
+              📌 {MACRO_CONTEXT.weeklyNote}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB AI */}
+      {activeTab === 'ai' && (
+        <div className="card-trading">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold">Analyse Macro IA — NQ Futures</span>
+            </div>
+            <Button size="sm" variant="outline" className="text-xs h-7 gap-1" onClick={getAIAnalysis} disabled={loadingAI}>
+              <RefreshCw className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
+              {loadingAI ? 'Analyse...' : 'Analyser'}
+            </Button>
+          </div>
+          {aiAnalysis ? (
+            <div className="text-xs text-foreground whitespace-pre-wrap leading-relaxed bg-secondary/20 rounded p-3">{aiAnalysis}</div>
+          ) : (
+            <div className="text-xs text-muted-foreground text-center py-10">
+              <Zap className="w-8 h-8 mx-auto mb-3 opacity-20" />
+              Cliquez sur "Analyser" pour une analyse macro IA complète : biais, niveaux, fenêtres, risques
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'calendar' && (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Events list */}
         <div className="lg:col-span-2 space-y-2">
@@ -159,27 +261,29 @@ export default function News() {
           })}
         </div>
 
-        {/* AI Analysis */}
-        <div className="card-trading">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold">Analyse Macro IA</span>
-            </div>
-            <Button size="sm" variant="outline" className="text-xs h-7 gap-1" onClick={getAIAnalysis} disabled={loadingAI}>
-              <RefreshCw className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
-              {loadingAI ? 'Analyse...' : 'Analyser'}
-            </Button>
+        {/* Summary */}
+        <div className="card-trading space-y-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Calendar className="w-4 h-4 text-yellow-400" />
+            <span className="text-sm font-semibold">Résumé du jour</span>
           </div>
-          {aiAnalysis ? (
-            <div className="text-xs text-foreground whitespace-pre-wrap leading-relaxed">{aiAnalysis}</div>
-          ) : (
-            <div className="text-xs text-muted-foreground text-center py-8">
-              Cliquez sur "Analyser" pour obtenir une analyse macro IA des événements du jour et leur impact sur le NQ
-            </div>
-          )}
+          <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between"><span className="text-muted-foreground">Événements total</span><span className="font-mono">{allEvents.length}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">À impact critique/high</span><span className="font-mono text-destructive">{allEvents.filter(e => e.impact === 'critical' || e.impact === 'high').length}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Bloquants actifs</span><span className="font-mono">{blockedCount}</span></div>
+          </div>
+          <div className={`p-2 rounded border text-xs ${biasBadge.cls}`}>
+            <BiasIcon className="w-3 h-3 inline mr-1" />
+            Biais NQ: <strong>{biasBadge.label}</strong> — {MACRO_CONTEXT.nqWeeklyBias}
+          </div>
+          <Button size="sm" variant="outline" className="w-full text-xs gap-1" onClick={getAIAnalysis} disabled={loadingAI}>
+            <RefreshCw className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
+            {loadingAI ? 'Analyse IA...' : 'Analyse IA rapide'}
+          </Button>
+          {aiAnalysis && <div className="text-xs text-foreground whitespace-pre-wrap leading-relaxed bg-secondary/20 rounded p-2 max-h-48 overflow-y-auto">{aiAnalysis}</div>}
         </div>
       </div>
+      )}
     </div>
   );
 }

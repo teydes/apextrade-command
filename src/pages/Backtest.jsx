@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { FlaskConical, Play, Pause, RotateCcw, Plus, TrendingUp, Target, Percent } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, ScatterChart, Scatter } from 'recharts';
+import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -25,10 +25,28 @@ const tradeLogs = [
   { id: 4, date: '2024-04-02', time: '15:15', setup: 'IFVG Fill', dir: 'SHORT', entry: 19845, sl: 19860, tp1: 19820, tp2: 19800, pnl: 210, rr: 1.8, result: 'win', mistake: null },
 ];
 
+// Statistiques auto par setup
+const setupStats = [
+  { name: 'ICT OB+FVG', trades: 12, wr: 75, avgRR: 2.6, pnl: 1840 },
+  { name: 'AMD Expansion', trades: 8, wr: 87, avgRR: 3.1, pnl: 2210 },
+  { name: 'BOS+CHoCH', trades: 9, wr: 44, avgRR: 1.3, pnl: -120 },
+  { name: 'IFVG Fill', trades: 6, wr: 67, avgRR: 1.9, pnl: 540 },
+  { name: 'POC Retest', trades: 4, wr: 50, avgRR: 1.5, pnl: 80 },
+];
+
+const sessionStats = [
+  { name: 'London', trades: 11, wr: 63, pnl: 890 },
+  { name: 'NY Open', trades: 18, wr: 78, pnl: 2340 },
+  { name: 'NY Afternoon', trades: 10, wr: 40, pnl: -230 },
+];
+
 export default function Backtest() {
   const [running, setRunning] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [activeTab, setActiveTab] = useState('journal'); // journal | auto | optimize
   const [showAddTrade, setShowAddTrade] = useState(false);
+  const [aiReport, setAiReport] = useState('');
+  const [loadingAI, setLoadingAI] = useState(false);
   const [newTrade, setNewTrade] = useState({ symbol: 'NQ1!', direction: 'LONG', setup: '', pnl: '', rr: '', result: 'win', mistakes: '', improvements: '' });
   const qc = useQueryClient();
 
@@ -53,6 +71,28 @@ export default function Backtest() {
 
   const isReadyForDemo = parseFloat(winRate) >= 60 && totalPnl > 500;
 
+  const runAIOptimization = async () => {
+    setLoadingAI(true);
+    const res = await base44.integrations.Core.InvokeLLM({
+      prompt: `Tu es un expert en trading algorithmique et backtest NQ Futures.
+Voici mes statistiques de backtest:
+- Win Rate: ${winRate}%
+- P&L Total: ${totalPnl}€
+- Avg R:R: ${avgRR}
+- Setups: ${setupStats.map(s => `${s.name} (WR:${s.wr}%, RR:${s.avgRR}, PnL:${s.pnl}€)`).join(', ')}
+- Sessions: ${sessionStats.map(s => `${s.name} (WR:${s.wr}%, PnL:${s.pnl}€)`).join(', ')}
+
+Donne une analyse critique et des recommandations concrètes:
+1. Setups à abandonner / optimiser
+2. Sessions à éviter
+3. Seuil R:R minimum recommandé
+4. Paramètres d'entrée à affiner
+5. Score de robustesse global (0-100)`,
+    });
+    setAiReport(res);
+    setLoadingAI(false);
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -73,7 +113,21 @@ export default function Backtest() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Tabs */}
+      <div className="flex gap-1 border-b border-border">
+        {[
+          { id: 'journal', label: '📋 Journal' },
+          { id: 'auto', label: '📊 Analyse Auto' },
+          { id: 'optimize', label: '⚡ Optimisation IA' },
+        ].map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
+            className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === t.id ? 'tab-active' : 'text-muted-foreground hover:text-foreground'}`}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Stats always visible */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <StatCard label="Trades Total" value={allTrades.length} icon={Target} />
         <StatCard label="Win Rate" value={`${winRate}%`} color={parseFloat(winRate) >= 60 ? 'text-green-400' : 'text-red-400'} icon={Percent} />
@@ -82,8 +136,102 @@ export default function Backtest() {
         <StatCard label="Wins / Losses" value={`${wins}W / ${losses}L`} />
       </div>
 
-      {/* Equity curve */}
-      <div className="card-trading">
+      {/* TAB: Analyse Auto */}
+      {activeTab === 'auto' && (
+        <div className="space-y-4">
+          {/* Performance par setup */}
+          <div className="card-trading">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart2 className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold">Performance par Setup</span>
+            </div>
+            <div className="space-y-2">
+              {setupStats.sort((a, b) => b.wr - a.wr).map(s => (
+                <div key={s.name} className="flex items-center gap-3">
+                  <div className="w-28 text-xs text-muted-foreground truncate flex-shrink-0">{s.name}</div>
+                  <div className="flex-1 h-2 bg-secondary rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full transition-all ${s.wr >= 65 ? 'bg-primary' : s.wr >= 50 ? 'bg-yellow-400' : 'bg-destructive'}`} style={{ width: `${s.wr}%` }} />
+                  </div>
+                  <span className={`font-mono text-xs font-bold w-10 text-right ${s.wr >= 65 ? 'text-primary' : s.wr >= 50 ? 'text-yellow-400' : 'text-destructive'}`}>{s.wr}%</span>
+                  <span className="font-mono text-xs text-muted-foreground w-8 text-right">{s.avgRR}:1</span>
+                  <span className={`font-mono text-xs font-bold w-16 text-right ${s.pnl >= 0 ? 'text-primary' : 'text-destructive'}`}>{s.pnl >= 0 ? '+' : ''}{s.pnl}€</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded ${s.wr >= 65 ? 'bg-primary/20 text-primary' : s.wr >= 50 ? 'bg-yellow-400/20 text-yellow-400' : 'bg-destructive/20 text-destructive'}`}>
+                    {s.wr >= 65 ? 'KEEP' : s.wr >= 50 ? 'WATCH' : 'DROP'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Performance par session */}
+          <div className="card-trading">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart2 className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-semibold">Performance par Session</span>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {sessionStats.map(s => (
+                <div key={s.name} className={`p-3 rounded-lg border text-center ${s.pnl >= 0 ? 'border-primary/20 bg-primary/5' : 'border-destructive/20 bg-destructive/5'}`}>
+                  <div className="text-xs text-muted-foreground mb-1">{s.name}</div>
+                  <div className={`text-xl font-bold font-mono ${s.wr >= 60 ? 'text-primary' : 'text-destructive'}`}>{s.wr}%</div>
+                  <div className="text-[10px] text-muted-foreground mt-1">{s.trades} trades</div>
+                  <div className={`font-mono text-xs font-bold ${s.pnl >= 0 ? 'text-primary' : 'text-destructive'}`}>{s.pnl >= 0 ? '+' : ''}{s.pnl}€</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Critères validation Demo */}
+          <div className="card-trading">
+            <div className="text-sm font-semibold mb-3">Validation pour passage Demo MFF</div>
+            <div className="space-y-2">
+              {[
+                { label: 'Win Rate ≥ 60%', ok: parseFloat(winRate) >= 60, val: `${winRate}%` },
+                { label: 'P&L Total > 500€', ok: totalPnl > 500, val: `${totalPnl}€` },
+                { label: 'Avg R:R ≥ 1.8:1', ok: parseFloat(avgRR) >= 1.8, val: `${avgRR}:1` },
+                { label: 'Min 30 trades backtestés', ok: allTrades.length >= 30, val: `${allTrades.length} trades` },
+                { label: 'Aucun setup WR < 40% en production', ok: !setupStats.some(s => s.wr < 40), val: setupStats.some(s => s.wr < 40) ? '⚠️ Voir BOS+CHoCH' : '✅ OK' },
+              ].map((c, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs">
+                  {c.ok ? <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0" /> : <XCircle className="w-3.5 h-3.5 text-destructive flex-shrink-0" />}
+                  <span className={c.ok ? 'text-foreground' : 'text-muted-foreground flex-1'}>{c.label}</span>
+                  <span className={`font-mono ${c.ok ? 'text-primary' : 'text-destructive'}`}>{c.val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB: Optimisation IA */}
+      {activeTab === 'optimize' && (
+        <div className="space-y-4">
+          <div className="card-trading">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold">Rapport d'Optimisation IA</span>
+              </div>
+              <Button size="sm" onClick={runAIOptimization} disabled={loadingAI} className="gap-1 text-xs">
+                <RefreshCw className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
+                {loadingAI ? 'Analyse...' : 'Lancer l\'analyse'}
+              </Button>
+            </div>
+            {aiReport ? (
+              <div className="text-xs text-foreground whitespace-pre-wrap leading-relaxed bg-secondary/20 rounded p-3">{aiReport}</div>
+            ) : (
+              <div className="text-center py-12 text-muted-foreground text-xs">
+                <Zap className="w-8 h-8 mx-auto mb-3 opacity-30" />
+                <p>Cliquez sur "Lancer l'analyse" pour obtenir un rapport IA complet basé sur vos statistiques de backtest</p>
+                <p className="mt-2 opacity-60">Setups, sessions, R:R, score de robustesse...</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Equity curve (journal tab only) */}
+      {activeTab === 'journal' && <div className="card-trading">
         <span className="text-sm font-semibold block mb-3">Courbe d'Équité — Backtest Local</span>
         <ResponsiveContainer width="100%" height={150}>
           <AreaChart data={mockEquity}>
@@ -101,7 +249,7 @@ export default function Backtest() {
         </ResponsiveContainer>
       </div>
 
-      {/* Trade Log */}
+      {activeTab === 'journal' && (
       <div className="card-trading">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold">Journal des Trades</span>
@@ -184,6 +332,7 @@ export default function Backtest() {
           </table>
         </div>
       </div>
+      )}
     </div>
   );
 }
