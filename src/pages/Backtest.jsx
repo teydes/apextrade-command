@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw } from 'lucide-react';
+import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw, AlertTriangle, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -45,7 +45,7 @@ export default function Backtest() {
   const [filter, setFilter] = useState('all');
   const [activeTab, setActiveTab] = useState('journal'); // journal | auto | optimize
   const [showAddTrade, setShowAddTrade] = useState(false);
-  const [aiReport, setAiReport] = useState('');
+  const [aiReport, setAiReport] = useState(null);
   const [loadingAI, setLoadingAI] = useState(false);
   const [newTrade, setNewTrade] = useState({ symbol: 'NQ1!', direction: 'LONG', setup: '', pnl: '', rr: '', result: 'win', mistakes: '', improvements: '' });
   const qc = useQueryClient();
@@ -82,12 +82,34 @@ Voici mes statistiques de backtest:
 - Setups: ${setupStats.map(s => `${s.name} (WR:${s.wr}%, RR:${s.avgRR}, PnL:${s.pnl}€)`).join(', ')}
 - Sessions: ${sessionStats.map(s => `${s.name} (WR:${s.wr}%, PnL:${s.pnl}€)`).join(', ')}
 
-Donne une analyse critique et des recommandations concrètes:
-1. Setups à abandonner / optimiser
-2. Sessions à éviter
-3. Seuil R:R minimum recommandé
-4. Paramètres d'entrée à affiner
-5. Score de robustesse global (0-100)`,
+Retourne UNIQUEMENT un JSON (sans markdown) avec cette structure exacte:
+{
+  "score": <number 0-100>,
+  "verdict": "<une phrase de synthèse>",
+  "suggestions": [
+    { "category": "Setup"|"Session"|"R:R"|"Entrée"|"Risque", "priority": "haute"|"moyenne"|"basse", "title": "<titre court>", "detail": "<explication concrète en 1-2 phrases>" }
+  ]
+}
+Fournis 5 à 7 suggestions concrètes et actionnables.`,
+      response_json_schema: {
+        type: "object",
+        properties: {
+          score: { type: "number" },
+          verdict: { type: "string" },
+          suggestions: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                category: { type: "string" },
+                priority: { type: "string" },
+                title: { type: "string" },
+                detail: { type: "string" }
+              }
+            }
+          }
+        }
+      }
     });
     setAiReport(res);
     setLoadingAI(false);
@@ -218,7 +240,41 @@ Donne une analyse critique et des recommandations concrètes:
               </Button>
             </div>
             {aiReport ? (
-              <div className="text-xs text-foreground whitespace-pre-wrap leading-relaxed bg-secondary/20 rounded p-3">{aiReport}</div>
+              <div className="space-y-4">
+                {/* Score global + verdict */}
+                <div className="flex items-center gap-4 p-3 bg-secondary/30 rounded-lg">
+                  <div className="text-center">
+                    <div className={`text-3xl font-bold font-mono ${aiReport.score >= 70 ? 'text-primary' : aiReport.score >= 50 ? 'text-yellow-400' : 'text-destructive'}`}>{aiReport.score}</div>
+                    <div className="text-[10px] text-muted-foreground">Score</div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-semibold mb-1">Verdict IA</div>
+                    <div className="text-xs text-muted-foreground">{aiReport.verdict}</div>
+                  </div>
+                </div>
+                {/* Suggestions */}
+                <div className="space-y-2">
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Suggestions ({aiReport.suggestions?.length})</div>
+                  {aiReport.suggestions?.map((s, i) => {
+                    const priorityColor = s.priority === 'haute' ? 'border-destructive/40 bg-destructive/5' : s.priority === 'moyenne' ? 'border-yellow-400/40 bg-yellow-400/5' : 'border-primary/30 bg-primary/5';
+                    const priorityBadge = s.priority === 'haute' ? 'bg-destructive/20 text-destructive' : s.priority === 'moyenne' ? 'bg-yellow-400/20 text-yellow-400' : 'bg-primary/20 text-primary';
+                    const PriorityIcon = s.priority === 'haute' ? AlertTriangle : s.priority === 'moyenne' ? Minus : CheckCircle2;
+                    return (
+                      <div key={i} className={`flex gap-3 p-3 rounded-lg border ${priorityColor}`}>
+                        <PriorityIcon className={`w-4 h-4 flex-shrink-0 mt-0.5 ${s.priority === 'haute' ? 'text-destructive' : s.priority === 'moyenne' ? 'text-yellow-400' : 'text-primary'}`} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <span className="text-xs font-semibold">{s.title}</span>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${priorityBadge}`}>{s.category}</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground">{s.detail}</div>
+                        </div>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded self-start flex-shrink-0 ${priorityBadge}`}>{s.priority}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             ) : (
               <div className="text-center py-12 text-muted-foreground text-xs">
                 <Zap className="w-8 h-8 mx-auto mb-3 opacity-30" />
