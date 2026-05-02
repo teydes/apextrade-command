@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { BarChart3, Download, RefreshCw, Filter, TrendingUp, TrendingDown, Target } from 'lucide-react';
+import { BarChart3, Download, RefreshCw, Filter, TrendingUp, TrendingDown, Target, AlertTriangle, CheckCircle2, Minus } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -37,7 +37,7 @@ const COLORS = ['#00FF88', '#EF4444', '#F59E0B'];
 export default function Reports() {
   const [period, setPeriod] = useState('week');
   const [phase, setPhase] = useState('all');
-  const [aiReport, setAiReport] = useState('');
+  const [aiReport, setAiReport] = useState(null);
   const [loadingAI, setLoadingAI] = useState(false);
 
   const wins = mockTrades.filter(t => t.result === 'win').length;
@@ -50,28 +50,57 @@ export default function Reports() {
   const worstTrade = Math.min(...mockTrades.map(t => t.pnl));
   const profitFactor = wins > 0 && losses > 0 ? (mockTrades.filter(t => t.pnl > 0).reduce((s, t) => s + t.pnl, 0) / Math.abs(mockTrades.filter(t => t.pnl < 0).reduce((s, t) => s + t.pnl, 0))).toFixed(2) : 'N/A';
 
+  const exportCSV = () => {
+    const headers = ['Date', 'Setup', 'Session', 'Direction', 'P&L', 'R:R', 'Résultat'];
+    const rows = mockTrades.map(t => [t.date, t.setup, t.session, '', t.pnl, t.rr, t.result]);
+    const csv = [headers, ...rows].map(r => r.join(';')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'rapport_trades.csv'; a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const getAIReport = async () => {
     setLoadingAI(true);
     const res = await base44.integrations.Core.InvokeLLM({
       prompt: `Tu es un coach de trading expert ICT/SMC spécialisé sur le NQ Futures.
-      Analyse ces statistiques de trading et génère un rapport détaillé:
-      
-      - Win Rate: ${winRate}%
-      - P&L Total: ${totalPnl}€
-      - Meilleur trade: +${bestTrade}€
-      - Pire trade: ${worstTrade}€
-      - Avg R:R: ${avgRR}
-      - Profit Factor: ${profitFactor}
-      - Setups par performance: ${setupStats.map(s => `${s.name}: ${s.wins}W/${s.losses}L`).join(', ')}
-      
-      Génère:
-      1. Analyse des forces (ce qui marche)
-      2. Faiblesses à corriger (erreurs récurrentes)
-      3. Setups à prioriser
-      4. Recommandations concrètes pour cette semaine
-      5. Score global /10
-      
-      Sois précis, actionnable et orienté vers la rentabilité propfirm.`,
+Analyse ces statistiques et retourne UNIQUEMENT un JSON (sans markdown) avec cette structure:
+{
+  "score": <number 0-10>,
+  "verdict": "<synthèse en 1 phrase>",
+  "forces": ["<force 1>", "<force 2>"],
+  "suggestions": [
+    { "category": "Setup"|"Session"|"R:R"|"Psychologie"|"Risque", "priority": "haute"|"moyenne"|"basse", "title": "<titre court>", "detail": "<action concrète 1-2 phrases>" }
+  ]
+}
+
+Données:
+- Win Rate: ${winRate}%, P&L: ${totalPnl}€, Avg R:R: ${avgRR}, Profit Factor: ${profitFactor}
+- Best: +${bestTrade}€, Worst: ${worstTrade}€
+- Setups: ${setupStats.map(s => `${s.name}: ${s.wins}W/${s.losses}L RR:${s.avg_rr}`).join(', ')}
+- Sessions: ${sessionStats.map(s => `${s.session}: ${s.pnl}€`).join(', ')}
+
+Fournis 5-6 suggestions concrètes et actionnables, orientées PropFirm MFF.`,
+      response_json_schema: {
+        type: "object",
+        properties: {
+          score: { type: "number" },
+          verdict: { type: "string" },
+          forces: { type: "array", items: { type: "string" } },
+          suggestions: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                category: { type: "string" },
+                priority: { type: "string" },
+                title: { type: "string" },
+                detail: { type: "string" }
+              }
+            }
+          }
+        }
+      }
     });
     setAiReport(res);
     setLoadingAI(false);
@@ -170,16 +199,71 @@ export default function Reports() {
       <div className="card-trading">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold">Rapport IA — Analyse des Performances</span>
-          <Button size="sm" onClick={getAIReport} disabled={loadingAI} className="gap-2 text-xs">
-            <RefreshCw className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
-            {loadingAI ? 'Génération...' : 'Générer Rapport'}
-          </Button>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" onClick={exportCSV} className="gap-1 text-xs">
+              <Download className="w-3 h-3" />CSV
+            </Button>
+            <Button size="sm" onClick={getAIReport} disabled={loadingAI} className="gap-2 text-xs">
+              <RefreshCw className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
+              {loadingAI ? 'Génération...' : 'Générer Rapport'}
+            </Button>
+          </div>
         </div>
         {aiReport ? (
-          <div className="text-xs text-foreground whitespace-pre-wrap leading-relaxed bg-secondary/30 p-4 rounded">{aiReport}</div>
+          <div className="space-y-4">
+            {/* Score + verdict */}
+            <div className="flex items-center gap-4 p-3 bg-secondary/30 rounded-lg">
+              <div className="text-center">
+                <div className={`text-3xl font-bold font-mono ${aiReport.score >= 7 ? 'text-primary' : aiReport.score >= 5 ? 'text-yellow-400' : 'text-destructive'}`}>{aiReport.score}<span className="text-base text-muted-foreground">/10</span></div>
+                <div className="text-[10px] text-muted-foreground">Score</div>
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-semibold mb-1">Verdict</div>
+                <div className="text-xs text-muted-foreground">{aiReport.verdict}</div>
+              </div>
+            </div>
+            {/* Forces */}
+            {aiReport.forces?.length > 0 && (
+              <div>
+                <div className="text-xs font-semibold text-primary mb-2">✅ Points forts</div>
+                <div className="space-y-1">
+                  {aiReport.forces.map((f, i) => (
+                    <div key={i} className="flex gap-2 text-xs p-2 bg-primary/5 rounded border border-primary/20">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-foreground">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Suggestions */}
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Suggestions ({aiReport.suggestions?.length})</div>
+              <div className="space-y-2">
+                {aiReport.suggestions?.map((s, i) => {
+                  const priorityColor = s.priority === 'haute' ? 'border-destructive/40 bg-destructive/5' : s.priority === 'moyenne' ? 'border-yellow-400/40 bg-yellow-400/5' : 'border-primary/30 bg-primary/5';
+                  const badgeCls = s.priority === 'haute' ? 'bg-destructive/20 text-destructive' : s.priority === 'moyenne' ? 'bg-yellow-400/20 text-yellow-400' : 'bg-primary/20 text-primary';
+                  const Icon = s.priority === 'haute' ? AlertTriangle : s.priority === 'moyenne' ? Minus : CheckCircle2;
+                  return (
+                    <div key={i} className={`flex gap-3 p-3 rounded-lg border ${priorityColor}`}>
+                      <Icon className={`w-4 h-4 flex-shrink-0 mt-0.5 ${s.priority === 'haute' ? 'text-destructive' : s.priority === 'moyenne' ? 'text-yellow-400' : 'text-primary'}`} />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-xs font-semibold">{s.title}</span>
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${badgeCls}`}>{s.category}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">{s.detail}</div>
+                      </div>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded self-start flex-shrink-0 ${badgeCls}`}>{s.priority}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="text-xs text-muted-foreground text-center py-6">
-            Cliquez sur "Générer Rapport" pour obtenir une analyse IA complète de vos performances avec recommandations concrètes
+            Cliquez sur "Générer Rapport" pour obtenir une analyse IA complète avec score, forces et suggestions actionnables
           </div>
         )}
       </div>

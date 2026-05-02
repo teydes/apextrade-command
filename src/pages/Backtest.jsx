@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw, AlertTriangle, ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw, AlertTriangle, ArrowUp, ArrowDown, Minus, Download } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -49,6 +49,20 @@ export default function Backtest() {
   const [loadingAI, setLoadingAI] = useState(false);
   const [newTrade, setNewTrade] = useState({ symbol: 'NQ1!', direction: 'LONG', setup: '', pnl: '', rr: '', result: 'win', mistakes: '', improvements: '' });
   const qc = useQueryClient();
+
+  const exportCSV = () => {
+    const headers = ['Heure', 'Setup', 'Direction', 'Entry', 'SL', 'TP1', 'P&L', 'R:R', 'Résultat', 'Erreur'];
+    const rows = allTrades.map(t => [
+      t.time || '', t.setup || '', t.dir || t.direction || '',
+      t.entry || '', t.sl || t.stop_loss || '', t.tp1 || t.take_profit_1 || '',
+      t.pnl || '', t.rr || '', t.result || '', t.mistake || t.mistakes || ''
+    ]);
+    const csv = [headers, ...rows].map(r => r.join(';')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'backtest_trades.csv'; a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const { data: trades = [] } = useQuery({
     queryKey: ['backtest-trades'],
@@ -310,6 +324,9 @@ Fournis 5 à 7 suggestions concrètes et actionnables.`,
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold">Journal des Trades</span>
           <div className="flex gap-2">
+            <Button size="sm" variant="outline" className="gap-1 text-xs" onClick={exportCSV}>
+              <Download className="w-3 h-3" />CSV
+            </Button>
             <div className="flex gap-1">
               {['all', 'win', 'loss', 'breakeven'].map(f => (
                 <button key={f} onClick={() => setFilter(f)}
