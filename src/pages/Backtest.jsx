@@ -88,23 +88,31 @@ export default function Backtest() {
   const runAIOptimization = async () => {
     setLoadingAI(true);
     const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `Tu es un expert en trading algorithmique et backtest NQ Futures.
-Voici mes statistiques de backtest:
-- Win Rate: ${winRate}%
-- P&L Total: ${totalPnl}€
-- Avg R:R: ${avgRR}
-- Setups: ${setupStats.map(s => `${s.name} (WR:${s.wr}%, RR:${s.avgRR}, PnL:${s.pnl}€)`).join(', ')}
-- Sessions: ${sessionStats.map(s => `${s.name} (WR:${s.wr}%, PnL:${s.pnl}€)`).join(', ')}
+      prompt: `Agis comme un partenaire stratégique critique orienté performance prop trading NQ Futures (compte MFF ~50K, capital personnel ~2000€, objectif 500€/jour).
 
-Retourne UNIQUEMENT un JSON (sans markdown) avec cette structure exacte:
+Mes statistiques backtest:
+- Win Rate: ${winRate}%, P&L: ${totalPnl}€, Avg R:R: ${avgRR}
+- Setups: ${setupStats.map(s => `${s.name} (WR:${s.wr}%, RR:${s.avgRR}, PnL:${s.pnl}€, ${s.trades} trades)`).join(' | ')}
+- Sessions: ${sessionStats.map(s => `${s.name} (WR:${s.wr}%, PnL:${s.pnl}€, ${s.trades} trades)`).join(' | ')}
+
+Analyse critique selon ces axes (ne valide que ce qui est robuste, remets en question le reste):
+1. TP/SL & taille de position (micro vs mini NQ, cohérence avec drawdown propfirm)
+2. Nb de trades optimal (peu/optimisés vs 10-20+) — quelle approche maximise la régularité ?
+3. Setups à garder/abandonner selon win rate et profit factor
+4. Sessions à prioriser ou bloquer (NY Open vs London vs Afternoon)
+5. Risque PropFirm (règle consistance 30%, kill switch journalier, détection pattern)
+6. Lissage PnL : stratégie pour verrouiller 500€ et viser 700-1000€+ sur trades premium
+7. Backtest suffisant ? Recommandation avant passage Demo
+
+Retourne UNIQUEMENT un JSON sans markdown:
 {
-  "score": <number 0-100>,
-  "verdict": "<une phrase de synthèse>",
+  "score": <0-100>,
+  "verdict": "<synthèse critique en 1 phrase>",
   "suggestions": [
-    { "category": "Setup"|"Session"|"R:R"|"Entrée"|"Risque", "priority": "haute"|"moyenne"|"basse", "title": "<titre court>", "detail": "<explication concrète en 1-2 phrases>" }
+    { "category": "Setup"|"Session"|"R:R"|"PropFirm"|"Risque"|"Exécution", "priority": "haute"|"moyenne"|"basse", "title": "<titre court>", "detail": "<action concrète 1-2 phrases>" }
   ]
 }
-Fournis 5 à 7 suggestions concrètes et actionnables.`,
+Fournis 7 à 9 suggestions. Remets en question toute hypothèse non robuste.`,
       response_json_schema: {
         type: "object",
         properties: {

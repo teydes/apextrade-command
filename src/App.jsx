@@ -22,6 +22,7 @@ import SettingsPage from '@/pages/SettingsPage';
 import Council from '@/pages/Council';
 import Strategy from '@/pages/Strategy';
 import Backlog from '@/pages/Backlog';
+import Sessions from '@/pages/Sessions';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -58,6 +59,7 @@ const AuthenticatedApp = () => {
         <Route path="/council" element={<Council />} />
         <Route path="/strategy" element={<Strategy />} />
         <Route path="/backlog" element={<Backlog />} />
+        <Route path="/sessions" element={<Sessions />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
