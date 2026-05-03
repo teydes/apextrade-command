@@ -23,6 +23,9 @@ import Council from '@/pages/Council';
 import Strategy from '@/pages/Strategy';
 import Backlog from '@/pages/Backlog';
 import Sessions from '@/pages/Sessions';
+import JournalIA from '@/pages/JournalIA';
+import MonteCarlo from '@/pages/MonteCarlo';
+import LiveFeed from '@/pages/LiveFeed';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -60,6 +63,9 @@ const AuthenticatedApp = () => {
         <Route path="/strategy" element={<Strategy />} />
         <Route path="/backlog" element={<Backlog />} />
         <Route path="/sessions" element={<Sessions />} />
+        <Route path="/journal" element={<JournalIA />} />
+        <Route path="/montecarlo" element={<MonteCarlo />} />
+        <Route path="/livefeed" element={<LiveFeed />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
