@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw, AlertTriangle, ArrowUp, ArrowDown, Minus, Download } from 'lucide-react';
+import { FlaskConical, Play, Pause, Plus, TrendingUp, Target, Percent, Zap, CheckCircle2, XCircle, BarChart2, RefreshCw, AlertTriangle, ArrowUp, ArrowDown, Minus, Download, Upload } from 'lucide-react';
+import CSVImporter from '@/components/backtest/CSVImporter';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -43,7 +44,8 @@ const sessionStats = [
 export default function Backtest() {
   const [running, setRunning] = useState(false);
   const [filter, setFilter] = useState('all');
-  const [activeTab, setActiveTab] = useState('journal'); // journal | auto | optimize
+  const [activeTab, setActiveTab] = useState('journal'); // journal | auto | optimize | import
+  const [importedTrades, setImportedTrades] = useState([]);
   const [showAddTrade, setShowAddTrade] = useState(false);
   const [aiReport, setAiReport] = useState(null);
   const [loadingAI, setLoadingAI] = useState(false);
@@ -74,7 +76,7 @@ export default function Backtest() {
     onSuccess: () => { qc.invalidateQueries(['backtest-trades']); setShowAddTrade(false); toast.success('Trade ajouté'); }
   });
 
-  const allTrades = [...tradeLogs, ...trades.map((t, i) => ({ ...t, id: `db-${i}` }))];
+  const allTrades = [...tradeLogs, ...trades.map((t, i) => ({ ...t, id: `db-${i}` })), ...importedTrades.map((t, i) => ({ ...t, id: `csv-${i}` }))];
   const wins = allTrades.filter(t => t.result === 'win').length;
   const losses = allTrades.filter(t => t.result === 'loss').length;
   const totalPnl = allTrades.reduce((s, t) => s + (t.pnl || 0), 0);
@@ -163,6 +165,7 @@ Fournis 7 à 9 suggestions. Remets en question toute hypothèse non robuste.`,
           { id: 'journal', label: '📋 Journal' },
           { id: 'auto', label: '📊 Analyse Auto' },
           { id: 'optimize', label: '⚡ Optimisation IA' },
+          { id: 'import', label: '📥 Import TV' },
         ].map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === t.id ? 'tab-active' : 'text-muted-foreground hover:text-foreground'}`}>
@@ -305,6 +308,25 @@ Fournis 7 à 9 suggestions. Remets en question toute hypothèse non robuste.`,
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* TAB: Import TradingView */}
+      {activeTab === 'import' && (
+        <div className="card-trading space-y-3">
+          <div className="flex items-center gap-2">
+            <Upload className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-semibold">Import CSV TradingView</span>
+            {importedTrades.length > 0 && (
+              <span className="ml-auto text-xs bg-primary/20 text-primary px-2 py-0.5 rounded font-mono">{importedTrades.length} trades importés</span>
+            )}
+          </div>
+          <CSVImporter onImport={trades => setImportedTrades(prev => [...prev, ...trades])} />
+          {importedTrades.length > 0 && (
+            <button className="text-xs text-destructive hover:underline" onClick={() => setImportedTrades([])}>
+              Supprimer tous les trades importés ({importedTrades.length})
+            </button>
+          )}
         </div>
       )}
 

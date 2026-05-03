@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Settings, Webhook, Bell, Shield, Trash2, CheckCircle2, XCircle, Send, Database, Cpu } from 'lucide-react';
+import { Settings, Webhook, Bell, Shield, Trash2, CheckCircle2, XCircle, Send, Database, Cpu, ToggleLeft, AlertTriangle, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import PreFlightChecklist from '@/components/shared/PreFlightChecklist';
 
 const defaultSettings = {
+  useRealData: false,
   webhookUrl: 'https://votre-app.base44.app/api/webhook',
   webhookSecret: '',
   dailyTarget: 500,
@@ -161,6 +162,49 @@ export default function SettingsPage() {
             </Button>
           </div>
         </div>
+      </div>
+
+      {/* Mode Données Réelles / Simulées */}
+      <div className={`card-trading border-2 transition-all ${settings.useRealData ? 'border-primary/50 bg-primary/5' : 'border-yellow-400/30 bg-yellow-400/5'}`}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Eye className={`w-4 h-4 ${settings.useRealData ? 'text-primary' : 'text-yellow-400'}`} />
+            <span className="text-sm font-semibold">Mode Données</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${settings.useRealData ? 'bg-primary/20 text-primary' : 'bg-yellow-400/20 text-yellow-400'}`}>
+              {settings.useRealData ? '🔴 DONNÉES RÉELLES' : '🟡 DONNÉES SIMULÉES'}
+            </span>
+          </div>
+          <Switch checked={settings.useRealData} onCheckedChange={v => { set('useRealData', v); toast(v ? '⚠️ Mode données réelles activé — Connectez vos sources' : '🟡 Mode simulation activé'); }} />
+        </div>
+        {settings.useRealData ? (
+          <div className="space-y-2 text-xs">
+            <div className="flex items-start gap-2 p-2 bg-primary/5 rounded border border-primary/20">
+              <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-primary">Mode Réel Activé</p>
+                <p className="text-muted-foreground">Le dashboard utilise uniquement les données de vos comptes connectés. Webhook TradingView requis pour les signaux live.</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: 'Webhook TradingView', status: 'required' },
+                { label: 'Compte MFF connecté', status: 'manual' },
+                { label: 'News API (Forex Factory)', status: 'integrated' },
+                { label: 'Export CSV TradingView', status: 'integrated' },
+              ].map(s => (
+                <div key={s.label} className="flex items-center gap-2 p-1.5 rounded bg-secondary/30">
+                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${s.status === 'integrated' ? 'bg-primary' : s.status === 'required' ? 'bg-yellow-400 animate-pulse' : 'bg-muted-foreground'}`} />
+                  <span className="text-[10px] text-muted-foreground">{s.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-start gap-2 text-xs p-2 bg-yellow-400/5 rounded border border-yellow-400/20">
+            <AlertTriangle className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+            <p className="text-muted-foreground">Mode simulation — Les données du dashboard sont des données de démonstration. Activez le mode réel et connectez TradingView + vos comptes prop firm pour exploiter des données live.</p>
+          </div>
+        )}
       </div>
 
       {/* Preflight checklist full */}

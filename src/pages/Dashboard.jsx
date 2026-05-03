@@ -4,6 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import StatCard from '@/components/shared/StatCard';
 import PreFlightChecklist from '@/components/shared/PreFlightChecklist';
 import PnLGauge from '@/components/shared/PnLGauge';
+import MultiAccountPanel from '@/components/dashboard/MultiAccountPanel';
+import RiskManager from '@/components/dashboard/RiskManager';
+import NewsCalendar from '@/components/dashboard/NewsCalendar';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { TrendingUp, TrendingDown, Target, Shield, Zap, AlertTriangle, Activity, ArrowUpRight } from 'lucide-react';
 
@@ -130,6 +133,15 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* News Calendar */}
+      <NewsCalendar />
+
+      {/* Multi-accounts + Risk */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <MultiAccountPanel />
+        <RiskManager />
+      </div>
+
       {/* Signals + Checklist */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Live signals */}
@@ -152,7 +164,6 @@ export default function Dashboard() {
             ))
           )}
         </div>
-
         {/* Checklist */}
         <PreFlightChecklist />
       </div>
