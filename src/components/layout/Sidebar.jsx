@@ -2,7 +2,8 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FlaskConical, Monitor, Radio,
   Building2, Snowflake, BarChart3, Settings, Newspaper,
-  Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks, Clock, BookOpen, Dices, Activity
+  Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks, Clock, BookOpen, Dices, Activity,
+  Bot, PieChart, Landmark
 } from 'lucide-react';
 
 const navItems = [
@@ -14,6 +15,9 @@ const navItems = [
   { path: '/snowball', label: 'Plan Boule de Neige', icon: Snowflake },
   { path: '/sessions', label: 'Sessions', icon: Clock },
   { path: '/journal', label: 'Journal IA', icon: BookOpen },
+  { path: '/backtest-auto', label: 'Backtest Auto', icon: Bot },
+  { path: '/analytics', label: 'Analytics IA', icon: PieChart },
+  { path: '/prop-capital', label: 'Suivi Capital', icon: Landmark },
   { path: '/montecarlo', label: 'Monte Carlo', icon: Dices },
   { path: '/livefeed', label: 'Flux Live', icon: Activity },
   { path: '/news', label: 'Actualités', icon: Newspaper },

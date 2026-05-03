@@ -24,6 +24,9 @@ import Strategy from '@/pages/Strategy';
 import Backlog from '@/pages/Backlog';
 import Sessions from '@/pages/Sessions';
 import JournalIA from '@/pages/JournalIA';
+import BacktestAuto from '@/pages/BacktestAuto';
+import AnalyticsDashboard from '@/pages/AnalyticsDashboard';
+import PropCapital from '@/pages/PropCapital';
 import MonteCarlo from '@/pages/MonteCarlo';
 import LiveFeed from '@/pages/LiveFeed';
 
@@ -64,6 +67,9 @@ const AuthenticatedApp = () => {
         <Route path="/backlog" element={<Backlog />} />
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/journal" element={<JournalIA />} />
+        <Route path="/backtest-auto" element={<BacktestAuto />} />
+        <Route path="/analytics" element={<AnalyticsDashboard />} />
+        <Route path="/prop-capital" element={<PropCapital />} />
         <Route path="/montecarlo" element={<MonteCarlo />} />
         <Route path="/livefeed" element={<LiveFeed />} />
         <Route path="/settings" element={<SettingsPage />} />
