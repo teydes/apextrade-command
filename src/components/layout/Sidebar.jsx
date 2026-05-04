@@ -2,39 +2,65 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FlaskConical, Monitor, Radio,
   Building2, Snowflake, BarChart3, Settings, Newspaper,
-  Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks, Clock, BookOpen, Dices, Activity,
-  Bot, PieChart, Landmark
+  Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
+  Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked
 } from 'lucide-react';
 
-const navItems = [
-  { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/backtest', label: 'Backtest 24/7', icon: FlaskConical },
-  { path: '/demo', label: 'Backtest Demo', icon: Monitor },
-  { path: '/live', label: 'Trading Live', icon: Radio },
-  { path: '/propfirms', label: 'PropFirms', icon: Building2 },
-  { path: '/snowball', label: 'Plan Boule de Neige', icon: Snowflake },
-  { path: '/sessions', label: 'Sessions', icon: Clock },
-  { path: '/journal', label: 'Journal IA', icon: BookOpen },
-  { path: '/backtest-auto', label: 'Backtest Auto', icon: Bot },
-  { path: '/analytics', label: 'Analytics IA', icon: PieChart },
-  { path: '/prop-capital', label: 'Suivi Capital', icon: Landmark },
-  { path: '/montecarlo', label: 'Monte Carlo', icon: Dices },
-  { path: '/livefeed', label: 'Flux Live', icon: Activity },
-  { path: '/news', label: 'Actualités', icon: Newspaper },
-  { path: '/reports', label: 'Rapports', icon: BarChart3 },
-  { path: '/bank', label: 'Banque / Rembt.', icon: Wallet },
-  { path: '/fiscal', label: 'Conseiller Fiscal', icon: Scale },
-  { path: '/backlog', label: 'Backlog IA', icon: ListChecks },
-  { path: '/strategy', label: 'Stratégie', icon: Brain },
-  { path: '/council', label: 'Conseil IA', icon: Users },
-  { path: '/settings', label: 'Réglages', icon: Settings },
+const NAV_GROUPS = [
+  {
+    label: 'Core',
+    items: [
+      { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+      { path: '/live', label: 'Trading Live', icon: Radio },
+      { path: '/livefeed', label: 'Flux Live', icon: Activity },
+    ]
+  },
+  {
+    label: 'Backtesting',
+    items: [
+      { path: '/backtest', label: 'Backtest Journal', icon: FlaskConical },
+      { path: '/backtest-auto', label: 'Backtest Auto', icon: Bot },
+      { path: '/demo', label: 'Démo Bot', icon: Monitor },
+    ]
+  },
+  {
+    label: 'Analyse & IA',
+    items: [
+      { path: '/analytics', label: 'Analytics IA', icon: PieChart },
+      { path: '/montecarlo', label: 'Monte Carlo', icon: Dices },
+      { path: '/journal', label: 'Journal IA', icon: BookOpen },
+      { path: '/sessions', label: 'Sessions', icon: Clock },
+      { path: '/playbook', label: 'Playbook', icon: BookMarked },
+      { path: '/reports', label: 'Rapports', icon: BarChart3 },
+    ]
+  },
+  {
+    label: 'Capital & PropFirm',
+    items: [
+      { path: '/prop-capital', label: 'Suivi Capital', icon: Landmark },
+      { path: '/propfirms', label: 'PropFirms', icon: Building2 },
+      { path: '/snowball', label: 'Boule de Neige', icon: Snowflake },
+    ]
+  },
+  {
+    label: 'Gestion',
+    items: [
+      { path: '/news', label: 'Actualités', icon: Newspaper },
+      { path: '/bank', label: 'Banque', icon: Wallet },
+      { path: '/fiscal', label: 'Fiscal', icon: Scale },
+      { path: '/backlog', label: 'Backlog IA', icon: ListChecks },
+      { path: '/strategy', label: 'Stratégie', icon: Brain },
+      { path: '/council', label: 'Conseil IA', icon: Users },
+      { path: '/settings', label: 'Réglages', icon: Settings },
+    ]
+  },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <div className="w-56 flex-shrink-0 h-screen bg-sidebar border-r border-sidebar-border flex flex-col">
+    <div className="w-52 flex-shrink-0 h-screen bg-sidebar border-r border-sidebar-border flex flex-col">
       {/* Logo */}
       <div className="p-4 border-b border-sidebar-border">
         <div className="flex items-center gap-2">
@@ -43,37 +69,42 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-xs text-muted-foreground">MFF · 50K · NQ</div>
+            <div className="text-[10px] text-muted-foreground">MFF · 50K · NQ · v2.0</div>
           </div>
         </div>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 p-2 overflow-y-auto">
-        {navItems.map(({ path, label, icon: Icon }) => {
-          const active = location.pathname === path;
-          return (
-            <Link
-              key={path}
-              to={path}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md mb-0.5 text-sm transition-all group ${
-                active
-                  ? 'bg-sidebar-accent text-primary border-l-2 border-primary'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-foreground'
-              }`}
-            >
-              <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-primary' : ''}`} />
-              <span className="flex-1 truncate">{label}</span>
-              {active && <ChevronRight className="w-3 h-3 text-primary" />}
-            </Link>
-          );
-        })}
+      {/* Nav groupée */}
+      <nav className="flex-1 p-2 overflow-y-auto space-y-3">
+        {NAV_GROUPS.map(group => (
+          <div key={group.label}>
+            <div className="text-[9px] font-bold text-muted-foreground/50 uppercase tracking-widest px-2 mb-1">{group.label}</div>
+            {group.items.map(({ path, label, icon: Icon }) => {
+              const active = location.pathname === path;
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md mb-0.5 text-xs transition-all group ${
+                    active
+                      ? 'bg-sidebar-accent text-primary border-l-2 border-primary'
+                      : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-foreground'
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${active ? 'text-primary' : ''}`} />
+                  <span className="flex-1 truncate">{label}</span>
+                  {active && <ChevronRight className="w-3 h-3 text-primary" />}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
 
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
-        <div className="text-xs text-muted-foreground mb-2 font-mono">SYSTEM STATUS</div>
-        <div className="space-y-1.5">
+        <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide">System Status</div>
+        <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
           <StatusRow label="MFF Account" status="active" />
           <StatusRow label="News Feed" status="active" />
@@ -86,9 +117,9 @@ export default function Sidebar() {
 
 function StatusRow({ label, status }) {
   return (
-    <div className="flex items-center justify-between text-xs">
+    <div className="flex items-center justify-between text-[10px]">
       <span className="text-muted-foreground">{label}</span>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1">
         <span className={`status-dot ${status}`} />
         <span className={status === 'active' ? 'text-primary' : 'text-muted-foreground'}>
           {status === 'active' ? 'ON' : 'OFF'}

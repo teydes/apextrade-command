@@ -29,6 +29,7 @@ import AnalyticsDashboard from '@/pages/AnalyticsDashboard';
 import PropCapital from '@/pages/PropCapital';
 import MonteCarlo from '@/pages/MonteCarlo';
 import LiveFeed from '@/pages/LiveFeed';
+import Playbook from '@/pages/Playbook';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
         <Route path="/prop-capital" element={<PropCapital />} />
         <Route path="/montecarlo" element={<MonteCarlo />} />
         <Route path="/livefeed" element={<LiveFeed />} />
+        <Route path="/playbook" element={<Playbook />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
