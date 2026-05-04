@@ -200,10 +200,11 @@ Sois direct et actionnable.`,
         {filtered.map(item => {
           const pc = priorityConfig[item.priority];
           const sc = statusConfig[item.status];
+          const StatusIcon = sc.icon;
           return (
             <div key={item.id} className={`card-trading flex items-start gap-3 ${item.status === 'done' ? 'opacity-60' : ''}`}>
               <button onClick={() => toggleStatus(item.id)} className="flex-shrink-0 mt-0.5 hover:opacity-80 transition-opacity">
-                <sc.icon className={`w-4 h-4 ${item.status === 'done' ? 'text-primary' : item.status === 'in_progress' ? 'text-blue-400' : 'text-muted-foreground'}`} />
+                <StatusIcon className={`w-4 h-4 ${item.status === 'done' ? 'text-primary' : item.status === 'in_progress' ? 'text-blue-400' : 'text-muted-foreground'}`} />
               </button>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">

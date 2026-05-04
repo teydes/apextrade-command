@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Building2, AlertTriangle, CheckCircle2, XCircle, ExternalLink, Copy, Star } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { Building2, AlertTriangle, CheckCircle2, XCircle, ExternalLink, Copy, Star, Zap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-
 // ✅ Propfirms sélectionnées : sérieuses, règles simples, payout fiable
 // ❌ Exclues : Apex (règles complexes), FTMO (phase 1+2 trop contraignante)
 const defaultPropFirms = [
@@ -105,6 +106,36 @@ const statusColors = {
 export default function PropFirms() {
   const [selected, setSelected] = useState(null);
   const [showCopyPlan, setShowCopyPlan] = useState(false);
+  const [aiComparison, setAiComparison] = useState(null);
+  const [loadingAI, setLoadingAI] = useState(false);
+
+  const compareWithAI = async () => {
+    setLoadingAI(true);
+    const res = await base44.integrations.Core.InvokeLLM({
+      prompt: `Tu es un expert PropFirm trading futures. Compare ces propfirms pour un trader NQ algorithmique avec bots et copy trading.
+
+${defaultPropFirms.filter(p => p.status !== 'avoided').map(p => 
+  `${p.name}: DD=${p.daily_drawdown_pct}%/j max=${p.max_drawdown_pct}%, bots=${p.allows_bots}, news=${p.news_trading}, payout=${p.payout_split}% ${p.payout_frequency}, score=${p.validation_score}`
+).join('\n')}
+
+Donne le classement optimal pour maximiser les payouts avec le moins de risque de violation. Retourne UNIQUEMENT JSON:
+{
+  "ranking": [{"name":"<nom>","rank":<1-5>,"reason":"<raison courte>"}],
+  "best_combo": "<combinaison optimale 3-4 firmes>",
+  "avoid_risk": "<risque principal à surveiller>",
+  "strategy": "<stratégie d'allocation du capital>"
+}`,
+      response_json_schema: {
+        type: "object", properties: {
+          ranking: { type: "array", items: { type: "object", properties: { name: { type: "string" }, rank: { type: "number" }, reason: { type: "string" } } } },
+          best_combo: { type: "string" }, avoid_risk: { type: "string" }, strategy: { type: "string" }
+        }
+      }
+    });
+    setAiComparison(res);
+    setLoadingAI(false);
+    toast.success('Comparaison IA générée');
+  };
 
   const active = defaultPropFirms.filter(p => p.status !== 'avoided');
   const totalPlannedAccounts = 15;
@@ -127,6 +158,10 @@ export default function PropFirms() {
             <div className="font-bold text-lg text-primary">{totalPlannedAccounts}</div>
             <div className="text-muted-foreground">Comptes cible</div>
           </div>
+          <Button size="sm" variant="outline" onClick={compareWithAI} disabled={loadingAI} className="gap-1 text-xs">
+            <Zap className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
+            {loadingAI ? 'IA...' : 'Comparer IA'}
+          </Button>
           <button onClick={() => setShowCopyPlan(p => !p)}
             className="px-3 py-1.5 rounded bg-primary/10 border border-primary/20 text-primary text-xs font-medium hover:bg-primary/20">
             {showCopyPlan ? 'Masquer' : '📋 Plan Copy'}
@@ -167,6 +202,41 @@ export default function PropFirms() {
           </div>
           <div className="mt-2 p-2 bg-blue-400/5 border border-blue-400/20 rounded text-xs text-blue-400">
             💡 Le copy trading permet de répliquer les trades du compte MFF maître sur tous les comptes en temps réel — <strong>un seul setup, 15 payouts.</strong>
+          </div>
+        </div>
+      )}
+
+      {aiComparison && (
+        <div className="card-trading border border-blue-400/30 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2"><Zap className="w-4 h-4 text-blue-400" /><span className="text-sm font-semibold text-blue-400">Analyse IA — Classement Optimal</span></div>
+            <Button size="sm" variant="ghost" className="h-6 text-xs" onClick={() => setAiComparison(null)}>✕</Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div>
+              <div className="font-semibold mb-1.5 text-muted-foreground">Classement</div>
+              {aiComparison.ranking?.map((r, i) => (
+                <div key={i} className="flex items-center gap-2 p-1.5 bg-secondary/30 rounded mb-1">
+                  <span className="font-bold font-mono text-primary w-5">#{r.rank}</span>
+                  <span className="font-medium">{r.name}</span>
+                  <span className="text-muted-foreground flex-1 text-[10px]">{r.reason}</span>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-2">
+              <div className="p-2 bg-primary/5 border border-primary/20 rounded">
+                <div className="font-semibold text-primary mb-0.5 text-[10px]">💡 Combo Optimal</div>
+                <div className="text-muted-foreground">{aiComparison.best_combo}</div>
+              </div>
+              <div className="p-2 bg-destructive/5 border border-destructive/20 rounded">
+                <div className="font-semibold text-destructive mb-0.5 text-[10px]">⚠️ Risque Principal</div>
+                <div className="text-muted-foreground">{aiComparison.avoid_risk}</div>
+              </div>
+              <div className="p-2 bg-blue-400/5 border border-blue-400/20 rounded">
+                <div className="font-semibold text-blue-400 mb-0.5 text-[10px]">🎯 Stratégie</div>
+                <div className="text-muted-foreground">{aiComparison.strategy}</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Wallet, TrendingUp, Target, Plus, Trash2, ArrowUpRight, ArrowDownRight, ShoppingCart, Monitor, Wifi } from 'lucide-react';
+import { Wallet, TrendingUp, Target, Plus, Trash2, ArrowUpRight, ArrowDownRight, ShoppingCart, Monitor, Wifi, Calculator } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,8 +44,9 @@ const priorityColors = { critique: 'text-red-400', haute: 'text-yellow-400', moy
 
 export default function Bank() {
   const [debts, setDebts] = useState(initialDebts);
-  const [payouts] = useState(initialPayouts);
+  const [payouts, setPayouts] = useState(initialPayouts);
   const [newDebt, setNewDebt] = useState({ name: '', amount: '' });
+  const [newPayout, setNewPayout] = useState({ propfirm: 'MFF', gross: '', reinvested_pct: 80 });
   const [activeTab, setActiveTab] = useState('debts'); // debts | payouts | needs
 
   const togglePaid = (id) => setDebts(prev => prev.map(d => d.id === id ? { ...d, paid: !d.paid } : d));
@@ -162,6 +163,29 @@ export default function Bank() {
       {/* TAB : Historique Payouts */}
       {activeTab === 'payouts' && (
         <div className="space-y-3">
+          {/* Ajouter payout rapide */}
+          <div className="card-trading border border-primary/20">
+            <div className="flex items-center gap-2 mb-2">
+              <Calculator className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs font-semibold">Enregistrer un Payout</span>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <Input placeholder="PropFirm" value={newPayout.propfirm} onChange={e => setNewPayout(p => ({...p, propfirm: e.target.value}))} className="h-7 text-xs bg-secondary border-border w-24" />
+              <Input placeholder="Montant brut €" type="number" value={newPayout.gross} onChange={e => setNewPayout(p => ({...p, gross: e.target.value}))} className="h-7 text-xs bg-secondary border-border w-28" />
+              <Input placeholder="% réinvesti" type="number" value={newPayout.reinvested_pct} onChange={e => setNewPayout(p => ({...p, reinvested_pct: parseFloat(e.target.value)}))} className="h-7 text-xs bg-secondary border-border w-24" />
+              <Button size="sm" className="h-7 px-3 text-xs" onClick={() => {
+                if (!newPayout.gross) return;
+                const gross = parseFloat(newPayout.gross);
+                const net = Math.round(gross * 0.9);
+                const reinvested = Math.round(net * (newPayout.reinvested_pct / 100));
+                setPayouts(p => [...p, { id: Date.now(), date: new Date().toISOString().split('T')[0], propfirm: newPayout.propfirm, gross, net, reinvested, withdrawn: net - reinvested }]);
+                setNewPayout({ propfirm: 'MFF', gross: '', reinvested_pct: 80 });
+              }}>
+                <Plus className="w-3 h-3 mr-1" />Ajouter
+              </Button>
+            </div>
+          </div>
+
           {payouts.length === 0 ? (
             <div className="card-trading text-center py-8 text-muted-foreground text-xs">Aucun payout reçu — En attente du 1er payout MFF</div>
           ) : payouts.map((p, i) => (

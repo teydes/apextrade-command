@@ -8,6 +8,9 @@ import PnLGauge from '@/components/shared/PnLGauge';
 import MultiAccountPanel from '@/components/dashboard/MultiAccountPanel';
 import RiskManager from '@/components/dashboard/RiskManager';
 import NewsCalendar from '@/components/dashboard/NewsCalendar';
+import DailyMission from '@/components/dashboard/DailyMission';
+import MarketBias from '@/components/dashboard/MarketBias';
+import KillSwitchBanner from '@/components/shared/KillSwitchBanner';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import {
   TrendingUp, TrendingDown, Target, Shield, Zap, Activity, ArrowUpRight,
@@ -75,6 +78,9 @@ export default function Dashboard() {
         </div>
         <PreFlightChecklist compact />
       </div>
+
+      {/* Kill Switch Banner */}
+      <KillSwitchBanner ddPct={Math.round((usedDD/maxDD)*100)} consecutiveLosses={0} />
 
       {/* Quick nav */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
@@ -223,12 +229,16 @@ export default function Dashboard() {
         <PreFlightChecklist />
       </div>
 
-      {/* News + Risk + Accounts */}
-      <NewsCalendar />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <MultiAccountPanel />
+      {/* Biais + Mission + Risk */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <MarketBias />
+        <DailyMission />
         <RiskManager />
       </div>
+
+      {/* News + Accounts */}
+      <NewsCalendar />
+      <MultiAccountPanel />
     </div>
   );
 }
