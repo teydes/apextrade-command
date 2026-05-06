@@ -4,7 +4,7 @@ import {
   Building2, Snowflake, BarChart3, Settings, Newspaper,
   Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
   Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
-  Copy, Link2
+  Copy, Link2, PiggyBank, GitBranch
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -50,7 +50,9 @@ const NAV_GROUPS = [
     items: [
       { path: '/news', label: 'Actualités', icon: Newspaper },
       { path: '/bank', label: 'Banque', icon: Wallet },
-      { path: '/fiscal', label: 'Fiscal', icon: Scale },
+      { path: '/finance-perso', label: 'Finance Perso', icon: PiggyBank },
+      { path: '/fiscal-auto', label: 'Fiscal Auto', icon: Scale },
+      { path: '/correlations', label: 'Corrélations', icon: GitBranch },
       { path: '/backlog', label: 'Backlog IA', icon: ListChecks },
       { path: '/strategy', label: 'Stratégie', icon: Brain },
       { path: '/council', label: 'Conseil IA', icon: Users },

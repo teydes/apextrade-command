@@ -32,6 +32,9 @@ import LiveFeed from '@/pages/LiveFeed';
 import Playbook from '@/pages/Playbook';
 import CopyTrading from '@/pages/CopyTrading';
 import PropFirmConnect from '@/pages/PropFirmConnect';
+import FinancePersonnelle from '@/pages/FinancePersonnelle';
+import FiscalAuto from '@/pages/FiscalAuto';
+import CorrelationMarkets from '@/pages/CorrelationMarkets';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +81,9 @@ const AuthenticatedApp = () => {
         <Route path="/playbook" element={<Playbook />} />
         <Route path="/copy-trading" element={<CopyTrading />} />
         <Route path="/prop-connect" element={<PropFirmConnect />} />
+        <Route path="/finance-perso" element={<FinancePersonnelle />} />
+        <Route path="/fiscal-auto" element={<FiscalAuto />} />
+        <Route path="/correlations" element={<CorrelationMarkets />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
