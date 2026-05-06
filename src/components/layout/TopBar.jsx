@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Clock, TrendingUp, TrendingDown, Activity, Wifi } from 'lucide-react';
 import NotificationCenter from '@/components/shared/NotificationCenter';
+import PushAlerts from '@/components/shared/PushAlerts';
 
 const INSTRUMENTS = [
   { sym: 'NQ1!', base: 19847.25, vol: 15 },
@@ -77,6 +78,7 @@ export default function TopBar() {
       </div>
 
       <NotificationCenter />
+      <PushAlerts />
     </div>
   );
 }

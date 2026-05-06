@@ -3,7 +3,8 @@ import {
   LayoutDashboard, FlaskConical, Monitor, Radio,
   Building2, Snowflake, BarChart3, Settings, Newspaper,
   Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
-  Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked
+  Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
+  Copy, Link2
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -39,6 +40,8 @@ const NAV_GROUPS = [
     items: [
       { path: '/prop-capital', label: 'Suivi Capital', icon: Landmark },
       { path: '/propfirms', label: 'PropFirms', icon: Building2 },
+      { path: '/prop-connect', label: 'Connexion PF', icon: Link2 },
+      { path: '/copy-trading', label: 'Copy Trading', icon: Copy },
       { path: '/snowball', label: 'Boule de Neige', icon: Snowflake },
     ]
   },
@@ -69,7 +72,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">MFF · 50K · NQ · v2.0</div>
+            <div className="text-[10px] text-muted-foreground">MFF · 50K · NQ · v3.0</div>
           </div>
         </div>
       </div>

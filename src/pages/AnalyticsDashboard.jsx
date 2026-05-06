@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { BarChart2, TrendingUp, Zap, RefreshCw, Target, Award } from 'lucide-react';
+import { BarChart2, TrendingUp, Zap, RefreshCw, Target, Award, Download, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -104,6 +104,52 @@ Retourne UNIQUEMENT JSON sans markdown:
 
   const trendColor = { improving: 'text-primary', declining: 'text-destructive', stable: 'text-yellow-400' };
 
+  // Export CSV complet
+  const exportCSV = () => {
+    const headers = ['Mois', 'PnL (€)', 'Trades', 'Win Rate (%)'];
+    const rows = MONTHLY_PNL.map(m => [m.month, m.pnl, m.trades, m.wr]);
+    const errorRows = MISTAKE_DISTRIBUTION.map(m => [m.name, m.count, m.pnl, '']);
+    const csv = [
+      '=== PERFORMANCE MENSUELLE ===',
+      headers.join(','),
+      ...rows.map(r => r.join(',')),
+      '',
+      '=== ERREURS IDENTIFIÉES ===',
+      'Erreur,Occurrences,Impact PnL (€),',
+      ...errorRows.map(r => r.join(',')),
+      '',
+      `=== SYNTHÈSE ===`,
+      `PnL Total,${totalPnl}€`,
+      `Win Rate Moyen,${avgWR}%`,
+      `Total Trades,${totalTrades}`,
+      `Score Performance,${aiInsight?.performance_score || 'N/A'}`,
+      `Export généré,${new Date().toLocaleDateString('fr-FR')}`,
+    ].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `ghost_trader_analytics_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+    toast.success('Export CSV généré');
+  };
+
+  const exportJSON = () => {
+    const data = {
+      exported_at: new Date().toISOString(),
+      summary: { total_pnl: totalPnl, total_trades: totalTrades, avg_win_rate: avgWR, best_month: bestMonth, worst_month: worstMonth },
+      monthly_pnl: MONTHLY_PNL,
+      mistake_distribution: MISTAKE_DISTRIBUTION,
+      session_breakdown: SESSION_PIE,
+      ai_insight: aiInsight || null,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `ghost_trader_analytics_${new Date().toISOString().slice(0,10)}.json`;
+    a.click(); URL.revokeObjectURL(url);
+    toast.success('Export JSON généré');
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
@@ -114,7 +160,7 @@ Retourne UNIQUEMENT JSON sans markdown:
           </h1>
           <p className="text-xs text-muted-foreground">Performance globale · Patterns d'erreurs · Insights IA</p>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center flex-wrap">
           <div className="flex gap-1">
             {['1m', '3m', 'all'].map(p => (
               <button key={p} onClick={() => setPeriod(p)}
@@ -123,6 +169,12 @@ Retourne UNIQUEMENT JSON sans markdown:
               </button>
             ))}
           </div>
+          <Button size="sm" variant="outline" onClick={exportCSV} className="gap-1 text-xs h-8">
+            <Download className="w-3 h-3" />CSV
+          </Button>
+          <Button size="sm" variant="outline" onClick={exportJSON} className="gap-1 text-xs h-8">
+            <FileText className="w-3 h-3" />JSON
+          </Button>
           <Button size="sm" onClick={getAIInsight} disabled={loadingAI} className="gap-1 text-xs">
             <Zap className={`w-3 h-3 ${loadingAI ? 'animate-spin' : ''}`} />
             {loadingAI ? 'Analyse...' : 'Insights IA'}
