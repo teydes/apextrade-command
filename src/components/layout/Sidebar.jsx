@@ -4,7 +4,7 @@ import {
   Building2, Snowflake, BarChart3, Settings, Newspaper,
   Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
   Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
-  Copy, Link2, PiggyBank, GitBranch
+  Copy, Link2, PiggyBank, GitBranch, Calculator, Bell
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -42,12 +42,14 @@ const NAV_GROUPS = [
       { path: '/propfirms', label: 'PropFirms', icon: Building2 },
       { path: '/prop-connect', label: 'Connexion PF', icon: Link2 },
       { path: '/copy-trading', label: 'Copy Trading', icon: Copy },
+      { path: '/payout-simulator', label: 'Simulateur Payouts', icon: Calculator },
       { path: '/snowball', label: 'Boule de Neige', icon: Snowflake },
     ]
   },
   {
     label: 'Gestion',
     items: [
+      { path: '/alerts', label: 'Alertes', icon: Bell },
       { path: '/news', label: 'Actualités', icon: Newspaper },
       { path: '/bank', label: 'Banque', icon: Wallet },
       { path: '/finance-perso', label: 'Finance Perso', icon: PiggyBank },

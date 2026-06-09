@@ -35,6 +35,8 @@ import PropFirmConnect from '@/pages/PropFirmConnect';
 import FinancePersonnelle from '@/pages/FinancePersonnelle';
 import FiscalAuto from '@/pages/FiscalAuto';
 import CorrelationMarkets from '@/pages/CorrelationMarkets';
+import PayoutSimulator from '@/pages/PayoutSimulator';
+import AlertCenter from '@/pages/AlertCenter';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -84,6 +86,8 @@ const AuthenticatedApp = () => {
         <Route path="/finance-perso" element={<FinancePersonnelle />} />
         <Route path="/fiscal-auto" element={<FiscalAuto />} />
         <Route path="/correlations" element={<CorrelationMarkets />} />
+        <Route path="/payout-simulator" element={<PayoutSimulator />} />
+        <Route path="/alerts" element={<AlertCenter />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

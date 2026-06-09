@@ -11,10 +11,13 @@ import NewsCalendar from '@/components/dashboard/NewsCalendar';
 import DailyMission from '@/components/dashboard/DailyMission';
 import MarketBias from '@/components/dashboard/MarketBias';
 import KillSwitchBanner from '@/components/shared/KillSwitchBanner';
+import PayoutWidget from '@/components/dashboard/PayoutWidget';
+import FinanceWidget from '@/components/dashboard/FinanceWidget';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import {
   TrendingUp, TrendingDown, Target, Shield, Zap, Activity, ArrowUpRight,
-  Bot, BarChart2, Landmark, BookOpen, Dices, Clock, Wifi, RefreshCw
+  Bot, BarChart2, Landmark, BookOpen, Dices, Wifi,
+  Calculator, Bell, GitBranch, PiggyBank
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -23,14 +26,17 @@ const QUICK_LINKS = [
   { to: '/analytics', label: 'Analytics IA', icon: BarChart2, color: 'text-purple-400' },
   { to: '/prop-capital', label: 'Capital MFF', icon: Landmark, color: 'text-yellow-400' },
   { to: '/montecarlo', label: 'Monte Carlo', icon: Dices, color: 'text-orange-400' },
+  { to: '/payout-simulator', label: 'Simulateur', icon: Calculator, color: 'text-orange-400' },
+  { to: '/alerts', label: 'Alertes', icon: Bell, color: 'text-red-400' },
+  { to: '/correlations', label: 'Corrélations', icon: GitBranch, color: 'text-purple-400' },
   { to: '/journal', label: 'Journal IA', icon: BookOpen, color: 'text-cyan-400' },
+  { to: '/finance-perso', label: 'Finance', icon: PiggyBank, color: 'text-yellow-400' },
   { to: '/livefeed', label: 'Flux Live', icon: Wifi, color: 'text-primary' },
 ];
 
 export default function Dashboard() {
   const [tick, setTick] = useState(0);
 
-  // Données réelles depuis la base
   const { data: signals = [] } = useQuery({ queryKey: ['signals-dash'], queryFn: () => base44.entities.Signal.list('-created_date', 5) });
   const { data: accounts = [] } = useQuery({ queryKey: ['accounts-dash'], queryFn: () => base44.entities.TradingAccount.list() });
   const { data: recentTradesDB = [] } = useQuery({ queryKey: ['recent-trades-dash'], queryFn: () => base44.entities.Trade.list('-entry_time', 10) });
@@ -41,31 +47,24 @@ export default function Dashboard() {
     return () => clearInterval(t);
   }, []);
 
-  // Calculs dynamiques depuis données réelles (fallback sur mock si DB vide)
   const liveAccount = accounts.find(a => a.phase === 'live' && a.status === 'active') || accounts[0];
   const accountBalance = liveAccount?.current_balance || liveAccount?.account_size || 53580;
   const accountSize = liveAccount?.account_size || 50000;
   const maxDD = liveAccount?.daily_drawdown_limit || 2000;
 
-  // P&L depuis les trades réels du jour
   const today = new Date().toISOString().slice(0, 10);
   const todayTrades = recentTradesDB.filter(t => t.entry_time?.startsWith(today));
-  const todayPnL = todayTrades.length > 0
-    ? todayTrades.reduce((s, t) => s + (t.pnl || 0), 0)
-    : 435;
+  const todayPnL = todayTrades.length > 0 ? todayTrades.reduce((s, t) => s + (t.pnl || 0), 0) : 435;
   const dailyTarget = liveAccount?.daily_profit_target || 500;
 
-  // DD utilisé
   const todayLosses = todayTrades.filter(t => (t.pnl || 0) < 0).reduce((s, t) => s + Math.abs(t.pnl || 0), 0);
   const usedDD = todayLosses || 320;
 
-  // Win rate depuis trades réels
   const closedTrades = recentTradesDB.filter(t => t.status === 'closed');
   const winRate = closedTrades.length > 0
     ? Math.round((closedTrades.filter(t => t.result === 'win').length / closedTrades.length) * 100)
     : 67;
 
-  // Equity curve depuis reports
   const equityCurve = reports.length > 0
     ? reports.slice(0, 14).reverse().map((r, i) => ({
         date: r.date?.slice(5) || `J${i}`,
@@ -77,7 +76,6 @@ export default function Dashboard() {
         { date: '29/04', eq: accountBalance },
       ];
 
-  // P&L semaine
   const weekDays = ['L', 'M', 'Me', 'J', 'V', 'S', 'D'];
   const pnlData = weekDays.map((day, i) => {
     const dayReport = reports.find(r => {
@@ -88,16 +86,12 @@ export default function Dashboard() {
   });
   const weekTotal = pnlData.reduce((s, d) => s + d.pnl, 0);
 
-  // Trades affichés (réels ou mock)
   const displayTrades = recentTradesDB.length > 0
     ? recentTradesDB.slice(0, 5).map(t => ({
         id: t.id,
         time: t.entry_time ? new Date(t.entry_time).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '--:--',
-        symbol: t.symbol,
-        dir: t.direction,
-        setup: t.setup || t.strategy || '—',
-        pnl: t.pnl || 0,
-        result: t.result || (t.pnl > 0 ? 'win' : t.pnl < 0 ? 'loss' : 'breakeven'),
+        symbol: t.symbol, dir: t.direction, setup: t.setup || t.strategy || '—',
+        pnl: t.pnl || 0, result: t.result || (t.pnl > 0 ? 'win' : t.pnl < 0 ? 'loss' : 'breakeven'),
       }))
     : [
         { id: 1, time: '09:42', symbol: 'NQ1!', dir: 'LONG', setup: 'OB + FVG', pnl: 320, result: 'win' },
@@ -130,20 +124,20 @@ export default function Dashboard() {
       <KillSwitchBanner ddPct={Math.round((usedDD / maxDD) * 100)} consecutiveLosses={0} />
 
       {/* Quick nav */}
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+      <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
         {QUICK_LINKS.map(l => (
           <Link key={l.to} to={l.to}
-            className="flex flex-col items-center gap-1.5 p-2.5 rounded-lg bg-card border border-border hover:border-primary/40 hover:bg-primary/5 transition-all group">
+            className="flex flex-col items-center gap-1.5 p-2 rounded-lg bg-card border border-border hover:border-primary/40 hover:bg-primary/5 transition-all group">
             <l.icon className={`w-4 h-4 ${l.color} group-hover:scale-110 transition-transform`} />
-            <span className="text-[10px] text-muted-foreground text-center leading-tight">{l.label}</span>
+            <span className="text-[9px] text-muted-foreground text-center leading-tight">{l.label}</span>
           </Link>
         ))}
       </div>
 
-      {/* Top stats — Données réelles */}
+      {/* Top stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <StatCard
-          label="P&L Journalier"
+          label="PnL Journalier"
           value={`${todayPnL >= 0 ? '+' : ''}${todayPnL.toLocaleString()}€`}
           sub={`Objectif: ${dailyTarget}€`}
           color={todayPnL >= 0 ? 'text-green-400' : 'text-destructive'}
@@ -235,11 +229,11 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* P&L hebdo + Recent trades */}
+      {/* PnL hebdo + Recent trades */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card-trading">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold">P&L Cette Semaine</span>
+            <span className="text-sm font-semibold">PnL Cette Semaine</span>
             <span className={`text-xs font-mono font-bold ${weekTotal >= 0 ? 'text-primary' : 'text-destructive'}`}>{weekTotal >= 0 ? '+' : ''}{weekTotal.toLocaleString()}€</span>
           </div>
           <ResponsiveContainer width="100%" height={120}>
@@ -247,7 +241,7 @@ export default function Dashboard() {
               <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ background: '#0f1625', border: '1px solid #1e293b', borderRadius: 6, fontSize: 11 }}
-                formatter={v => [`${v}€`, 'P&L']} />
+                formatter={v => [`${v}€`, 'PnL']} />
               <Bar dataKey="pnl" radius={[3, 3, 0, 0]}>
                 {pnlData.map((e, i) => <Cell key={i} fill={e.pnl >= 0 ? '#00FF88' : '#EF4444'} />)}
               </Bar>
@@ -310,6 +304,12 @@ export default function Dashboard() {
         <MarketBias />
         <DailyMission />
         <RiskManager />
+      </div>
+
+      {/* Payout + Finance widgets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <PayoutWidget />
+        <FinanceWidget />
       </div>
 
       {/* News + Accounts */}
