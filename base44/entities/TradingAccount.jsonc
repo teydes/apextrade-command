@@ -3,20 +3,53 @@
   "type": "object",
   "properties": {
     "name": {
+      "type": "string"
+    },
+    "account_type": {
       "type": "string",
-      "description": "Nom du compte"
+      "enum": [
+        "propfirm",
+        "personal",
+        "demo"
+      ],
+      "default": "propfirm",
+      "description": "Type de compte: PropFirm (avec r\u00e8gles) ou Personnel (sans restrictions)"
     },
     "propfirm": {
+      "type": "string"
+    },
+    "broker": {
       "type": "string",
-      "description": "Nom de la PropFirm"
+      "description": "Broker pour comptes personnels (ex: ICMarkets, Pepperstone)"
     },
     "account_size": {
-      "type": "number",
-      "description": "Taille du compte en \u20ac"
+      "type": "number"
     },
     "current_balance": {
-      "type": "number",
-      "description": "Balance actuelle"
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "EUR",
+        "USD",
+        "GBP",
+        "CHF"
+      ],
+      "default": "EUR"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "mt4",
+        "mt5",
+        "quantower",
+        "ninjatrader",
+        "ctrader",
+        "tradingview",
+        "other"
+      ],
+      "default": "mt5"
     },
     "phase": {
       "type": "string",
@@ -38,33 +71,31 @@
       "default": "active"
     },
     "daily_drawdown_limit": {
-      "type": "number"
+      "type": "number",
+      "description": "0 = pas de limite (comptes perso)"
     },
     "max_drawdown_limit": {
-      "type": "number"
+      "type": "number",
+      "description": "0 = pas de limite"
     },
     "daily_profit_target": {
       "type": "number"
     },
     "overall_profit_target": {
-      "type": "number"
+      "type": "number",
+      "description": "0 = pas de target"
     },
     "consistency_rule": {
       "type": "number",
-      "description": "% max d'un seul trade sur le total"
+      "default": 0
+    },
+    "leverage": {
+      "type": "number",
+      "default": 1,
+      "description": "Levier pour comptes personnels"
     },
     "login": {
       "type": "string"
-    },
-    "platform": {
-      "type": "string",
-      "enum": [
-        "quantower",
-        "mt4",
-        "mt5",
-        "ninjatrader",
-        "other"
-      ]
     },
     "notes": {
       "type": "string"
@@ -72,7 +103,6 @@
   },
   "required": [
     "name",
-    "propfirm",
     "account_size"
   ]
 }

@@ -16,7 +16,19 @@
     },
     "symbol": {
       "type": "string",
-      "default": "NQ1!"
+      "default": "EURUSD"
+    },
+    "asset_class": {
+      "type": "string",
+      "enum": [
+        "forex",
+        "indices",
+        "crypto",
+        "commodities",
+        "stocks",
+        "futures"
+      ],
+      "default": "forex"
     },
     "direction": {
       "type": "string",
@@ -44,6 +56,9 @@
       "type": "number"
     },
     "quantity": {
+      "type": "number"
+    },
+    "lot_size": {
       "type": "number"
     },
     "pnl": {
@@ -76,8 +91,18 @@
         "AMD/IFVG",
         "Footprint",
         "Order Book",
+        "Pullback",
+        "Breakout",
+        "Range",
+        "Trend Following",
+        "Mean Reversion",
+        "Scalping",
         "Mixed"
       ]
+    },
+    "pattern": {
+      "type": "string",
+      "description": "Pattern d\u00e9tect\u00e9 (OB, FVG, BOS, CHoCH, EQH, EQL, Liquidity, Pullback...)"
     },
     "session": {
       "type": "string",
@@ -85,7 +110,9 @@
         "London",
         "New York",
         "Asian",
-        "Pre-Market"
+        "Pre-Market",
+        "Sydney",
+        "Overlap London-NY"
       ]
     },
     "entry_time": {
@@ -97,16 +124,26 @@
       "format": "date-time"
     },
     "setup": {
+      "type": "string"
+    },
+    "timeframe": {
       "type": "string",
-      "description": "Description du setup (OB, FVG, BOS...)"
+      "enum": [
+        "M1",
+        "M5",
+        "M15",
+        "M30",
+        "H1",
+        "H4",
+        "D1",
+        "W1"
+      ]
     },
     "mistakes": {
-      "type": "string",
-      "description": "Erreurs identifi\u00e9es"
+      "type": "string"
     },
     "improvements": {
-      "type": "string",
-      "description": "Am\u00e9liorations"
+      "type": "string"
     },
     "screenshot_url": {
       "type": "string"
@@ -116,7 +153,8 @@
       "enum": [
         "webhook",
         "manual",
-        "auto"
+        "auto",
+        "agent"
       ],
       "default": "manual"
     },
@@ -132,6 +170,14 @@
         "high"
       ],
       "default": "none"
+    },
+    "commission": {
+      "type": "number",
+      "default": 0
+    },
+    "swap": {
+      "type": "number",
+      "default": 0
     }
   },
   "required": [

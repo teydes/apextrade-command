@@ -4,7 +4,8 @@ import {
   Building2, Snowflake, BarChart3, Settings, Newspaper,
   Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
   Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
-  Copy, Link2, PiggyBank, GitBranch, Calculator, Bell
+  Copy, Link2, PiggyBank, GitBranch, Calculator, Bell,
+  Search, User, CalendarDays, LayoutTemplate
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -13,13 +14,25 @@ const NAV_GROUPS = [
     items: [
       { path: '/', label: 'Dashboard', icon: LayoutDashboard },
       { path: '/live', label: 'Trading Live', icon: Radio },
+      { path: '/scanner', label: 'Scanner Multi-Marchés', icon: Search },
       { path: '/livefeed', label: 'Flux Live', icon: Activity },
+    ]
+  },
+  {
+    label: 'Comptes',
+    items: [
+      { path: '/personal-account', label: 'Comptes Perso MT4/5', icon: User },
+      { path: '/prop-capital', label: 'Suivi PropFirm', icon: Landmark },
+      { path: '/propfirms', label: 'PropFirms', icon: Building2 },
+      { path: '/prop-connect', label: 'Connexion PF', icon: Link2 },
+      { path: '/copy-trading', label: 'Copy Trading', icon: Copy },
     ]
   },
   {
     label: 'Backtesting',
     items: [
-      { path: '/backtest', label: 'Backtest Journal', icon: FlaskConical },
+      { path: '/backtest-templates', label: 'Templates Backtest', icon: LayoutTemplate },
+      { path: '/backtest', label: 'Journal Backtest', icon: FlaskConical },
       { path: '/backtest-auto', label: 'Backtest Auto', icon: Bot },
       { path: '/demo', label: 'Démo Bot', icon: Monitor },
     ]
@@ -33,28 +46,25 @@ const NAV_GROUPS = [
       { path: '/sessions', label: 'Sessions', icon: Clock },
       { path: '/playbook', label: 'Playbook', icon: BookMarked },
       { path: '/reports', label: 'Rapports', icon: BarChart3 },
+      { path: '/correlations', label: 'Corrélations', icon: GitBranch },
     ]
   },
   {
-    label: 'Capital & PropFirm',
+    label: 'Capital & Croissance',
     items: [
-      { path: '/prop-capital', label: 'Suivi Capital', icon: Landmark },
-      { path: '/propfirms', label: 'PropFirms', icon: Building2 },
-      { path: '/prop-connect', label: 'Connexion PF', icon: Link2 },
-      { path: '/copy-trading', label: 'Copy Trading', icon: Copy },
       { path: '/payout-simulator', label: 'Simulateur Payouts', icon: Calculator },
       { path: '/snowball', label: 'Boule de Neige', icon: Snowflake },
+      { path: '/finance-perso', label: 'Finance Perso', icon: PiggyBank },
     ]
   },
   {
     label: 'Gestion',
     items: [
-      { path: '/alerts', label: 'Alertes', icon: Bell },
+      { path: '/alerts', label: 'Alertes Kill Switch', icon: Bell },
+      { path: '/fiscal-calendar', label: 'Calendrier Fiscal', icon: CalendarDays },
+      { path: '/fiscal-auto', label: 'Fiscal Auto', icon: Scale },
       { path: '/news', label: 'Actualités', icon: Newspaper },
       { path: '/bank', label: 'Banque', icon: Wallet },
-      { path: '/finance-perso', label: 'Finance Perso', icon: PiggyBank },
-      { path: '/fiscal-auto', label: 'Fiscal Auto', icon: Scale },
-      { path: '/correlations', label: 'Corrélations', icon: GitBranch },
       { path: '/backlog', label: 'Backlog IA', icon: ListChecks },
       { path: '/strategy', label: 'Stratégie', icon: Brain },
       { path: '/council', label: 'Conseil IA', icon: Users },
@@ -76,7 +86,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">MFF · 50K · NQ · v3.0</div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · v4.0</div>
           </div>
         </div>
       </div>
@@ -113,7 +123,7 @@ export default function Sidebar() {
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide">System Status</div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
-          <StatusRow label="MFF Account" status="active" />
+          <StatusRow label="Scanner IA" status="active" />
           <StatusRow label="News Feed" status="active" />
           <StatusRow label="Live Bot" status="inactive" />
         </div>

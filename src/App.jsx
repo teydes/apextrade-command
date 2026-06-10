@@ -37,6 +37,10 @@ import FiscalAuto from '@/pages/FiscalAuto';
 import CorrelationMarkets from '@/pages/CorrelationMarkets';
 import PayoutSimulator from '@/pages/PayoutSimulator';
 import AlertCenter from '@/pages/AlertCenter';
+import MarketScanner from '@/pages/MarketScanner';
+import PersonalAccount from '@/pages/PersonalAccount';
+import BacktestTemplates from '@/pages/BacktestTemplates';
+import FiscalCalendar from '@/pages/FiscalCalendar';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -88,6 +92,10 @@ const AuthenticatedApp = () => {
         <Route path="/correlations" element={<CorrelationMarkets />} />
         <Route path="/payout-simulator" element={<PayoutSimulator />} />
         <Route path="/alerts" element={<AlertCenter />} />
+        <Route path="/scanner" element={<MarketScanner />} />
+        <Route path="/personal-account" element={<PersonalAccount />} />
+        <Route path="/backtest-templates" element={<BacktestTemplates />} />
+        <Route path="/fiscal-calendar" element={<FiscalCalendar />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
