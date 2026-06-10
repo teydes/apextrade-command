@@ -41,6 +41,8 @@ import MarketScanner from '@/pages/MarketScanner';
 import PersonalAccount from '@/pages/PersonalAccount';
 import BacktestTemplates from '@/pages/BacktestTemplates';
 import FiscalCalendar from '@/pages/FiscalCalendar';
+import DrawdownSimulator from '@/pages/DrawdownSimulator';
+import PayoutCalendar from '@/pages/PayoutCalendar';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -96,6 +98,8 @@ const AuthenticatedApp = () => {
         <Route path="/personal-account" element={<PersonalAccount />} />
         <Route path="/backtest-templates" element={<BacktestTemplates />} />
         <Route path="/fiscal-calendar" element={<FiscalCalendar />} />
+        <Route path="/drawdown-simulator" element={<DrawdownSimulator />} />
+        <Route path="/payout-calendar" element={<PayoutCalendar />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

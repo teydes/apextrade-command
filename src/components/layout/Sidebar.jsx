@@ -5,7 +5,7 @@ import {
   Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
   Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
   Copy, Link2, PiggyBank, GitBranch, Calculator, Bell,
-  Search, User, CalendarDays, LayoutTemplate
+  Search, User, CalendarDays, LayoutTemplate, TrendingDown, DollarSign
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -52,7 +52,9 @@ const NAV_GROUPS = [
   {
     label: 'Capital & Croissance',
     items: [
+      { path: '/payout-calendar', label: 'Calendrier Payouts', icon: DollarSign },
       { path: '/payout-simulator', label: 'Simulateur Payouts', icon: Calculator },
+      { path: '/drawdown-simulator', label: 'Simulateur Drawdown', icon: TrendingDown },
       { path: '/snowball', label: 'Boule de Neige', icon: Snowflake },
       { path: '/finance-perso', label: 'Finance Perso', icon: PiggyBank },
     ]

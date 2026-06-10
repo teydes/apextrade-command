@@ -4,8 +4,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Settings, Webhook, Bell, Shield, Trash2, CheckCircle2, Send,
   Database, Cpu, AlertTriangle, Eye, Building2, Plus, Edit2, Save, X, Clock,
-  Zap, Download, RefreshCw, Calculator, Target, TrendingUp, Brain
+  Zap, Download, RefreshCw, Calculator, Target, TrendingUp, Brain, FileText
 } from 'lucide-react';
+import { downloadDocumentation, PROJECT_VERSION } from '@/lib/projectDoc';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -128,9 +129,14 @@ export default function SettingsPage() {
           </h1>
           <p className="text-xs text-muted-foreground">Configuration centrale · Risk · Automation · PropFirm · Backtest</p>
         </div>
-        <Button size="sm" variant="outline" onClick={exportSettings} className="gap-1 text-xs h-8">
-          <Download className="w-3 h-3" />Exporter config
-        </Button>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={() => { downloadDocumentation(); toast.success('Documentation téléchargée'); }} className="gap-1 text-xs h-8 border-primary/40 text-primary hover:bg-primary/5">
+            <FileText className="w-3 h-3" />Documentation {PROJECT_VERSION}
+          </Button>
+          <Button size="sm" variant="outline" onClick={exportSettings} className="gap-1 text-xs h-8">
+            <Download className="w-3 h-3" />Config JSON
+          </Button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -225,7 +231,7 @@ export default function SettingsPage() {
             <div className="text-sm font-semibold mb-3">Statut Système</div>
             <div className="space-y-2 text-xs">
               {[
-                { label: 'Version', value: 'Ghost Trader v3.0', color: 'text-primary' },
+                { label: 'Version', value: `Ghost Trader ${PROJECT_VERSION}`, color: 'text-primary' },
                 { label: 'Phase active', value: settings.phase.replace('_', ' '), color: 'text-foreground' },
                 { label: 'Mode données', value: settings.useRealData ? 'Réelles' : 'Simulées', color: settings.useRealData ? 'text-primary' : 'text-yellow-400' },
                 { label: 'Kill Switch', value: `${settings.killSwitchConsecLosses} pertes consec.`, color: 'text-muted-foreground' },
