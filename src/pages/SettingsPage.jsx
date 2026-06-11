@@ -4,7 +4,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Settings, Webhook, Bell, Shield, Trash2, CheckCircle2, Send,
   Database, Cpu, AlertTriangle, Eye, Building2, Plus, Edit2, Save, X, Clock,
-  Zap, Download, RefreshCw, Calculator, Target, TrendingUp, Brain, FileText
+  Zap, Download, RefreshCw, Calculator, Target, TrendingUp, Brain, FileText,
+  HardDrive, Github, Smartphone, ExternalLink, Wifi, Package, Rocket, Star,
+  MessageSquare, Lightbulb, ArrowRight, Monitor, Globe
 } from 'lucide-react';
 import { downloadDocumentation, PROJECT_VERSION } from '@/lib/projectDoc';
 import { Button } from '@/components/ui/button';
@@ -15,6 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import PreFlightChecklist from '@/components/shared/PreFlightChecklist';
+import OutilsTab from '@/components/settings/OutilsTab';
 
 const defaultSettings = {
   useRealData: false,
@@ -148,6 +151,7 @@ export default function SettingsPage() {
           { id: 'propfirm', label: 'PropFirm' },
           { id: 'backtest', label: 'Backtest' },
           { id: 'accounts', label: 'Comptes' },
+          { id: 'outils', label: '⚡ Outils & Sync' },
         ].map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === t.id ? 'tab-active' : 'text-muted-foreground hover:text-foreground'}`}>
@@ -493,6 +497,8 @@ export default function SettingsPage() {
           </div>
         </div>
       )}
+
+      {activeTab === 'outils' && <OutilsTab />}
     </div>
   );
 }
