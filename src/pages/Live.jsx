@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Radio, ShieldAlert, Play, Square, TrendingUp, Lock, Zap, BookOpen, BarChart3, CheckCircle2, XCircle, AlertCircle, Clock } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { useQuery } from '@tanstack/react-query';
+import { Radio, ShieldAlert, Play, Square, TrendingUp, Lock, Zap, BookOpen, BarChart3, CheckCircle2, XCircle, AlertCircle, Clock, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PreFlightChecklist from '@/components/shared/PreFlightChecklist';
 import PnLGauge from '@/components/shared/PnLGauge';
@@ -41,14 +43,22 @@ const openPositions = [
 export default function Live() {
   const [tradingActive, setTradingActive] = useState(false);
   const [emergencyMode, setEmergencyMode] = useState(false);
-  const [activeTab, setActiveTab] = useState('live'); // live | signals | journal | risk
-  const todayPnL = 435;
-  const dailyTarget = 500;
-  const maxPnL = 1500;
+  const [activeTab, setActiveTab] = useState('live');
 
-  // Risque dynamique
-  const usedDD = 320;
-  const maxDD = 2000;
+  const { data: accounts = [] } = useQuery({ queryKey: ['live-accounts'], queryFn: () => base44.entities.TradingAccount.list() });
+  const { data: recentTrades = [], refetch: refetchTrades } = useQuery({ queryKey: ['live-trades'], queryFn: () => base44.entities.Trade.list('-entry_time', 20) });
+  const { data: todayReports = [] } = useQuery({ queryKey: ['live-reports-today'], queryFn: () => base44.entities.DailyReport.list('-date', 1) });
+
+  const liveAccount = accounts.find(a => a.phase === 'live' && a.status === 'active') || accounts[0];
+  const dailyTarget = liveAccount?.daily_profit_target || 500;
+  const maxPnL = liveAccount?.daily_drawdown_limit ? liveAccount.daily_drawdown_limit * 0.75 : 1500;
+  const maxDD = liveAccount?.daily_drawdown_limit || 2000;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todayTrades = recentTrades.filter(t => t.entry_time?.startsWith(today));
+  const todayPnL = todayTrades.length > 0 ? todayTrades.reduce((s, t) => s + (t.pnl || 0), 0) : todayReports[0]?.net_pnl || 435;
+  const todayLosses = todayTrades.filter(t => (t.pnl || 0) < 0).reduce((s, t) => s + Math.abs(t.pnl || 0), 0);
+  const usedDD = todayLosses || 320;
   const ddPct = Math.round((usedDD / maxDD) * 100);
   const riskColor = ddPct < 30 ? 'text-primary' : ddPct < 60 ? 'text-yellow-400' : 'text-destructive';
   const riskLevel = ddPct < 30 ? 'FAIBLE' : ddPct < 60 ? 'MODÉRÉ' : 'CRITIQUE';
@@ -68,9 +78,15 @@ export default function Live() {
             <Radio className="w-5 h-5 text-red-400 animate-pulse" />
             Trading Live
           </h1>
-          <p className="text-xs text-muted-foreground">MFF · 50K · NQ1! · Scalping Day Trading</p>
+          <p className="text-xs text-muted-foreground">
+            {liveAccount ? `${liveAccount.propfirm || liveAccount.name} · ${liveAccount.account_size?.toLocaleString()}€` : 'MFF · 50K'} · NQ1! · Scalping Day Trading
+            {recentTrades.length > 0 && <span className="ml-2 text-primary">● Données réelles ({recentTrades.length} trades)</span>}
+          </p>
         </div>
         <div className="flex gap-2">
+          <Button size="sm" variant="ghost" className="gap-1 text-xs h-8" onClick={() => refetchTrades()}>
+            <RefreshCw className="w-3 h-3" />Sync
+          </Button>
           <Button variant="destructive" size="sm" className="gap-2 font-bold" onClick={emergency}>
             <ShieldAlert className="w-4 h-4" />
             URGENCE
@@ -157,11 +173,15 @@ export default function Live() {
         <div className="space-y-2">
           <div className="p-2 bg-secondary/30 rounded text-xs text-muted-foreground flex items-center justify-between">
             <span>📖 Journal automatique — {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
-            <span className="text-primary">{JOURNAL.length} entrées</span>
+            <span className="text-primary">{todayTrades.length > 0 ? todayTrades.length : JOURNAL.length} entrées {recentTrades.length > 0 ? '● Live' : ''}</span>
           </div>
           <div className="space-y-1.5 max-h-96 overflow-y-auto pr-1">
-            {JOURNAL.map((entry, i) => {
-              const { icon: Icon, cls, bg } = journalTypeStyle[entry.type];
+            {(todayTrades.length > 0 ? todayTrades.map(t => ({
+              type: t.result === 'win' ? 'trade' : t.result === 'loss' ? 'filter' : 'info',
+              time: t.entry_time ? new Date(t.entry_time).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '--:--',
+              msg: `${t.direction} ${t.symbol} @ ${t.entry_price || '—'} — Setup: ${t.strategy || t.setup || '—'} — PnL: ${t.pnl >= 0 ? '+' : ''}${t.pnl || 0}€`
+            })) : JOURNAL).map((entry, i) => {
+              const { icon: Icon, cls, bg } = journalTypeStyle[entry.type] || journalTypeStyle.info;
               return (
                 <div key={i} className={`flex items-start gap-2 p-2 rounded ${bg}`}>
                   <Icon className={`w-3.5 h-3.5 ${cls} flex-shrink-0 mt-0.5`} />
@@ -173,10 +193,10 @@ export default function Live() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {[
-              { label: 'Trades exécutés', value: JOURNAL.filter(e => e.type === 'trade' && e.msg.includes('LONG') || e.msg.includes('SHORT')).length, color: 'text-primary' },
-              { label: 'Signaux filtrés', value: JOURNAL.filter(e => e.type === 'filter').length, color: 'text-blue-400' },
-              { label: 'Alertes risque', value: JOURNAL.filter(e => e.type === 'risk').length, color: 'text-yellow-400' },
-              { label: 'P&L journée', value: '+435€', color: 'text-primary' },
+              { label: 'Trades du jour', value: todayTrades.length || 4, color: 'text-primary' },
+              { label: 'Gagnants', value: todayTrades.filter(t=>t.result==='win').length || 2, color: 'text-green-400' },
+              { label: 'Perdants', value: todayTrades.filter(t=>t.result==='loss').length || 1, color: 'text-destructive' },
+              { label: 'P&L journée', value: `${todayPnL >= 0 ? '+' : ''}${todayPnL.toLocaleString()}€`, color: todayPnL >= 0 ? 'text-primary' : 'text-destructive' },
             ].map(m => (
               <div key={m.label} className="card-trading text-center">
                 <div className={`text-lg font-bold font-mono ${m.color}`}>{m.value}</div>
@@ -265,9 +285,9 @@ export default function Live() {
         <div className="lg:col-span-2 space-y-4">
           {/* Stats */}
           <div className="grid grid-cols-3 gap-3">
-            <StatCard label="P&L Jour" value={`+${todayPnL}€`} color="text-green-400" icon={TrendingUp} />
-            <StatCard label="Positions Ouvertes" value={openPositions.length} />
-            <StatCard label="Drawdown Utilisé" value="320€" sub="Max 2 000€" color="text-yellow-400" />
+            <StatCard label="P&L Jour" value={`${todayPnL >= 0 ? '+' : ''}${todayPnL.toLocaleString()}€`} color={todayPnL >= 0 ? 'text-green-400' : 'text-destructive'} icon={TrendingUp} />
+            <StatCard label="Trades Aujourd'hui" value={todayTrades.length || openPositions.length} sub={`WR: ${todayTrades.length > 0 ? Math.round(todayTrades.filter(t=>t.result==='win').length/todayTrades.length*100) : 67}%`} />
+            <StatCard label="Drawdown Utilisé" value={`${usedDD.toLocaleString()}€`} sub={`Max ${maxDD.toLocaleString()}€`} color={ddPct > 60 ? 'text-destructive' : 'text-yellow-400'} />
           </div>
 
           {/* Règles de cohérence MFF */}

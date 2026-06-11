@@ -17,7 +17,7 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, 
 import {
   TrendingUp, TrendingDown, Target, Shield, Zap, Activity, ArrowUpRight,
   Bot, BarChart2, Landmark, BookOpen, Dices, Wifi,
-  Calculator, Bell, GitBranch, PiggyBank
+  Calculator, Bell, GitBranch, PiggyBank, Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -312,9 +312,69 @@ export default function Dashboard() {
         <FinanceWidget />
       </div>
 
+      {/* Session active + Score Global */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <SessionWidget />
+        <div className="lg:col-span-2 card-trading">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-semibold flex items-center gap-2"><Activity className="w-4 h-4 text-blue-400" />Résumé Semaine</span>
+          </div>
+          <div className="grid grid-cols-3 gap-3 text-center">
+            {[
+              { label: 'PnL Semaine', value: `${weekTotal >= 0 ? '+' : ''}${weekTotal.toLocaleString()}€`, color: weekTotal >= 0 ? 'text-primary' : 'text-destructive' },
+              { label: 'Win Rate', value: `${winRate}%`, color: winRate >= 60 ? 'text-primary' : 'text-yellow-400' },
+              { label: 'Trades', value: recentTradesDB.length, color: 'text-blue-400' },
+            ].map(s => (
+              <div key={s.label} className="p-3 rounded bg-secondary/30 border border-border">
+                <div className={`text-xl font-bold font-mono ${s.color}`}>{s.value}</div>
+                <div className="text-[10px] text-muted-foreground mt-0.5">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* News + Accounts */}
       <NewsCalendar />
       <MultiAccountPanel />
+    </div>
+  );
+}
+
+function SessionWidget() {
+  const now = new Date();
+  const h = now.getUTCHours();
+  const sessions = [
+    { name: 'Sydney', start: 21, end: 6, color: 'text-purple-400', bg: 'border-purple-400/30 bg-purple-400/5' },
+    { name: 'Asian / Tokyo', start: 23, end: 8, color: 'text-blue-400', bg: 'border-blue-400/30 bg-blue-400/5' },
+    { name: 'London', start: 7, end: 16, color: 'text-yellow-400', bg: 'border-yellow-400/30 bg-yellow-400/5' },
+    { name: 'New York', start: 13, end: 22, color: 'text-primary', bg: 'border-primary/30 bg-primary/5' },
+  ];
+  const isActive = s => s.start < s.end ? (h >= s.start && h < s.end) : (h >= s.start || h < s.end);
+  const activeSessions = sessions.filter(isActive);
+  const overlap = activeSessions.length > 1;
+  return (
+    <div className="card-trading">
+      <div className="flex items-center gap-2 mb-3">
+        <Clock className="w-4 h-4 text-primary" />
+        <span className="text-sm font-semibold">Sessions Actives</span>
+        <span className="text-[10px] font-mono text-muted-foreground ml-auto">{now.toLocaleTimeString('fr-FR', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' })} UTC</span>
+      </div>
+      {overlap && <div className="text-[10px] bg-primary/10 text-primary px-2 py-1 rounded mb-2 flex items-center gap-1"><Zap className="w-3 h-3" />Overlap actif — Liquidité maximale</div>}
+      <div className="space-y-2">
+        {sessions.map(s => {
+          const active = isActive(s);
+          return (
+            <div key={s.name} className={`flex items-center justify-between p-2 rounded border text-xs transition-all ${active ? s.bg : 'border-border opacity-40'}`}>
+              <div className="flex items-center gap-2">
+                <span className={`status-dot ${active ? 'active' : 'inactive'}`} />
+                <span className={active ? s.color : 'text-muted-foreground'}>{s.name}</span>
+              </div>
+              <span className="font-mono text-[10px] text-muted-foreground">{s.start}h–{s.end}h UTC</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

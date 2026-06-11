@@ -69,6 +69,7 @@ export default function MarketScanner() {
   const [activeTab, setActiveTab] = useState('scanner');
   const [watchlist, setWatchlist] = useState(['EURUSD', 'XAUUSD', 'SPX500', 'BTCUSD']);
   const [expandedId, setExpandedId] = useState(null);
+  const [autoAlerts, setAutoAlerts] = useState([]);
   const scanTimerRef = useRef(null);
 
   const { data: accounts = [] } = useQuery({ queryKey: ['accounts-scanner'], queryFn: () => base44.entities.TradingAccount.list() });
@@ -113,6 +114,11 @@ export default function MarketScanner() {
     setResults(newResults.slice(0, 15));
     setLastScan(new Date().toLocaleTimeString('fr-FR'));
     setScanCount(c => c + 1);
+    // Auto-alertes pour scores très élevés
+    const highScore = newResults.filter(r => r.score >= 85);
+    if (highScore.length > 0) {
+      setAutoAlerts(prev => [...highScore.map(r => ({ ...r, alertTime: new Date().toLocaleTimeString('fr-FR') })), ...prev].slice(0, 20));
+    }
     if (!silent && newResults.length > 0) {
       const best = newResults[0];
       toast.success(`Scanner: ${newResults.length} setups — Meilleur: ${best.symbol} ${best.direction} (${best.score})`);
@@ -265,6 +271,7 @@ Analyse le marché maintenant avec données temps réel et retourne UNIQUEMENT J
           { id: 'scanner', label: `Setups (${results.length})` },
           { id: 'watchlist', label: 'Watchlist' },
           { id: 'strategies', label: 'Stratégies' },
+          { id: 'alerts', label: `🔔 Alertes (${autoAlerts.length})` },
         ].map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === t.id ? 'tab-active' : 'text-muted-foreground hover:text-foreground'}`}>
@@ -372,6 +379,39 @@ Analyse le marché maintenant avec données temps réel et retourne UNIQUEMENT J
           </div>
           <Input placeholder="+ Ajouter symbole (Entrée)..." className="bg-secondary border-border h-8 text-xs"
             onKeyDown={e => { if (e.key === 'Enter' && e.target.value) { setWatchlist(p => [...new Set([...p, e.target.value.toUpperCase()])]); e.target.value = ''; }}} />
+        </div>
+      )}
+
+      {activeTab === 'alerts' && (
+        <div className="space-y-2">
+          <div className="p-2 bg-primary/5 border border-primary/20 rounded text-xs text-primary flex items-center gap-2">
+            <Activity className="w-3.5 h-3.5" />
+            Alertes automatiques générées pour scores ≥ 85 à chaque scan ({scanCount} scans effectués)
+          </div>
+          {autoAlerts.length === 0 ? (
+            <div className="card-trading text-center py-8 text-xs text-muted-foreground">
+              <Brain className="w-8 h-8 mx-auto mb-2 opacity-20" />
+              En attente d'opportunités score ≥ 85...
+            </div>
+          ) : (
+            autoAlerts.map((a, i) => (
+              <div key={i} className="card-trading border border-primary/20 bg-primary/5 flex items-center gap-3 text-xs flex-wrap">
+                <span className="text-[10px] font-mono text-muted-foreground w-12">{a.alertTime}</span>
+                <span className="font-bold font-mono">{a.symbol}</span>
+                <span className={`px-2 py-0.5 rounded font-bold ${a.direction === 'LONG' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>{a.direction}</span>
+                <span className="text-muted-foreground">{a.timeframe || 'H1'}</span>
+                <span className="flex-1 text-muted-foreground truncate">{a.strategies?.slice(0,2).join(' + ') || 'Multi-stratégies'}</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-primary">{a.score}</span>
+                  <span className="text-[10px] text-muted-foreground">/100</span>
+                  <span className="text-blue-400 font-mono">{a.rr}:1</span>
+                </div>
+              </div>
+            ))
+          )}
+          {autoAlerts.length > 0 && (
+            <button onClick={() => setAutoAlerts([])} className="text-xs text-muted-foreground hover:text-foreground underline">Effacer les alertes</button>
+          )}
         </div>
       )}
 

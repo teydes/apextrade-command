@@ -58,22 +58,40 @@ export default function AnalyticsDashboard() {
     queryFn: () => base44.entities.Trade.list('-created_date', 200),
   });
 
-  const totalPnl = MONTHLY_PNL.reduce((s, m) => s + m.pnl, 0);
-  const totalTrades = MONTHLY_PNL.reduce((s, m) => s + m.trades, 0);
-  const avgWR = (MONTHLY_PNL.reduce((s, m) => s + m.wr, 0) / MONTHLY_PNL.length).toFixed(1);
-  const bestMonth = MONTHLY_PNL.reduce((a, b) => a.pnl > b.pnl ? a : b);
-  const worstMonth = MONTHLY_PNL.reduce((a, b) => a.pnl < b.pnl ? a : b);
+  // Données réelles si disponibles
+  const realTotalPnl = trades.length > 0 ? trades.reduce((s, t) => s + (t.pnl || 0), 0) : null;
+  const realTotalTrades = trades.length > 0 ? trades.length : null;
+  const realWins = trades.filter(t => t.result === 'win').length;
+  const realWR = trades.length > 0 ? ((realWins / trades.length) * 100).toFixed(1) : null;
+
+  // Agrégation par mois depuis les vraies données
+  const monthlyFromReal = trades.length > 0 ? Object.values(
+    trades.reduce((acc, t) => {
+      const m = t.entry_time ? new Date(t.entry_time).toLocaleDateString('fr-FR', { month: 'short' }) : 'N/A';
+      if (!acc[m]) acc[m] = { month: m, pnl: 0, trades: 0, wins: 0 };
+      acc[m].pnl += t.pnl || 0; acc[m].trades++; if (t.result === 'win') acc[m].wins++;
+      acc[m].wr = Math.round((acc[m].wins / acc[m].trades) * 100);
+      return acc;
+    }, {})
+  ) : null;
+
+  const displayMonthly = monthlyFromReal || MONTHLY_PNL;
+  const totalPnl = realTotalPnl ?? MONTHLY_PNL.reduce((s, m) => s + m.pnl, 0);
+  const totalTrades = realTotalTrades ?? MONTHLY_PNL.reduce((s, m) => s + m.trades, 0);
+  const avgWR = realWR ?? (MONTHLY_PNL.reduce((s, m) => s + m.wr, 0) / MONTHLY_PNL.length).toFixed(1);
+  const bestMonth = displayMonthly.reduce((a, b) => a.pnl > b.pnl ? a : b);
+  const worstMonth = displayMonthly.reduce((a, b) => a.pnl < b.pnl ? a : b);
 
   const getAIInsight = async () => {
     setLoadingAI(true);
     const res = await base44.integrations.Core.InvokeLLM({
       prompt: `Tu es un analyste performance trading NQ Futures expert. Synthétise ces données analytics et fournis des insights stratégiques actionnables.
 
-Performance globale:
+Performance globale (${trades.length > 0 ? 'données réelles' : 'données simulées'}):
 - PnL total: ${totalPnl}€ sur ${totalTrades} trades
 - Win Rate moyen: ${avgWR}%
-- Meilleur mois: ${bestMonth.month} (+${bestMonth.pnl}€, WR:${bestMonth.wr}%)
-- Pire mois: ${worstMonth.month} (${worstMonth.pnl}€, WR:${worstMonth.wr}%)
+- Meilleur mois: ${bestMonth.month} (+${bestMonth.pnl}€, WR:${bestMonth.wr || '—'}%)
+- Pire mois: ${worstMonth.month} (${worstMonth.pnl}€, WR:${worstMonth.wr || '—'}%)
 
 Erreurs identifiées: ${MISTAKE_DISTRIBUTION.map(e => `${e.name}(${e.count}x, ${e.pnl}€)`).join(', ')}
 
@@ -161,6 +179,7 @@ Retourne UNIQUEMENT JSON sans markdown:
           <p className="text-xs text-muted-foreground">Performance globale · Patterns d'erreurs · Insights IA</p>
         </div>
         <div className="flex gap-2 items-center flex-wrap">
+          {trades.length > 0 && <span className="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">● {trades.length} trades réels chargés</span>}
           <div className="flex gap-1">
             {['1m', '3m', 'all'].map(p => (
               <button key={p} onClick={() => setPeriod(p)}
@@ -239,9 +258,9 @@ Retourne UNIQUEMENT JSON sans markdown:
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* PnL mensuel */}
         <div className="card-trading">
-          <span className="text-xs font-semibold block mb-3">PnL Mensuel</span>
+          <span className="text-xs font-semibold block mb-3">PnL Mensuel {trades.length > 0 ? '(données réelles)' : '(simulation)'}</span>
           <ResponsiveContainer width="100%" height={160}>
-            <BarChart data={MONTHLY_PNL}>
+            <BarChart data={displayMonthly}>
               <XAxis dataKey="month" tick={{ fontSize: 9, fill: '#64748b' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 9, fill: '#64748b' }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ background: '#0f1625', border: '1px solid #1e293b', borderRadius: 6, fontSize: 10 }}
