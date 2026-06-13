@@ -5,7 +5,8 @@ import {
   Wallet, Scale, ChevronRight, Zap, Users, Brain, ListChecks,
   Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
   Copy, Link2, PiggyBank, GitBranch, Calculator, Bell,
-  Search, User, CalendarDays, LayoutTemplate, TrendingDown, DollarSign
+  Search, User, CalendarDays, LayoutTemplate, TrendingDown, DollarSign,
+  Cpu, Crosshair, MessageCircle
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -14,6 +15,8 @@ const NAV_GROUPS = [
     items: [
       { path: '/', label: 'Dashboard', icon: LayoutDashboard },
       { path: '/live', label: 'Trading Live', icon: Radio },
+      { path: '/trading-os', label: 'Trading OS', icon: Cpu },
+      { path: '/coach', label: 'Ghost Coach IA', icon: MessageCircle },
       { path: '/scanner', label: 'Scanner Multi-Marchés', icon: Search },
       { path: '/livefeed', label: 'Flux Live', icon: Activity },
     ]
@@ -35,6 +38,13 @@ const NAV_GROUPS = [
       { path: '/backtest', label: 'Journal Backtest', icon: FlaskConical },
       { path: '/backtest-auto', label: 'Backtest Auto', icon: Bot },
       { path: '/demo', label: 'Démo Bot', icon: Monitor },
+    ]
+  },
+  {
+    label: 'Outils Trade',
+    items: [
+      { path: '/trade-builder', label: 'Trade Builder', icon: Crosshair },
+      { path: '/risk-calc', label: 'Calculateur Risque', icon: Calculator },
     ]
   },
   {

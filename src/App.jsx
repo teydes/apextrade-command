@@ -46,6 +46,7 @@ import PayoutCalendar from '@/pages/PayoutCalendar';
 import TradingOS from '@/pages/TradingOS';
 import RiskCalculator from '@/pages/RiskCalculator';
 import TradeBuilder from '@/pages/TradeBuilder';
+import GhostCoach from '@/pages/GhostCoach';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -104,8 +105,9 @@ const AuthenticatedApp = () => {
         <Route path="/drawdown-simulator" element={<DrawdownSimulator />} />
         <Route path="/payout-calendar" element={<PayoutCalendar />} />
         <Route path="/trading-os" element={<TradingOS />} />
-        <Route path="/risk-calculator" element={<RiskCalculator />} />
+        <Route path="/risk-calc" element={<RiskCalculator />} />
         <Route path="/trade-builder" element={<TradeBuilder />} />
+        <Route path="/coach" element={<GhostCoach />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
