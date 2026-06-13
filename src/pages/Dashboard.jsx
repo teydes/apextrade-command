@@ -17,20 +17,21 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, 
 import {
   TrendingUp, TrendingDown, Target, Shield, Zap, Activity, ArrowUpRight,
   Bot, BarChart2, Landmark, BookOpen, Dices, Wifi,
-  Calculator, Bell, GitBranch, PiggyBank, Clock
+  Calculator, Bell, GitBranch, PiggyBank, Clock, Cpu, MessageCircle,
+  Crosshair, Brain, RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const QUICK_LINKS = [
-  { to: '/backtest-auto', label: 'Backtest Auto', icon: Bot, color: 'text-blue-400' },
+  { to: '/trading-os', label: 'Trading OS', icon: Cpu, color: 'text-primary' },
+  { to: '/coach', label: 'Ghost Coach', icon: MessageCircle, color: 'text-cyan-400' },
+  { to: '/trade-builder', label: 'Trade Builder', icon: Crosshair, color: 'text-blue-400' },
+  { to: '/risk-calc', label: 'Risque', icon: Calculator, color: 'text-yellow-400' },
   { to: '/analytics', label: 'Analytics IA', icon: BarChart2, color: 'text-purple-400' },
-  { to: '/prop-capital', label: 'Capital MFF', icon: Landmark, color: 'text-yellow-400' },
-  { to: '/montecarlo', label: 'Monte Carlo', icon: Dices, color: 'text-orange-400' },
-  { to: '/payout-simulator', label: 'Simulateur', icon: Calculator, color: 'text-orange-400' },
+  { to: '/scanner', label: 'Scanner', icon: Brain, color: 'text-green-400' },
+  { to: '/journal', label: 'Journal IA', icon: BookOpen, color: 'text-purple-400' },
   { to: '/alerts', label: 'Alertes', icon: Bell, color: 'text-red-400' },
-  { to: '/correlations', label: 'Corrélations', icon: GitBranch, color: 'text-purple-400' },
-  { to: '/journal', label: 'Journal IA', icon: BookOpen, color: 'text-cyan-400' },
-  { to: '/finance-perso', label: 'Finance', icon: PiggyBank, color: 'text-yellow-400' },
+  { to: '/montecarlo', label: 'Monte Carlo', icon: Dices, color: 'text-orange-400' },
   { to: '/livefeed', label: 'Flux Live', icon: Wifi, color: 'text-primary' },
 ];
 

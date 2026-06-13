@@ -80,6 +80,8 @@ export default function TradingOS() {
 
   const cpuLoad = systemActive ? Math.round(15 + Math.sin(tick / 2) * 8) : 2;
   const memLoad = systemActive ? Math.round(42 + Math.sin(tick / 3) * 5) : 18;
+  const latency = systemActive ? Math.round(8 + Math.sin(tick) * 3) : 0;
+  const uptime = systemActive ? `${Math.floor(tick * 5 / 60)}m ${(tick * 5) % 60}s` : '—';
 
   return (
     <div className="space-y-4">
@@ -111,8 +113,20 @@ export default function TradingOS() {
           </span>
         </div>
         <div className="flex gap-4 text-xs ml-auto flex-wrap">
-          <span className="text-muted-foreground">CPU: <span className="font-mono text-foreground">{cpuLoad}%</span></span>
-          <span className="text-muted-foreground">MEM: <span className="font-mono text-foreground">{memLoad}%</span></span>
+          {[
+            { l: 'CPU', v: `${cpuLoad}%`, bar: cpuLoad, c: cpuLoad > 80 ? 'text-destructive' : 'text-foreground' },
+            { l: 'MEM', v: `${memLoad}%`, bar: memLoad, c: memLoad > 80 ? 'text-destructive' : 'text-foreground' },
+          ].map(m => (
+            <div key={m.l} className="flex items-center gap-1.5">
+              <span className="text-muted-foreground">{m.l}:</span>
+              <div className="w-12 h-1.5 bg-secondary rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${m.bar}%`, background: m.bar > 80 ? '#EF4444' : '#00FF88' }} />
+              </div>
+              <span className={`font-mono ${m.c}`}>{m.v}</span>
+            </div>
+          ))}
+          <span className="text-muted-foreground">Latence: <span className="font-mono text-blue-400">{latency}ms</span></span>
+          <span className="text-muted-foreground">Uptime: <span className="font-mono text-foreground">{uptime}</span></span>
           <span className="text-muted-foreground">Signaux: <span className="font-mono text-yellow-400">{pendingSignals.length}</span></span>
           <span className="text-muted-foreground">Positions: <span className="font-mono text-blue-400">{openTrades.length}</span></span>
         </div>

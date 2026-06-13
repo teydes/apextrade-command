@@ -199,6 +199,55 @@ Retourne UNIQUEMENT JSON: {"verdict":"<1 phrase>","risk_level":"faible"|"modér�
         </div>
       </div>
 
+      {/* Visualisation graphique Entry/SL/TP */}
+      <div className="card-trading">
+        <div className="text-sm font-semibold mb-3 flex items-center gap-2">
+          <TrendingUp className="w-4 h-4 text-blue-400" />Visualisation des Niveaux
+        </div>
+        <div className="relative h-12 rounded-lg bg-secondary/50 overflow-hidden border border-border">
+          {(() => {
+            const allVals = [entry, stopLoss, parseFloat(calc.tp1), parseFloat(calc.tp2)].filter(Boolean);
+            const min = Math.min(...allVals);
+            const max = Math.max(...allVals);
+            const range = max - min || 1;
+            const pct = v => ((v - min) / range * 100).toFixed(1);
+            return (
+              <>
+                <div className="absolute top-0 bottom-0 w-0.5 bg-destructive/80" style={{ left: `${pct(stopLoss)}%` }} />
+                <div className="absolute top-0 bottom-0 w-0.5 bg-blue-400" style={{ left: `${pct(entry)}%` }} />
+                <div className="absolute top-0 bottom-0 w-0.5 bg-green-400" style={{ left: `${pct(parseFloat(calc.tp1))}%` }} />
+                <div className="absolute top-0 bottom-0 w-0.5 bg-primary" style={{ left: `${pct(parseFloat(calc.tp2))}%` }} />
+                {/* Zone SL→Entry rouge */}
+                <div className="absolute top-0 bottom-0 bg-destructive/10" style={{ left: `${Math.min(pct(stopLoss), pct(entry))}%`, width: `${Math.abs(pct(entry) - pct(stopLoss))}%` }} />
+                {/* Zone Entry→TP1 verte */}
+                <div className="absolute top-0 bottom-0 bg-green-400/10" style={{ left: `${Math.min(pct(entry), pct(parseFloat(calc.tp1)))}%`, width: `${Math.abs(pct(parseFloat(calc.tp1)) - pct(entry))}%` }} />
+                {/* Labels */}
+                <div className="absolute bottom-0 text-[8px] text-destructive font-mono" style={{ left: `${pct(stopLoss)}%`, transform: 'translateX(-50%)' }}>SL</div>
+                <div className="absolute top-0 text-[8px] text-blue-400 font-mono" style={{ left: `${pct(entry)}%`, transform: 'translateX(-50%)' }}>E</div>
+                <div className="absolute bottom-0 text-[8px] text-green-400 font-mono" style={{ left: `${pct(parseFloat(calc.tp1))}%`, transform: 'translateX(-50%)' }}>TP1</div>
+                <div className="absolute top-0 text-[8px] text-primary font-mono" style={{ left: `${pct(parseFloat(calc.tp2))}%`, transform: 'translateX(-50%)' }}>TP2</div>
+              </>
+            );
+          })()}
+        </div>
+        {/* Simulation multi-risque */}
+        <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+          {[0.5, 1, 1.5].map(r => {
+            const risk = effectiveAccountSize * (r / 100);
+            const lots = slDist => slDist > 0 ? Math.floor(risk / (slDist * instr.pointValue)) : 0;
+            const slPts2 = Math.abs(entry - stopLoss);
+            const l = lots(slPts2);
+            return (
+              <div key={r} className={`p-2 rounded border text-center ${r === riskPct ? 'border-primary bg-primary/5' : 'border-border bg-secondary/30'}`}>
+                <div className={`font-bold font-mono ${r === riskPct ? 'text-primary' : 'text-muted-foreground'}`}>{r}%</div>
+                <div className="text-muted-foreground text-[10px]">Risque: {risk.toFixed(0)}€</div>
+                <div className="text-blue-400 text-[10px]">{l} lot(s)</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {aiTip && (
         <div className={`card-trading border ${riskLevelColor[aiTip.risk_level] || 'border-border'}`}>
           <div className="flex items-center justify-between mb-2">

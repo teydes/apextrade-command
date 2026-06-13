@@ -47,6 +47,9 @@ import TradingOS from '@/pages/TradingOS';
 import RiskCalculator from '@/pages/RiskCalculator';
 import TradeBuilder from '@/pages/TradeBuilder';
 import GhostCoach from '@/pages/GhostCoach';
+import PerformanceHeatmap from '@/pages/PerformanceHeatmap';
+import TradeReview from '@/pages/TradeReview';
+import PropFirmComparator from '@/pages/PropFirmComparator';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -108,6 +111,9 @@ const AuthenticatedApp = () => {
         <Route path="/risk-calc" element={<RiskCalculator />} />
         <Route path="/trade-builder" element={<TradeBuilder />} />
         <Route path="/coach" element={<GhostCoach />} />
+        <Route path="/heatmap" element={<PerformanceHeatmap />} />
+        <Route path="/trade-review" element={<TradeReview />} />
+        <Route path="/propfirm-comparator" element={<PropFirmComparator />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

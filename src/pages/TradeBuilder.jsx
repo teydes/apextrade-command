@@ -94,7 +94,27 @@ Retourne UNIQUEMENT JSON:
     setLoadingAI(false);
   };
 
-  const set = (k, v) => setTrade(p => ({ ...p, [k]: v }));
+  const set = (k, v) => setTrade(p => {
+    const next = { ...p, [k]: v };
+    // Auto-calcul R:R et TP quand entry + SL changent
+    if ((k === 'entry_price' || k === 'stop_loss') && next.entry_price && next.stop_loss) {
+      const slDist = Math.abs(next.entry_price - next.stop_loss);
+      const rrVal = next.risk_reward || 2;
+      if (next.direction === 'LONG') {
+        next.take_profit_1 = parseFloat((next.entry_price + slDist * rrVal).toFixed(4));
+        next.take_profit_2 = parseFloat((next.entry_price + slDist * rrVal * 1.5).toFixed(4));
+      } else {
+        next.take_profit_1 = parseFloat((next.entry_price - slDist * rrVal).toFixed(4));
+        next.take_profit_2 = parseFloat((next.entry_price - slDist * rrVal * 1.5).toFixed(4));
+      }
+    }
+    if (k === 'pnl' && next.pnl !== '' && !isNaN(next.pnl)) {
+      next.result = +next.pnl > 0 ? 'win' : +next.pnl < 0 ? 'loss' : 'breakeven';
+    }
+    return next;
+  });
+  const slDist = trade.entry_price && trade.stop_loss ? Math.abs(trade.entry_price - trade.stop_loss) : 0;
+  const estimatedPnl = slDist > 0 && trade.lot_size ? (slDist * (trade.risk_reward || 2) * trade.lot_size * 20).toFixed(0) : 0;
   const verdictColors = { EXECUTE: 'text-primary border-primary/40 bg-primary/5', WAIT: 'text-yellow-400 border-yellow-400/40 bg-yellow-400/5', SKIP: 'text-destructive border-destructive/40 bg-destructive/5' };
 
   return (
@@ -119,6 +139,21 @@ Retourne UNIQUEMENT JSON:
             <Save className="w-3 h-3" />Enregistrer
           </Button>
         </div>
+      </div>
+
+      {/* Live metrics bar */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { l: 'Distance SL', v: slDist > 0 ? `${slDist.toFixed(2)} pts` : '—', c: 'text-destructive' },
+          { l: 'PnL Estimé TP1', v: estimatedPnl > 0 ? `+${Number(estimatedPnl).toLocaleString()}€` : '—', c: 'text-primary' },
+          { l: 'R:R', v: `${trade.risk_reward || 2}:1`, c: (trade.risk_reward || 2) >= 2 ? 'text-primary' : 'text-yellow-400' },
+          { l: 'Lots', v: trade.lot_size || 1, c: 'text-blue-400' },
+        ].map(m => (
+          <div key={m.l} className="card-trading text-center py-2">
+            <div className={`text-base font-bold font-mono ${m.c}`}>{m.v}</div>
+            <div className="text-[10px] text-muted-foreground">{m.l}</div>
+          </div>
+        ))}
       </div>
 
       {/* Checklist Score */}

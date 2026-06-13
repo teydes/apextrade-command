@@ -6,7 +6,7 @@ import {
   Clock, BookOpen, Dices, Activity, Bot, PieChart, Landmark, BookMarked,
   Copy, Link2, PiggyBank, GitBranch, Calculator, Bell,
   Search, User, CalendarDays, LayoutTemplate, TrendingDown, DollarSign,
-  Cpu, Crosshair, MessageCircle
+  Cpu, Crosshair, MessageCircle, Grid3x3, Eye, Star
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -45,6 +45,9 @@ const NAV_GROUPS = [
     items: [
       { path: '/trade-builder', label: 'Trade Builder', icon: Crosshair },
       { path: '/risk-calc', label: 'Calculateur Risque', icon: Calculator },
+      { path: '/trade-review', label: 'Trade Review IA', icon: Eye },
+      { path: '/heatmap', label: 'Heatmap Perf.', icon: Grid3x3 },
+      { path: '/propfirm-comparator', label: 'Comparateur PF', icon: Star },
     ]
   },
   {
@@ -98,7 +101,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v4.1</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v4.2</span></div>
           </div>
         </div>
       </div>
@@ -132,7 +135,9 @@ export default function Sidebar() {
 
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
-        <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide">System Status</div>
+        <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
+          <span>System Status</span><span className="text-primary font-bold">v4.2</span>
+        </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
           <StatusRow label="Scanner IA" status="active" />
