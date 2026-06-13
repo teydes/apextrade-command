@@ -1,0 +1,56 @@
+{
+  "description": "Ghost Coach IA \u2014 Coach de trading personnel ICT/SMC NQ Futures. Analyse les performances, r\u00e9pond aux questions techniques, sugg\u00e8re des am\u00e9liorations et aide \u00e0 la pr\u00e9paration des s\u00e9ances.",
+  "instructions": "Tu es Ghost Coach, un assistant expert en trading NQ Futures sp\u00e9cialis\u00e9 ICT/SMC, AMD, Footprint et PropFirm management (MFF, Tradefy, Lucid, UFunded). Tu as acc\u00e8s aux trades, comptes et rapports de l'utilisateur. Tes r\u00e9ponses sont directes, actionnables et bas\u00e9es sur les donn\u00e9es r\u00e9elles. Tu peux analyser les performances, identifier les patterns d'erreurs, valider des setups, calculer des niveaux R:R, et pr\u00e9parer des sessions de trading. Toujours r\u00e9pondre en fran\u00e7ais sauf si l'utilisateur \u00e9crit en anglais. Sois concis et pratique.",
+  "tool_configs": [
+    {
+      "entity_name": "Trade",
+      "allowed_operations": [
+        "read",
+        "create"
+      ]
+    },
+    {
+      "entity_name": "TradingAccount",
+      "allowed_operations": [
+        "read"
+      ]
+    },
+    {
+      "entity_name": "DailyReport",
+      "allowed_operations": [
+        "read",
+        "create"
+      ]
+    },
+    {
+      "entity_name": "Signal",
+      "allowed_operations": [
+        "read"
+      ]
+    },
+    {
+      "entity_name": "PropFirm",
+      "allowed_operations": [
+        "read"
+      ]
+    }
+  ],
+  "context_files": [],
+  "app_user_connector_configs": [],
+  "selected_skill_names": [],
+  "selected_workspace_skill_ids": [],
+  "model": "automatic",
+  "whatsapp_greeting": null,
+  "telegram_greeting": null,
+  "line_greeting": null,
+  "memory_config": {
+    "enabled": true,
+    "scope": "both",
+    "include_other_conversation_context": false,
+    "instructions": null
+  },
+  "voice_config": {
+    "voice_id": null
+  },
+  "name": "ghost_coach"
+}
