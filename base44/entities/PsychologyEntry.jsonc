@@ -1,0 +1,70 @@
+{
+  "name": "PsychologyEntry",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "mood": {
+      "type": "string",
+      "enum": [
+        "confident",
+        "neutral",
+        "anxious",
+        "frustrated",
+        "euphoric",
+        "tilt"
+      ],
+      "default": "neutral"
+    },
+    "discipline_score": {
+      "type": "number",
+      "description": "0-100"
+    },
+    "fomo_level": {
+      "type": "number",
+      "description": "0-10"
+    },
+    "fatigue_level": {
+      "type": "number",
+      "description": "0-10"
+    },
+    "trades_taken": {
+      "type": "number",
+      "default": 0
+    },
+    "trades_planned": {
+      "type": "number",
+      "default": 0
+    },
+    "rules_followed": {
+      "type": "boolean",
+      "default": true
+    },
+    "overtrading": {
+      "type": "boolean",
+      "default": false
+    },
+    "revenge_trading": {
+      "type": "boolean",
+      "default": false
+    },
+    "session_quality": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "average",
+        "poor"
+      ],
+      "default": "good"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "date"
+  ]
+}

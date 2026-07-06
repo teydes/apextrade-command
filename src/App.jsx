@@ -50,6 +50,12 @@ import GhostCoach from '@/pages/GhostCoach';
 import PerformanceHeatmap from '@/pages/PerformanceHeatmap';
 import TradeReview from '@/pages/TradeReview';
 import PropFirmComparator from '@/pages/PropFirmComparator';
+import PsychologyTracker from '@/pages/PsychologyTracker';
+import RiskOfRuin from '@/pages/RiskOfRuin';
+import PositionSizer from '@/pages/PositionSizer';
+import TradeReplay from '@/pages/TradeReplay';
+import EquityAnalytics from '@/pages/EquityAnalytics';
+import SessionClock from '@/pages/SessionClock';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -114,6 +120,12 @@ const AuthenticatedApp = () => {
         <Route path="/heatmap" element={<PerformanceHeatmap />} />
         <Route path="/trade-review" element={<TradeReview />} />
         <Route path="/propfirm-comparator" element={<PropFirmComparator />} />
+        <Route path="/psychology" element={<PsychologyTracker />} />
+        <Route path="/risk-ruin" element={<RiskOfRuin />} />
+        <Route path="/position-sizer" element={<PositionSizer />} />
+        <Route path="/trade-replay" element={<TradeReplay />} />
+        <Route path="/equity-analytics" element={<EquityAnalytics />} />
+        <Route path="/session-clock" element={<SessionClock />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
