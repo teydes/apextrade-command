@@ -7,7 +7,8 @@ import {
   Copy, Link2, PiggyBank, GitBranch, Calculator, Bell,
   Search, User, CalendarDays, LayoutTemplate, TrendingDown, DollarSign,
   Cpu, Crosshair, MessageCircle, Grid3x3, Eye, Star,
-  HeartPulse, Skull, RotateCcw, LineChart as LineChartIcon, Globe
+  HeartPulse, Skull, RotateCcw, LineChart as LineChartIcon, Globe,
+  Layers, Waves, Droplets, ShieldCheck
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -52,6 +53,8 @@ const NAV_GROUPS = [
       { path: '/trade-replay', label: 'Trade Replay', icon: RotateCcw },
       { path: '/position-sizer', label: 'Position Sizing', icon: Calculator },
       { path: '/risk-ruin', label: 'Risk of Ruin', icon: Skull },
+      { path: '/guardian', label: 'Trade Guardian', icon: ShieldCheck },
+      { path: '/liquidity-map', label: 'Liquidity Map', icon: Droplets },
     ]
   },
   {
@@ -60,6 +63,9 @@ const NAV_GROUPS = [
       { path: '/analytics', label: 'Analytics IA', icon: PieChart },
       { path: '/montecarlo', label: 'Monte Carlo', icon: Dices },
       { path: '/equity-analytics', label: 'Equity Analytics', icon: LineChartIcon },
+      { path: '/forecaster', label: 'Forecaster IA', icon: LineChartIcon },
+      { path: '/strategy-optimizer', label: 'Strategy Optim.', icon: GitBranch },
+      { path: '/volatility', label: 'Volatility', icon: Waves },
       { path: '/psychology', label: 'Psychology', icon: HeartPulse },
       { path: '/journal', label: 'Journal IA', icon: BookOpen },
       { path: '/sessions', label: 'Sessions', icon: Clock },
@@ -89,6 +95,7 @@ const NAV_GROUPS = [
       { path: '/bank', label: 'Banque', icon: Wallet },
       { path: '/backlog', label: 'Backlog IA', icon: ListChecks },
       { path: '/strategy', label: 'Stratégie', icon: Brain },
+      { path: '/plan-builder', label: 'Plan Builder', icon: Layers },
       { path: '/council', label: 'Conseil IA', icon: Users },
       { path: '/settings', label: 'Réglages', icon: Settings },
     ]
@@ -108,7 +115,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v4.3</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v4.4</span></div>
           </div>
         </div>
       </div>
@@ -143,7 +150,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v4.3</span>
+          <span>System Status</span><span className="text-primary font-bold">v4.4</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />

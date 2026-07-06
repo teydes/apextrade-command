@@ -56,6 +56,12 @@ import PositionSizer from '@/pages/PositionSizer';
 import TradeReplay from '@/pages/TradeReplay';
 import EquityAnalytics from '@/pages/EquityAnalytics';
 import SessionClock from '@/pages/SessionClock';
+import TradingPlanBuilder from '@/pages/TradingPlanBuilder';
+import VolatilityAnalyzer from '@/pages/VolatilityAnalyzer';
+import LiquidityMap from '@/pages/LiquidityMap';
+import PerformanceForecaster from '@/pages/PerformanceForecaster';
+import StrategyOptimizer from '@/pages/StrategyOptimizer';
+import TradeGuardian from '@/pages/TradeGuardian';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -126,6 +132,12 @@ const AuthenticatedApp = () => {
         <Route path="/trade-replay" element={<TradeReplay />} />
         <Route path="/equity-analytics" element={<EquityAnalytics />} />
         <Route path="/session-clock" element={<SessionClock />} />
+        <Route path="/plan-builder" element={<TradingPlanBuilder />} />
+        <Route path="/volatility" element={<VolatilityAnalyzer />} />
+        <Route path="/liquidity-map" element={<LiquidityMap />} />
+        <Route path="/forecaster" element={<PerformanceForecaster />} />
+        <Route path="/strategy-optimizer" element={<StrategyOptimizer />} />
+        <Route path="/guardian" element={<TradeGuardian />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

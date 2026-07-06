@@ -1,0 +1,123 @@
+{
+  "name": "TradingPlan",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "asset_class": {
+      "type": "string",
+      "enum": [
+        "forex",
+        "indices",
+        "crypto",
+        "commodities",
+        "stocks",
+        "futures"
+      ],
+      "default": "futures"
+    },
+    "timeframe": {
+      "type": "string",
+      "enum": [
+        "M1",
+        "M5",
+        "M15",
+        "M30",
+        "H1",
+        "H4",
+        "D1"
+      ]
+    },
+    "session": {
+      "type": "string",
+      "enum": [
+        "London",
+        "New York",
+        "Asian",
+        "Overlap London-NY",
+        "All"
+      ]
+    },
+    "strategy": {
+      "type": "string"
+    },
+    "entry_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exit_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "max_trades_per_day": {
+      "type": "number",
+      "default": 3
+    },
+    "max_daily_loss": {
+      "type": "number",
+      "description": "Max daily loss in %"
+    },
+    "risk_per_trade": {
+      "type": "number",
+      "default": 1
+    },
+    "min_rr": {
+      "type": "number",
+      "default": 2
+    },
+    "checklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "paused",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "backtest_trades": {
+      "type": "number",
+      "default": 0
+    },
+    "backtest_wr": {
+      "type": "number",
+      "default": 0
+    },
+    "backtest_pf": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}
