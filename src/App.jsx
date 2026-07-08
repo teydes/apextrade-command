@@ -62,6 +62,19 @@ import LiquidityMap from '@/pages/LiquidityMap';
 import PerformanceForecaster from '@/pages/PerformanceForecaster';
 import StrategyOptimizer from '@/pages/StrategyOptimizer';
 import TradeGuardian from '@/pages/TradeGuardian';
+import KellyCriterion from '@/pages/KellyCriterion';
+import SharpeMetrics from '@/pages/SharpeMetrics';
+import StreakAnalyzer from '@/pages/StreakAnalyzer';
+import DrawdownAnalysis from '@/pages/DrawdownAnalysis';
+import TradeSimulator from '@/pages/TradeSimulator';
+import MFConfluence from '@/pages/MFConfluence';
+import PivotCalculator from '@/pages/PivotCalculator';
+import ExpectancyModel from '@/pages/ExpectancyModel';
+import PortfolioHeat from '@/pages/PortfolioHeat';
+import SessionAnalyzer from '@/pages/SessionAnalyzer';
+import RiskRewardCalculator from '@/pages/RiskRewardCalculator';
+import CorrelationMatrix from '@/pages/CorrelationMatrix';
+import ConsistencyTracker from '@/pages/ConsistencyTracker';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -138,6 +151,19 @@ const AuthenticatedApp = () => {
         <Route path="/forecaster" element={<PerformanceForecaster />} />
         <Route path="/strategy-optimizer" element={<StrategyOptimizer />} />
         <Route path="/guardian" element={<TradeGuardian />} />
+        <Route path="/kelly" element={<KellyCriterion />} />
+        <Route path="/sharpe" element={<SharpeMetrics />} />
+        <Route path="/streaks" element={<StreakAnalyzer />} />
+        <Route path="/drawdown-analysis" element={<DrawdownAnalysis />} />
+        <Route path="/trade-simulator" element={<TradeSimulator />} />
+        <Route path="/mf-confluence" element={<MFConfluence />} />
+        <Route path="/pivots" element={<PivotCalculator />} />
+        <Route path="/expectancy" element={<ExpectancyModel />} />
+        <Route path="/portfolio-heat" element={<PortfolioHeat />} />
+        <Route path="/session-analyzer" element={<SessionAnalyzer />} />
+        <Route path="/rr-calc" element={<RiskRewardCalculator />} />
+        <Route path="/correlation-matrix" element={<CorrelationMatrix />} />
+        <Route path="/consistency" element={<ConsistencyTracker />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

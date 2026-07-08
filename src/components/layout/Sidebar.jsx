@@ -8,7 +8,8 @@ import {
   Search, User, CalendarDays, LayoutTemplate, TrendingDown, DollarSign,
   Cpu, Crosshair, MessageCircle, Grid3x3, Eye, Star,
   HeartPulse, Skull, RotateCcw, LineChart as LineChartIcon, Globe,
-  Layers, Waves, Droplets, ShieldCheck
+  Layers, Waves, Droplets, ShieldCheck,
+  Scale as ScaleIcon, Sigma, Flame, Thermometer, Repeat
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -97,6 +98,24 @@ const NAV_GROUPS = [
       { path: '/strategy', label: 'Stratégie', icon: Brain },
       { path: '/plan-builder', label: 'Plan Builder', icon: Layers },
       { path: '/council', label: 'Conseil IA', icon: Users },
+    ]
+  },
+  {
+    label: 'Quant Lab',
+    items: [
+      { path: '/kelly', label: 'Kelly Criterion', icon: ScaleIcon },
+      { path: '/sharpe', label: 'Sharpe & Ratios', icon: Activity },
+      { path: '/expectancy', label: 'Expectancy', icon: Sigma },
+      { path: '/streaks', label: 'Streak Analyzer', icon: Flame },
+      { path: '/drawdown-analysis', label: 'Drawdown', icon: TrendingDown },
+      { path: '/consistency', label: 'Consistency', icon: Repeat },
+      { path: '/trade-simulator', label: 'Simulator', icon: Dices },
+      { path: '/portfolio-heat', label: 'Portfolio Heat', icon: Thermometer },
+      { path: '/correlation-matrix', label: 'Correlations', icon: Grid3x3 },
+      { path: '/session-analyzer', label: 'Session Stats', icon: Clock },
+      { path: '/mf-confluence', label: 'MTF Confluence', icon: Layers },
+      { path: '/pivots', label: 'Pivot Points', icon: Crosshair },
+      { path: '/rr-calc', label: 'R:R Calculator', icon: Calculator },
       { path: '/settings', label: 'Réglages', icon: Settings },
     ]
   },
@@ -115,7 +134,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v4.4</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v5.0</span></div>
           </div>
         </div>
       </div>
@@ -150,7 +169,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v4.4</span>
+          <span>System Status</span><span className="text-primary font-bold">v5.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
