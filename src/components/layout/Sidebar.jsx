@@ -9,7 +9,10 @@ import {
   Cpu, Crosshair, MessageCircle, Grid3x3, Eye, Star,
   HeartPulse, Skull, RotateCcw, LineChart as LineChartIcon, Globe,
   Layers, Waves, Droplets, ShieldCheck,
-  Scale as ScaleIcon, Sigma, Flame, Thermometer, Repeat
+  Scale as ScaleIcon, Sigma, Flame, Thermometer, Repeat,
+  Activity as ActivityIcon, BarChart3 as Bar3Icon, GitBranch as GitIcon,
+  CalendarDays as CalIcon, Award as AwardIcon, Coins as CoinsIcon,
+  Target as TargetIcon, Zap as ZapIcon, Tag as TagIcon, Layers3
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -116,6 +119,28 @@ const NAV_GROUPS = [
       { path: '/mf-confluence', label: 'MTF Confluence', icon: Layers },
       { path: '/pivots', label: 'Pivot Points', icon: Crosshair },
       { path: '/rr-calc', label: 'R:R Calculator', icon: Calculator },
+      { path: '/breakeven', label: 'Break-Even', icon: TargetIcon },
+      { path: '/compounding', label: 'Compounding', icon: CoinsIcon },
+      { path: '/slippage', label: 'Slippage', icon: ZapIcon },
+      { path: '/backtest-engine', label: 'WFA Backtest', icon: FlaskConical },
+      { path: '/risk-parity', label: 'Risk Parity', icon: ScaleIcon },
+      { path: '/trade-tags', label: 'Tags Analyzer', icon: TagIcon },
+    ]
+  },
+  {
+    label: 'Market Analysis',
+    items: [
+      { path: '/market-profile', label: 'Market Profile', icon: Bar3Icon },
+      { path: '/order-flow', label: 'Order Flow', icon: ActivityIcon },
+      { path: '/fibonacci', label: 'Fibonacci', icon: GitIcon },
+      { path: '/economic-calendar', label: 'Eco Calendar', icon: CalIcon },
+      { path: '/calendar-heatmap', label: 'PnL Calendar', icon: CalIcon },
+    ]
+  },
+  {
+    label: 'Quality & Review',
+    items: [
+      { path: '/trade-grading', label: 'Trade Grading', icon: AwardIcon },
       { path: '/settings', label: 'Réglages', icon: Settings },
     ]
   },

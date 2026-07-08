@@ -75,6 +75,18 @@ import SessionAnalyzer from '@/pages/SessionAnalyzer';
 import RiskRewardCalculator from '@/pages/RiskRewardCalculator';
 import CorrelationMatrix from '@/pages/CorrelationMatrix';
 import ConsistencyTracker from '@/pages/ConsistencyTracker';
+import BacktestEngine from '@/pages/BacktestEngine';
+import MarketProfile from '@/pages/MarketProfile';
+import OrderFlowAnalyzer from '@/pages/OrderFlowAnalyzer';
+import FibCalculator from '@/pages/FibCalculator';
+import EconomicCalendar from '@/pages/EconomicCalendar';
+import TradeGrading from '@/pages/TradeGrading';
+import CompoundingCalculator from '@/pages/CompoundingCalculator';
+import BreakEvenAnalyzer from '@/pages/BreakEvenAnalyzer';
+import SlippageCalculator from '@/pages/SlippageCalculator';
+import RiskParityAllocator from '@/pages/RiskParityAllocator';
+import CalendarHeatmap from '@/pages/CalendarHeatmap';
+import TradeTagsAnalyzer from '@/pages/TradeTagsAnalyzer';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -164,6 +176,18 @@ const AuthenticatedApp = () => {
         <Route path="/rr-calc" element={<RiskRewardCalculator />} />
         <Route path="/correlation-matrix" element={<CorrelationMatrix />} />
         <Route path="/consistency" element={<ConsistencyTracker />} />
+        <Route path="/backtest-engine" element={<BacktestEngine />} />
+        <Route path="/market-profile" element={<MarketProfile />} />
+        <Route path="/order-flow" element={<OrderFlowAnalyzer />} />
+        <Route path="/fibonacci" element={<FibCalculator />} />
+        <Route path="/economic-calendar" element={<EconomicCalendar />} />
+        <Route path="/trade-grading" element={<TradeGrading />} />
+        <Route path="/compounding" element={<CompoundingCalculator />} />
+        <Route path="/breakeven" element={<BreakEvenAnalyzer />} />
+        <Route path="/slippage" element={<SlippageCalculator />} />
+        <Route path="/risk-parity" element={<RiskParityAllocator />} />
+        <Route path="/calendar-heatmap" element={<CalendarHeatmap />} />
+        <Route path="/trade-tags" element={<TradeTagsAnalyzer />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
