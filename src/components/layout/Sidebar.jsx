@@ -12,7 +12,8 @@ import {
   Scale as ScaleIcon, Sigma, Flame, Thermometer, Repeat,
   Activity as ActivityIcon, BarChart3 as Bar3Icon, GitBranch as GitIcon,
   CalendarDays as CalIcon, Award as AwardIcon, Coins as CoinsIcon,
-  Target as TargetIcon, Zap as ZapIcon, Tag as TagIcon, Layers3
+  Target as TargetIcon, Zap as ZapIcon, Tag as TagIcon, Layers3,
+  RefreshCw, Gauge, Ruler, Shield, Receipt, ClipboardList, Moon, LineChart as LineChartIcon2
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -125,6 +126,16 @@ const NAV_GROUPS = [
       { path: '/backtest-engine', label: 'WFA Backtest', icon: FlaskConical },
       { path: '/risk-parity', label: 'Risk Parity', icon: ScaleIcon },
       { path: '/trade-tags', label: 'Tags Analyzer', icon: TagIcon },
+      { path: '/mfe-mae', label: 'MFE / MAE', icon: ActivityIcon },
+      { path: '/trade-duration', label: 'Duration', icon: Clock },
+      { path: '/symbol-performance', label: 'By Symbol', icon: Layers3 },
+      { path: '/zscore', label: 'Z-Score', icon: Sigma },
+      { path: '/dd-recovery', label: 'DD Recovery', icon: RefreshCw },
+      { path: '/sequence-matrix', label: 'Sequence Matrix', icon: Grid3x3 },
+      { path: '/entry-exit-quality', label: 'Entry/Exit Q.', icon: Crosshair },
+      { path: '/equity-stats', label: 'Equity Stats', icon: LineChartIcon2 },
+      { path: '/wr-optimizer', label: 'WR Optimizer', icon: ZapIcon },
+      { path: '/backtest-compare', label: 'BT Compare', icon: GitBranch },
     ]
   },
   {
@@ -135,12 +146,26 @@ const NAV_GROUPS = [
       { path: '/fibonacci', label: 'Fibonacci', icon: GitIcon },
       { path: '/economic-calendar', label: 'Eco Calendar', icon: CalIcon },
       { path: '/calendar-heatmap', label: 'PnL Calendar', icon: CalIcon },
+      { path: '/currency-strength', label: 'Currency Strength', icon: DollarSign },
+      { path: '/volatility-regime', label: 'Volatility Regime', icon: Gauge },
+    ]
+  },
+  {
+    label: 'Calculators Pro',
+    items: [
+      { path: '/atr-sizer', label: 'ATR Position Sizer', icon: Ruler },
+      { path: '/margin-calc', label: 'Margin Calc', icon: Shield },
+      { path: '/pip-calc', label: 'Pip Value', icon: CoinsIcon },
+      { path: '/swap-calc', label: 'Swap Calc', icon: Moon },
+      { path: '/spread-cost', label: 'Spread Cost', icon: Receipt },
     ]
   },
   {
     label: 'Quality & Review',
     items: [
       { path: '/trade-grading', label: 'Trade Grading', icon: AwardIcon },
+      { path: '/daily-routine', label: 'Daily Routine', icon: ClipboardList },
+      { path: '/goals', label: 'Goals Tracker', icon: TargetIcon },
       { path: '/settings', label: 'Réglages', icon: Settings },
     ]
   },

@@ -87,6 +87,25 @@ import SlippageCalculator from '@/pages/SlippageCalculator';
 import RiskParityAllocator from '@/pages/RiskParityAllocator';
 import CalendarHeatmap from '@/pages/CalendarHeatmap';
 import TradeTagsAnalyzer from '@/pages/TradeTagsAnalyzer';
+import MFEAnalyzer from '@/pages/MFEAnalyzer';
+import TradeDuration from '@/pages/TradeDuration';
+import SymbolPerformance from '@/pages/SymbolPerformance';
+import ZScoreAnalyzer from '@/pages/ZScoreAnalyzer';
+import DrawdownRecovery from '@/pages/DrawdownRecovery';
+import CurrencyStrength from '@/pages/CurrencyStrength';
+import VolatilityRegime from '@/pages/VolatilityRegime';
+import SequenceMatrix from '@/pages/SequenceMatrix';
+import EntryExitQuality from '@/pages/EntryExitQuality';
+import ATRPositionSizer from '@/pages/ATRPositionSizer';
+import MarginCalculator from '@/pages/MarginCalculator';
+import PipCalculator from '@/pages/PipCalculator';
+import SwapCalculator from '@/pages/SwapCalculator';
+import DailyRoutine from '@/pages/DailyRoutine';
+import GoalsTracker from '@/pages/GoalsTracker';
+import EquityCurveStats from '@/pages/EquityCurveStats';
+import SpreadCostAnalyzer from '@/pages/SpreadCostAnalyzer';
+import WinRateOptimizer from '@/pages/WinRateOptimizer';
+import BacktestCompare from '@/pages/BacktestCompare';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -188,6 +207,25 @@ const AuthenticatedApp = () => {
         <Route path="/risk-parity" element={<RiskParityAllocator />} />
         <Route path="/calendar-heatmap" element={<CalendarHeatmap />} />
         <Route path="/trade-tags" element={<TradeTagsAnalyzer />} />
+        <Route path="/mfe-mae" element={<MFEAnalyzer />} />
+        <Route path="/trade-duration" element={<TradeDuration />} />
+        <Route path="/symbol-performance" element={<SymbolPerformance />} />
+        <Route path="/zscore" element={<ZScoreAnalyzer />} />
+        <Route path="/dd-recovery" element={<DrawdownRecovery />} />
+        <Route path="/currency-strength" element={<CurrencyStrength />} />
+        <Route path="/volatility-regime" element={<VolatilityRegime />} />
+        <Route path="/sequence-matrix" element={<SequenceMatrix />} />
+        <Route path="/entry-exit-quality" element={<EntryExitQuality />} />
+        <Route path="/atr-sizer" element={<ATRPositionSizer />} />
+        <Route path="/margin-calc" element={<MarginCalculator />} />
+        <Route path="/pip-calc" element={<PipCalculator />} />
+        <Route path="/swap-calc" element={<SwapCalculator />} />
+        <Route path="/daily-routine" element={<DailyRoutine />} />
+        <Route path="/goals" element={<GoalsTracker />} />
+        <Route path="/equity-stats" element={<EquityCurveStats />} />
+        <Route path="/spread-cost" element={<SpreadCostAnalyzer />} />
+        <Route path="/wr-optimizer" element={<WinRateOptimizer />} />
+        <Route path="/backtest-compare" element={<BacktestCompare />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
