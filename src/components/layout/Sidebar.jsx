@@ -14,7 +14,7 @@ import {
   CalendarDays as CalIcon, Award as AwardIcon, Coins as CoinsIcon,
   Target as TargetIcon, Zap as ZapIcon, Tag as TagIcon, Layers3,
   RefreshCw, Gauge, Ruler, Shield, Receipt, ClipboardList, Moon, LineChart as LineChartIcon2,
-  Timer, TrendingUp
+  Timer, TrendingUp, ShieldAlert, GitMerge, Award
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -61,6 +61,11 @@ const NAV_GROUPS = [
       { path: '/risk-ruin', label: 'Risk of Ruin', icon: Skull },
       { path: '/guardian', label: 'Trade Guardian', icon: ShieldCheck },
       { path: '/liquidity-map', label: 'Liquidity Map', icon: Droplets },
+      { path: '/hedging', label: 'Hedging Calc', icon: GitMerge },
+      { path: '/gap-risk', label: 'Gap Risk', icon: Moon },
+      { path: '/margin-call', label: 'Margin Call', icon: ShieldAlert },
+      { path: '/position-correlation', label: 'Pos. Correlation', icon: Crosshair },
+      { path: '/dd-duration', label: 'DD Duration', icon: Clock },
     ]
   },
   {
@@ -151,6 +156,17 @@ const NAV_GROUPS = [
       { path: '/optimal-risk', label: 'Optimal Risk', icon: Search },
       { path: '/sharpe-optimizer', label: 'Sharpe Opt.', icon: Gauge },
       { path: '/dd-probability', label: 'DD Probability', icon: ActivityIcon },
+      { path: '/sortino', label: 'Sortino', icon: Shield },
+      { path: '/calmar', label: 'Calmar', icon: Gauge },
+      { path: '/omega', label: 'Omega', icon: Sigma },
+      { path: '/k-ratio', label: 'K-Ratio', icon: Activity },
+      { path: '/expected-value', label: 'Expected Val.', icon: Calculator },
+      { path: '/leverage-opt', label: 'Lev. Optim.', icon: Layers3 },
+      { path: '/growth-rate', label: 'Growth Rate', icon: TrendingUp },
+      { path: '/equity-fitness', label: 'Eq. Fitness', icon: LineChartIcon2 },
+      { path: '/risk-ladder', label: 'Risk Ladder', icon: Layers3 },
+      { path: '/trade-frequency', label: 'Frequency', icon: Timer },
+      { path: '/trader-scorecard', label: 'Scorecard', icon: Award },
     ]
   },
   {
@@ -166,6 +182,8 @@ const NAV_GROUPS = [
       { path: '/market-internals', label: 'Market Internals', icon: ActivityIcon },
       { path: '/vwap', label: 'VWAP', icon: TrendingUp },
       { path: '/regime-perf', label: 'Regime Perf', icon: Gauge },
+      { path: '/vol-surface', label: 'Vol. Surface', icon: Waves },
+      { path: '/vol-target', label: 'Vol. Target', icon: Thermometer },
     ]
   },
   {
@@ -187,6 +205,8 @@ const NAV_GROUPS = [
       { path: '/psychology-score', label: 'Psychology Score', icon: HeartPulse },
       { path: '/day-of-week', label: 'Day of Week', icon: CalendarDays },
       { path: '/monthly-seasonality', label: 'Seasonality', icon: CalIcon },
+      { path: '/conviction', label: 'Conviction', icon: Star },
+      { path: '/liq-sweep', label: 'Liq. Sweep', icon: Droplets },
       { path: '/settings', label: 'Réglages', icon: Settings },
     ]
   },
@@ -205,7 +225,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v5.0</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v7.0</span></div>
           </div>
         </div>
       </div>
@@ -240,7 +260,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v5.0</span>
+          <span>System Status</span><span className="text-primary font-bold">v7.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />

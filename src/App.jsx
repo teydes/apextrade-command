@@ -126,6 +126,27 @@ import SharpeOptimizer from '@/pages/SharpeOptimizer';
 import TradeEfficiency from '@/pages/TradeEfficiency';
 import TradeAttribution from '@/pages/TradeAttribution';
 import EquityMomentum from '@/pages/EquityMomentum';
+import SortinoCalculator from '@/pages/SortinoCalculator';
+import TailRiskAnalyzer from '@/pages/TailRiskAnalyzer';
+import CalmarRatio from '@/pages/CalmarRatio';
+import OmegaRatio from '@/pages/OmegaRatio';
+import GrowthRateCalculator from '@/pages/GrowthRateCalculator';
+import LeverageOptimizer from '@/pages/LeverageOptimizer';
+import GapRiskCalculator from '@/pages/GapRiskCalculator';
+import HedgingCalculator from '@/pages/HedgingCalculator';
+import DrawdownDuration from '@/pages/DrawdownDuration';
+import TradeConviction from '@/pages/TradeConviction';
+import LiquiditySweep from '@/pages/LiquiditySweep';
+import MarginCallCalculator from '@/pages/MarginCallCalculator';
+import VolatilityTarget from '@/pages/VolatilityTarget';
+import KRatioAnalyzer from '@/pages/KRatioAnalyzer';
+import ExpectedValueCalculator from '@/pages/ExpectedValueCalculator';
+import EquityCurveFitness from '@/pages/EquityCurveFitness';
+import TradeFrequencyAnalyzer from '@/pages/TradeFrequencyAnalyzer';
+import RiskLadder from '@/pages/RiskLadder';
+import PositionCorrelation from '@/pages/PositionCorrelation';
+import VolatilitySurface from '@/pages/VolatilitySurface';
+import TraderScorecard from '@/pages/TraderScorecard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -266,6 +287,27 @@ const AuthenticatedApp = () => {
         <Route path="/trade-efficiency" element={<TradeEfficiency />} />
         <Route path="/trade-attribution" element={<TradeAttribution />} />
         <Route path="/equity-momentum" element={<EquityMomentum />} />
+        <Route path="/sortino" element={<SortinoCalculator />} />
+        <Route path="/tail-risk" element={<TailRiskAnalyzer />} />
+        <Route path="/calmar" element={<CalmarRatio />} />
+        <Route path="/omega" element={<OmegaRatio />} />
+        <Route path="/growth-rate" element={<GrowthRateCalculator />} />
+        <Route path="/leverage-opt" element={<LeverageOptimizer />} />
+        <Route path="/gap-risk" element={<GapRiskCalculator />} />
+        <Route path="/hedging" element={<HedgingCalculator />} />
+        <Route path="/dd-duration" element={<DrawdownDuration />} />
+        <Route path="/conviction" element={<TradeConviction />} />
+        <Route path="/liq-sweep" element={<LiquiditySweep />} />
+        <Route path="/margin-call" element={<MarginCallCalculator />} />
+        <Route path="/vol-target" element={<VolatilityTarget />} />
+        <Route path="/k-ratio" element={<KRatioAnalyzer />} />
+        <Route path="/expected-value" element={<ExpectedValueCalculator />} />
+        <Route path="/equity-fitness" element={<EquityCurveFitness />} />
+        <Route path="/trade-frequency" element={<TradeFrequencyAnalyzer />} />
+        <Route path="/risk-ladder" element={<RiskLadder />} />
+        <Route path="/position-correlation" element={<PositionCorrelation />} />
+        <Route path="/vol-surface" element={<VolatilitySurface />} />
+        <Route path="/trader-scorecard" element={<TraderScorecard />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
