@@ -106,6 +106,26 @@ import EquityCurveStats from '@/pages/EquityCurveStats';
 import SpreadCostAnalyzer from '@/pages/SpreadCostAnalyzer';
 import WinRateOptimizer from '@/pages/WinRateOptimizer';
 import BacktestCompare from '@/pages/BacktestCompare';
+import RMultipleAnalyzer from '@/pages/RMultipleAnalyzer';
+import DayOfWeekAnalysis from '@/pages/DayOfWeekAnalysis';
+import MonthlySeasonality from '@/pages/MonthlySeasonality';
+import TradeClustering from '@/pages/TradeClustering';
+import ProfitFactorAnalyzer from '@/pages/ProfitFactorAnalyzer';
+import OptimalRiskFinder from '@/pages/OptimalRiskFinder';
+import VWAPCalculator from '@/pages/VWAPCalculator';
+import MarketInternals from '@/pages/MarketInternals';
+import PsychologyScore from '@/pages/PsychologyScore';
+import CapitalEfficiency from '@/pages/CapitalEfficiency';
+import DrawdownProbability from '@/pages/DrawdownProbability';
+import SetupQualityScore from '@/pages/SetupQualityScore';
+import PerformanceAttribution from '@/pages/PerformanceAttribution';
+import RecoveryFactor from '@/pages/RecoveryFactor';
+import TradeVelocity from '@/pages/TradeVelocity';
+import RegimePerformance from '@/pages/RegimePerformance';
+import SharpeOptimizer from '@/pages/SharpeOptimizer';
+import TradeEfficiency from '@/pages/TradeEfficiency';
+import TradeAttribution from '@/pages/TradeAttribution';
+import EquityMomentum from '@/pages/EquityMomentum';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -226,6 +246,26 @@ const AuthenticatedApp = () => {
         <Route path="/spread-cost" element={<SpreadCostAnalyzer />} />
         <Route path="/wr-optimizer" element={<WinRateOptimizer />} />
         <Route path="/backtest-compare" element={<BacktestCompare />} />
+        <Route path="/r-multiples" element={<RMultipleAnalyzer />} />
+        <Route path="/day-of-week" element={<DayOfWeekAnalysis />} />
+        <Route path="/monthly-seasonality" element={<MonthlySeasonality />} />
+        <Route path="/trade-clustering" element={<TradeClustering />} />
+        <Route path="/profit-factor" element={<ProfitFactorAnalyzer />} />
+        <Route path="/optimal-risk" element={<OptimalRiskFinder />} />
+        <Route path="/vwap" element={<VWAPCalculator />} />
+        <Route path="/market-internals" element={<MarketInternals />} />
+        <Route path="/psychology-score" element={<PsychologyScore />} />
+        <Route path="/capital-efficiency" element={<CapitalEfficiency />} />
+        <Route path="/dd-probability" element={<DrawdownProbability />} />
+        <Route path="/setup-quality" element={<SetupQualityScore />} />
+        <Route path="/perf-attribution" element={<PerformanceAttribution />} />
+        <Route path="/recovery-factor" element={<RecoveryFactor />} />
+        <Route path="/trade-velocity" element={<TradeVelocity />} />
+        <Route path="/regime-perf" element={<RegimePerformance />} />
+        <Route path="/sharpe-optimizer" element={<SharpeOptimizer />} />
+        <Route path="/trade-efficiency" element={<TradeEfficiency />} />
+        <Route path="/trade-attribution" element={<TradeAttribution />} />
+        <Route path="/equity-momentum" element={<EquityMomentum />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

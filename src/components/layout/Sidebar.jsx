@@ -13,7 +13,8 @@ import {
   Activity as ActivityIcon, BarChart3 as Bar3Icon, GitBranch as GitIcon,
   CalendarDays as CalIcon, Award as AwardIcon, Coins as CoinsIcon,
   Target as TargetIcon, Zap as ZapIcon, Tag as TagIcon, Layers3,
-  RefreshCw, Gauge, Ruler, Shield, Receipt, ClipboardList, Moon, LineChart as LineChartIcon2
+  RefreshCw, Gauge, Ruler, Shield, Receipt, ClipboardList, Moon, LineChart as LineChartIcon2,
+  Timer, TrendingUp
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -136,6 +137,20 @@ const NAV_GROUPS = [
       { path: '/equity-stats', label: 'Equity Stats', icon: LineChartIcon2 },
       { path: '/wr-optimizer', label: 'WR Optimizer', icon: ZapIcon },
       { path: '/backtest-compare', label: 'BT Compare', icon: GitBranch },
+      { path: '/r-multiples', label: 'R-Multiples', icon: Sigma },
+      { path: '/profit-factor', label: 'Profit Factor', icon: DollarSign },
+      { path: '/recovery-factor', label: 'Recovery Factor', icon: RefreshCw },
+      { path: '/trade-velocity', label: 'Trade Velocity', icon: Timer },
+      { path: '/trade-efficiency', label: 'Efficiency', icon: ZapIcon },
+      { path: '/capital-efficiency', label: 'Capital Eff.', icon: DollarSign },
+      { path: '/equity-momentum', label: 'Eq. Momentum', icon: Waves },
+      { path: '/trade-clustering', label: 'Clustering', icon: Layers3 },
+      { path: '/trade-attribution', label: 'Attribution', icon: PieChart },
+      { path: '/perf-attribution', label: 'Perf Attribution', icon: Bar3Icon },
+      { path: '/setup-quality', label: 'Setup Quality', icon: Star },
+      { path: '/optimal-risk', label: 'Optimal Risk', icon: Search },
+      { path: '/sharpe-optimizer', label: 'Sharpe Opt.', icon: Gauge },
+      { path: '/dd-probability', label: 'DD Probability', icon: ActivityIcon },
     ]
   },
   {
@@ -148,6 +163,9 @@ const NAV_GROUPS = [
       { path: '/calendar-heatmap', label: 'PnL Calendar', icon: CalIcon },
       { path: '/currency-strength', label: 'Currency Strength', icon: DollarSign },
       { path: '/volatility-regime', label: 'Volatility Regime', icon: Gauge },
+      { path: '/market-internals', label: 'Market Internals', icon: ActivityIcon },
+      { path: '/vwap', label: 'VWAP', icon: TrendingUp },
+      { path: '/regime-perf', label: 'Regime Perf', icon: Gauge },
     ]
   },
   {
@@ -166,6 +184,9 @@ const NAV_GROUPS = [
       { path: '/trade-grading', label: 'Trade Grading', icon: AwardIcon },
       { path: '/daily-routine', label: 'Daily Routine', icon: ClipboardList },
       { path: '/goals', label: 'Goals Tracker', icon: TargetIcon },
+      { path: '/psychology-score', label: 'Psychology Score', icon: HeartPulse },
+      { path: '/day-of-week', label: 'Day of Week', icon: CalendarDays },
+      { path: '/monthly-seasonality', label: 'Seasonality', icon: CalIcon },
       { path: '/settings', label: 'Réglages', icon: Settings },
     ]
   },
