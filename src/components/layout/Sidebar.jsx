@@ -207,6 +207,37 @@ const NAV_GROUPS = [
       { path: '/benchmark', label: 'Benchmark', icon: GitCompare },
       { path: '/latency', label: 'Latency', icon: CalendarClock },
       { path: '/data-quality', label: 'Data Quality', icon: Activity },
+      { path: '/tail-ratio', label: 'Tail Ratio', icon: ScaleIcon },
+      { path: '/rachev', label: 'Rachev Ratio', icon: TrendingUp },
+      { path: '/gain-pain', label: 'Gain/Pain', icon: Percent },
+      { path: '/upside-pot', label: 'Upside Pot.', icon: TrendingUp },
+      { path: '/rolling-sharpe', label: 'Rolling Sharpe', icon: Activity },
+      { path: '/rolling-sortino', label: 'Rolling Sortino', icon: Activity },
+      { path: '/rolling-dd', label: 'Rolling DD', icon: Activity },
+      { path: '/rolling-vol', label: 'Rolling Vol', icon: Activity },
+      { path: '/rolling-wr', label: 'Rolling WR', icon: Activity },
+      { path: '/rolling-exp', label: 'Rolling E[R]', icon: Activity },
+      { path: '/hourly-perf', label: 'Hourly Perf', icon: Clock },
+      { path: '/quarterly', label: 'Quarterly', icon: CalendarDays },
+      { path: '/yearly', label: 'Yearly Comp', icon: CalendarDays },
+      { path: '/monthly-matrix', label: 'Monthly Matrix', icon: CalendarDays },
+      { path: '/outliers', label: 'Outliers', icon: AlertTriangle },
+      { path: '/dd-depth', label: 'DD Depth', icon: TrendingDown },
+      { path: '/recovery-time', label: 'Recovery Time', icon: Clock },
+      { path: '/quality-comp', label: 'Quality Comp.', icon: Award },
+      { path: '/price-efficiency', label: 'Price Eff.', icon: Activity },
+      { path: '/concentration', label: 'Concentration', icon: AlertTriangle },
+      { path: '/cvar', label: 'CVaR', icon: Shield },
+      { path: '/kurtosis-risk', label: 'Kurtosis Risk', icon: Waves },
+      { path: '/cum-alpha', label: 'Cum. Alpha', icon: Activity },
+      { path: '/strategy-decay', label: 'Strategy Decay', icon: TargetIcon },
+      { path: '/regime-detect', label: 'Regime Detect', icon: Layers },
+      { path: '/profit-consistency', label: 'P. Consistency', icon: DollarSign },
+      { path: '/worst-case', label: 'Worst Case', icon: ShieldAlert },
+      { path: '/equity-smooth', label: 'Eq. Smoothness', icon: Activity },
+      { path: '/geo-returns', label: 'Geo Returns', icon: TrendingUp },
+      { path: '/ra-ranking', label: 'RA Ranking', icon: Layers3 },
+      { path: '/cost-efficiency', label: 'Cost Efficiency', icon: DollarSign },
     ]
   },
   {
@@ -265,7 +296,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v8.0</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v9.0</span></div>
           </div>
         </div>
       </div>
@@ -300,7 +331,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v8.0</span>
+          <span>System Status</span><span className="text-primary font-bold">v9.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />

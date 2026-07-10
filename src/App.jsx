@@ -181,6 +181,37 @@ import AutocorrelationAnalysis from '@/pages/AutocorrelationAnalysis';
 import EquityDecomposition from '@/pages/EquityDecomposition';
 import BenchmarkComparison from '@/pages/BenchmarkComparison';
 import TradeLatencyAnalysis from '@/pages/TradeLatencyAnalysis';
+import TailRatioPage from '@/pages/TailRatioPage';
+import RachevRatio from '@/pages/RachevRatio';
+import GainToPainRatio from '@/pages/GainToPainRatio';
+import UpsidePotential from '@/pages/UpsidePotential';
+import RollingSharpe from '@/pages/RollingSharpe';
+import RollingSortino from '@/pages/RollingSortino';
+import HourlyPerformance from '@/pages/HourlyPerformance';
+import QuarterlyPerformance from '@/pages/QuarterlyPerformance';
+import YearlyComparison from '@/pages/YearlyComparison';
+import OutlierAnalysis from '@/pages/OutlierAnalysis';
+import DrawdownDepthAnalysis from '@/pages/DrawdownDepthAnalysis';
+import RecoveryTimeAnalysis from '@/pages/RecoveryTimeAnalysis';
+import TradeQualityComposite from '@/pages/TradeQualityComposite';
+import PriceActionEfficiency from '@/pages/PriceActionEfficiency';
+import ConcentrationRisk from '@/pages/ConcentrationRisk';
+import RollingDrawdown from '@/pages/RollingDrawdown';
+import RollingVolatility from '@/pages/RollingVolatility';
+import RollingWinRate from '@/pages/RollingWinRate';
+import RollingExpectancy from '@/pages/RollingExpectancy';
+import ConditionalVaR from '@/pages/ConditionalVaR';
+import KurtosisRisk from '@/pages/KurtosisRisk';
+import CumulativeAlpha from '@/pages/CumulativeAlpha';
+import StrategyDecay from '@/pages/StrategyDecay';
+import MarketRegimeDetection from '@/pages/MarketRegimeDetection';
+import ProfitConsistency from '@/pages/ProfitConsistency';
+import WorstCaseAnalysis from '@/pages/WorstCaseAnalysis';
+import EquitySmoothness from '@/pages/EquitySmoothness';
+import MonthlyPnLMatrix from '@/pages/MonthlyPnLMatrix';
+import GeometricReturns from '@/pages/GeometricReturns';
+import RiskAdjustedRanking from '@/pages/RiskAdjustedRanking';
+import CostEfficiencyRatio from '@/pages/CostEfficiencyRatio';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -376,6 +407,37 @@ const AuthenticatedApp = () => {
         <Route path="/equity-decomp" element={<EquityDecomposition />} />
         <Route path="/benchmark" element={<BenchmarkComparison />} />
         <Route path="/latency" element={<TradeLatencyAnalysis />} />
+        <Route path="/tail-ratio" element={<TailRatioPage />} />
+        <Route path="/rachev" element={<RachevRatio />} />
+        <Route path="/gain-pain" element={<GainToPainRatio />} />
+        <Route path="/upside-pot" element={<UpsidePotential />} />
+        <Route path="/rolling-sharpe" element={<RollingSharpe />} />
+        <Route path="/rolling-sortino" element={<RollingSortino />} />
+        <Route path="/hourly-perf" element={<HourlyPerformance />} />
+        <Route path="/quarterly" element={<QuarterlyPerformance />} />
+        <Route path="/yearly" element={<YearlyComparison />} />
+        <Route path="/outliers" element={<OutlierAnalysis />} />
+        <Route path="/dd-depth" element={<DrawdownDepthAnalysis />} />
+        <Route path="/recovery-time" element={<RecoveryTimeAnalysis />} />
+        <Route path="/quality-comp" element={<TradeQualityComposite />} />
+        <Route path="/price-efficiency" element={<PriceActionEfficiency />} />
+        <Route path="/concentration" element={<ConcentrationRisk />} />
+        <Route path="/rolling-dd" element={<RollingDrawdown />} />
+        <Route path="/rolling-vol" element={<RollingVolatility />} />
+        <Route path="/rolling-wr" element={<RollingWinRate />} />
+        <Route path="/rolling-exp" element={<RollingExpectancy />} />
+        <Route path="/cvar" element={<ConditionalVaR />} />
+        <Route path="/kurtosis-risk" element={<KurtosisRisk />} />
+        <Route path="/cum-alpha" element={<CumulativeAlpha />} />
+        <Route path="/strategy-decay" element={<StrategyDecay />} />
+        <Route path="/regime-detect" element={<MarketRegimeDetection />} />
+        <Route path="/profit-consistency" element={<ProfitConsistency />} />
+        <Route path="/worst-case" element={<WorstCaseAnalysis />} />
+        <Route path="/equity-smooth" element={<EquitySmoothness />} />
+        <Route path="/monthly-matrix" element={<MonthlyPnLMatrix />} />
+        <Route path="/geo-returns" element={<GeometricReturns />} />
+        <Route path="/ra-ranking" element={<RiskAdjustedRanking />} />
+        <Route path="/cost-efficiency" element={<CostEfficiencyRatio />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
