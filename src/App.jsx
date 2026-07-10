@@ -147,6 +147,40 @@ import RiskLadder from '@/pages/RiskLadder';
 import PositionCorrelation from '@/pages/PositionCorrelation';
 import VolatilitySurface from '@/pages/VolatilitySurface';
 import TraderScorecard from '@/pages/TraderScorecard';
+import InformationRatio from '@/pages/InformationRatio';
+import TreynorRatio from '@/pages/TreynorRatio';
+import PainIndex from '@/pages/PainIndex';
+import UlcerIndex from '@/pages/UlcerIndex';
+import BurkeRatio from '@/pages/BurkeRatio';
+import SterlingRatio from '@/pages/SterlingRatio';
+import ProbabilisticSharpe from '@/pages/ProbabilisticSharpe';
+import SkewnessKurtosis from '@/pages/SkewnessKurtosis';
+import HurstExponent from '@/pages/HurstExponent';
+import BetaAnalyzer from '@/pages/BetaAnalyzer';
+import AlphaCalculator from '@/pages/AlphaCalculator';
+import WalkForward from '@/pages/WalkForward';
+import OverfittingDetector from '@/pages/OverfittingDetector';
+import BootstrapAnalysis from '@/pages/BootstrapAnalysis';
+import StressTest from '@/pages/StressTest';
+import CointegrationTest from '@/pages/CointegrationTest';
+import MeanReversionSpeed from '@/pages/MeanReversionSpeed';
+import ChoppinessIndex from '@/pages/ChoppinessIndex';
+import GamblerRuin from '@/pages/GamblerRuin';
+import DeflatedSharpe from '@/pages/DeflatedSharpe';
+import MARratio from '@/pages/MARratio';
+import EfficientFrontier from '@/pages/EfficientFrontier';
+import FractalDimension from '@/pages/FractalDimension';
+import CaptureRatios from '@/pages/CaptureRatios';
+import CumulativeDelta from '@/pages/CumulativeDelta';
+import SensitivityAnalysis from '@/pages/SensitivityAnalysis';
+import VolatilityClustering from '@/pages/VolatilityClustering';
+import ModiglianiRatio from '@/pages/ModiglianiRatio';
+import NetProfitAnalysis from '@/pages/NetProfitAnalysis';
+import DataQualityScore from '@/pages/DataQualityScore';
+import AutocorrelationAnalysis from '@/pages/AutocorrelationAnalysis';
+import EquityDecomposition from '@/pages/EquityDecomposition';
+import BenchmarkComparison from '@/pages/BenchmarkComparison';
+import TradeLatencyAnalysis from '@/pages/TradeLatencyAnalysis';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -308,6 +342,40 @@ const AuthenticatedApp = () => {
         <Route path="/position-correlation" element={<PositionCorrelation />} />
         <Route path="/vol-surface" element={<VolatilitySurface />} />
         <Route path="/trader-scorecard" element={<TraderScorecard />} />
+        <Route path="/information-ratio" element={<InformationRatio />} />
+        <Route path="/treynor" element={<TreynorRatio />} />
+        <Route path="/pain-index" element={<PainIndex />} />
+        <Route path="/ulcer" element={<UlcerIndex />} />
+        <Route path="/burke" element={<BurkeRatio />} />
+        <Route path="/sterling" element={<SterlingRatio />} />
+        <Route path="/psr" element={<ProbabilisticSharpe />} />
+        <Route path="/skew-kurt" element={<SkewnessKurtosis />} />
+        <Route path="/hurst" element={<HurstExponent />} />
+        <Route path="/beta" element={<BetaAnalyzer />} />
+        <Route path="/alpha" element={<AlphaCalculator />} />
+        <Route path="/walk-forward" element={<WalkForward />} />
+        <Route path="/overfit" element={<OverfittingDetector />} />
+        <Route path="/bootstrap" element={<BootstrapAnalysis />} />
+        <Route path="/stress-test" element={<StressTest />} />
+        <Route path="/cointegration" element={<CointegrationTest />} />
+        <Route path="/mean-reversion" element={<MeanReversionSpeed />} />
+        <Route path="/choppiness" element={<ChoppinessIndex />} />
+        <Route path="/gamblers-ruin" element={<GamblerRuin />} />
+        <Route path="/deflated-sharpe" element={<DeflatedSharpe />} />
+        <Route path="/mar-ratio" element={<MARratio />} />
+        <Route path="/efficient-frontier" element={<EfficientFrontier />} />
+        <Route path="/fractal-dim" element={<FractalDimension />} />
+        <Route path="/capture-ratios" element={<CaptureRatios />} />
+        <Route path="/cum-delta" element={<CumulativeDelta />} />
+        <Route path="/sensitivity" element={<SensitivityAnalysis />} />
+        <Route path="/vol-clustering" element={<VolatilityClustering />} />
+        <Route path="/modigliani" element={<ModiglianiRatio />} />
+        <Route path="/net-profit" element={<NetProfitAnalysis />} />
+        <Route path="/data-quality" element={<DataQualityScore />} />
+        <Route path="/autocorr" element={<AutocorrelationAnalysis />} />
+        <Route path="/equity-decomp" element={<EquityDecomposition />} />
+        <Route path="/benchmark" element={<BenchmarkComparison />} />
+        <Route path="/latency" element={<TradeLatencyAnalysis />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

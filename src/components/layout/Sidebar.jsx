@@ -14,7 +14,8 @@ import {
   CalendarDays as CalIcon, Award as AwardIcon, Coins as CoinsIcon,
   Target as TargetIcon, Zap as ZapIcon, Tag as TagIcon, Layers3,
   RefreshCw, Gauge, Ruler, Shield, Receipt, ClipboardList, Moon, LineChart as LineChartIcon2,
-  Timer, TrendingUp, ShieldAlert, GitMerge, Award
+  Timer, TrendingUp, ShieldAlert, GitMerge, Award,
+  HeartCrack, SlidersHorizontal, Percent, BarChart2, CalendarClock, GitCompare, AlertTriangle
 } from 'lucide-react';
 
 const NAV_GROUPS = [
@@ -170,6 +171,45 @@ const NAV_GROUPS = [
     ]
   },
   {
+    label: 'Advanced Quant',
+    items: [
+      { path: '/information-ratio', label: 'Info Ratio', icon: Sigma },
+      { path: '/treynor', label: 'Treynor', icon: Activity },
+      { path: '/modigliani', label: 'Modigliani M²', icon: ScaleIcon },
+      { path: '/psr', label: 'Prob. Sharpe', icon: Percent },
+      { path: '/deflated-sharpe', label: 'Deflated Sharpe', icon: Shield },
+      { path: '/mar-ratio', label: 'MAR Ratio', icon: TrendingUp },
+      { path: '/burke', label: 'Burke', icon: TrendingDown },
+      { path: '/sterling', label: 'Sterling', icon: ScaleIcon },
+      { path: '/pain-index', label: 'Pain Index', icon: HeartCrack },
+      { path: '/ulcer', label: 'Ulcer Index', icon: Shield },
+      { path: '/capture-ratios', label: 'Capture Ratios', icon: TrendingUp },
+      { path: '/alpha', label: 'Alpha', icon: Star },
+      { path: '/beta', label: 'Beta', icon: TrendingUp },
+      { path: '/skew-kurt', label: 'Skew & Kurtosis', icon: BarChart2 },
+      { path: '/hurst', label: 'Hurst Exp.', icon: Waves },
+      { path: '/fractal-dim', label: 'Fractal Dim.', icon: Grid3x3 },
+      { path: '/choppiness', label: 'Choppiness', icon: Activity },
+      { path: '/autocorr', label: 'Autocorrelation', icon: Activity },
+      { path: '/vol-clustering', label: 'Vol Clustering', icon: Layers3 },
+      { path: '/mean-reversion', label: 'Mean Reversion', icon: RefreshCw },
+      { path: '/cointegration', label: 'Cointegration', icon: GitMerge },
+      { path: '/gamblers-ruin', label: "Gambler's Ruin", icon: Skull },
+      { path: '/walk-forward', label: 'Walk-Forward', icon: GitBranch },
+      { path: '/overfit', label: 'Overfit Detector', icon: AlertTriangle },
+      { path: '/bootstrap', label: 'Bootstrap', icon: Dices },
+      { path: '/stress-test', label: 'Stress Test', icon: Zap },
+      { path: '/sensitivity', label: 'Sensitivity', icon: SlidersHorizontal },
+      { path: '/cum-delta', label: 'Cum. Delta', icon: Activity },
+      { path: '/efficient-frontier', label: 'Eff. Frontier', icon: Layers },
+      { path: '/net-profit', label: 'Net Profit', icon: DollarSign },
+      { path: '/equity-decomp', label: 'Eq. Decomp.', icon: Layers3 },
+      { path: '/benchmark', label: 'Benchmark', icon: GitCompare },
+      { path: '/latency', label: 'Latency', icon: CalendarClock },
+      { path: '/data-quality', label: 'Data Quality', icon: Activity },
+    ]
+  },
+  {
     label: 'Market Analysis',
     items: [
       { path: '/market-profile', label: 'Market Profile', icon: Bar3Icon },
@@ -225,7 +265,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v7.0</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v8.0</span></div>
           </div>
         </div>
       </div>
@@ -260,7 +300,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v7.0</span>
+          <span>System Status</span><span className="text-primary font-bold">v8.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
