@@ -238,6 +238,34 @@ const NAV_GROUPS = [
       { path: '/geo-returns', label: 'Geo Returns', icon: TrendingUp },
       { path: '/ra-ranking', label: 'RA Ranking', icon: Layers3 },
       { path: '/cost-efficiency', label: 'Cost Efficiency', icon: DollarSign },
+      { path: '/sqn', label: 'SQN (Van Tharp)', icon: Sigma },
+      { path: '/optimal-f', label: 'Optimal f', icon: TargetIcon },
+      { path: '/expectunity', label: 'Expectunity', icon: Sigma },
+      { path: '/r-expectancy', label: 'R-Expectancy', icon: Sigma },
+      { path: '/kelly-mult', label: 'Kelly Mult.', icon: TargetIcon },
+      { path: '/t-stat', label: 'T-Statistic', icon: Sigma },
+      { path: '/conf-interval', label: 'Conf. Interval', icon: Shield },
+      { path: '/sharpe-sig', label: 'Sharpe Sig.', icon: Shield },
+      { path: '/jarque-bera', label: 'Jarque-Bera', icon: BarChart2 },
+      { path: '/ljung-box', label: 'Ljung-Box', icon: Activity },
+      { path: '/entropy', label: 'Shannon Entropy', icon: Brain },
+      { path: '/gini', label: 'Gini Coeff.', icon: ScaleIcon },
+      { path: '/tracking-error', label: 'Tracking Error', icon: GitCompare },
+      { path: '/ic', label: 'Info Coeff.', icon: GitCompare },
+      { path: '/fama', label: 'Fama Decomp.', icon: Layers3 },
+      { path: '/brinson', label: 'Brinson Attr.', icon: Layers3 },
+      { path: '/style-drift', label: 'Style Drift', icon: Activity },
+      { path: '/capacity', label: 'Capacity', icon: TrendingUp },
+      { path: '/pf-stability', label: 'PF Stability', icon: Activity },
+      { path: '/dd-sharpe', label: 'DD Sharpe', icon: Activity },
+      { path: '/risk-decomp', label: 'Risk Decomp.', icon: Layers3 },
+      { path: '/overfit-risk', label: 'Overfit Risk', icon: AlertTriangle },
+      { path: '/lvar', label: 'Liquidity VaR', icon: Shield },
+      { path: '/vol-adj-returns', label: 'Vol-Adj Returns', icon: Gauge },
+      { path: '/persistence', label: 'Persistence', icon: RefreshCw },
+      { path: '/robustness', label: 'Robustness', icon: ShieldCheck },
+      { path: '/signal-quality', label: 'Signal Quality', icon: Crosshair },
+      { path: '/bench-alpha', label: 'Bench. Alpha', icon: GitCompare },
     ]
   },
   {
@@ -296,7 +324,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v9.0</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v10.0</span></div>
           </div>
         </div>
       </div>
@@ -331,7 +359,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v9.0</span>
+          <span>System Status</span><span className="text-primary font-bold">v10.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />

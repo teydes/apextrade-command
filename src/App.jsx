@@ -212,6 +212,34 @@ import MonthlyPnLMatrix from '@/pages/MonthlyPnLMatrix';
 import GeometricReturns from '@/pages/GeometricReturns';
 import RiskAdjustedRanking from '@/pages/RiskAdjustedRanking';
 import CostEfficiencyRatio from '@/pages/CostEfficiencyRatio';
+import SQNAnalyzer from '@/pages/SQNAnalyzer';
+import OptimalF from '@/pages/OptimalF';
+import ExpectancyOpportunity from '@/pages/ExpectancyOpportunity';
+import TStatistic from '@/pages/TStatistic';
+import ConfidenceInterval from '@/pages/ConfidenceInterval';
+import JarqueBeraTest from '@/pages/JarqueBeraTest';
+import LjungBoxTest from '@/pages/LjungBoxTest';
+import ShannonEntropy from '@/pages/ShannonEntropy';
+import GiniCoefficient from '@/pages/GiniCoefficient';
+import TrackingError from '@/pages/TrackingError';
+import InformationCoefficient from '@/pages/InformationCoefficient';
+import FamaDecomposition from '@/pages/FamaDecomposition';
+import StyleDriftScore from '@/pages/StyleDriftScore';
+import CapacityAnalysis from '@/pages/CapacityAnalysis';
+import ProfitFactorStability from '@/pages/ProfitFactorStability';
+import DrawdownSharpe from '@/pages/DrawdownSharpe';
+import RMultipleExpectancy from '@/pages/RMultipleExpectancy';
+import RiskDecomposition from '@/pages/RiskDecomposition';
+import OverfitRiskScore from '@/pages/OverfitRiskScore';
+import SharpeSignificance from '@/pages/SharpeSignificance';
+import LiquidityAdjustedVaR from '@/pages/LiquidityAdjustedVaR';
+import VolatilityAdjustedReturns from '@/pages/VolatilityAdjustedReturns';
+import PerformancePersistence from '@/pages/PerformancePersistence';
+import StrategyRobustnessScore from '@/pages/StrategyRobustnessScore';
+import TradeSignalQuality from '@/pages/TradeSignalQuality';
+import BenchmarkAlpha from '@/pages/BenchmarkAlpha';
+import BrinsonAttribution from '@/pages/BrinsonAttribution';
+import KellyMultiplier from '@/pages/KellyMultiplier';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -438,6 +466,34 @@ const AuthenticatedApp = () => {
         <Route path="/geo-returns" element={<GeometricReturns />} />
         <Route path="/ra-ranking" element={<RiskAdjustedRanking />} />
         <Route path="/cost-efficiency" element={<CostEfficiencyRatio />} />
+        <Route path="/sqn" element={<SQNAnalyzer />} />
+        <Route path="/optimal-f" element={<OptimalF />} />
+        <Route path="/expectunity" element={<ExpectancyOpportunity />} />
+        <Route path="/t-stat" element={<TStatistic />} />
+        <Route path="/conf-interval" element={<ConfidenceInterval />} />
+        <Route path="/jarque-bera" element={<JarqueBeraTest />} />
+        <Route path="/ljung-box" element={<LjungBoxTest />} />
+        <Route path="/entropy" element={<ShannonEntropy />} />
+        <Route path="/gini" element={<GiniCoefficient />} />
+        <Route path="/tracking-error" element={<TrackingError />} />
+        <Route path="/ic" element={<InformationCoefficient />} />
+        <Route path="/fama" element={<FamaDecomposition />} />
+        <Route path="/style-drift" element={<StyleDriftScore />} />
+        <Route path="/capacity" element={<CapacityAnalysis />} />
+        <Route path="/pf-stability" element={<ProfitFactorStability />} />
+        <Route path="/dd-sharpe" element={<DrawdownSharpe />} />
+        <Route path="/r-expectancy" element={<RMultipleExpectancy />} />
+        <Route path="/risk-decomp" element={<RiskDecomposition />} />
+        <Route path="/overfit-risk" element={<OverfitRiskScore />} />
+        <Route path="/sharpe-sig" element={<SharpeSignificance />} />
+        <Route path="/lvar" element={<LiquidityAdjustedVaR />} />
+        <Route path="/vol-adj-returns" element={<VolatilityAdjustedReturns />} />
+        <Route path="/persistence" element={<PerformancePersistence />} />
+        <Route path="/robustness" element={<StrategyRobustnessScore />} />
+        <Route path="/signal-quality" element={<TradeSignalQuality />} />
+        <Route path="/bench-alpha" element={<BenchmarkAlpha />} />
+        <Route path="/brinson" element={<BrinsonAttribution />} />
+        <Route path="/kelly-mult" element={<KellyMultiplier />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
