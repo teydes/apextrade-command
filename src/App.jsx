@@ -250,6 +250,16 @@ import BetaStability from '@/pages/BetaStability';
 import V2Ratio from '@/pages/V2Ratio';
 import MonteCarloVaR from '@/pages/MonteCarloVaR';
 import CostAdjustedSharpe from '@/pages/CostAdjustedSharpe';
+import BayesianWinRate from '@/pages/BayesianWinRate';
+import RunsTest from '@/pages/RunsTest';
+import ChiSquareTest from '@/pages/ChiSquareTest';
+import TimeUnderWater from '@/pages/TimeUnderWater';
+import PayoffRatio from '@/pages/PayoffRatio';
+import ConditionalWinRate from '@/pages/ConditionalWinRate';
+import ConsecutiveLossRisk from '@/pages/ConsecutiveLossRisk';
+import RecoveryRequired from '@/pages/RecoveryRequired';
+import PeriodReturns from '@/pages/PeriodReturns';
+import HourlyWage from '@/pages/HourlyWage';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -514,6 +524,16 @@ const AuthenticatedApp = () => {
         <Route path="/v2-ratio" element={<V2Ratio />} />
         <Route path="/mc-var" element={<MonteCarloVaR />} />
         <Route path="/cost-sharpe" element={<CostAdjustedSharpe />} />
+        <Route path="/bayes-wr" element={<BayesianWinRate />} />
+        <Route path="/runs-test" element={<RunsTest />} />
+        <Route path="/chi-square" element={<ChiSquareTest />} />
+        <Route path="/tuw" element={<TimeUnderWater />} />
+        <Route path="/payoff-ratio" element={<PayoffRatio />} />
+        <Route path="/cond-wr" element={<ConditionalWinRate />} />
+        <Route path="/loss-streak" element={<ConsecutiveLossRisk />} />
+        <Route path="/recovery-needed" element={<RecoveryRequired />} />
+        <Route path="/period-returns" element={<PeriodReturns />} />
+        <Route path="/hourly-wage" element={<HourlyWage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

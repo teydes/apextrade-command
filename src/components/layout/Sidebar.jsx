@@ -276,6 +276,16 @@ export const NAV_GROUPS = [
       { path: '/v2-ratio', label: 'V2 Ratio', icon: Gauge },
       { path: '/mc-var', label: 'MC VaR', icon: Dices },
       { path: '/cost-sharpe', label: 'Cost Sharpe', icon: Receipt },
+      { path: '/bayes-wr', label: 'WR Bayésien', icon: Brain },
+      { path: '/runs-test', label: 'Runs Test', icon: Repeat },
+      { path: '/chi-square', label: 'Chi² Test', icon: BarChart2 },
+      { path: '/tuw', label: 'Time Under Water', icon: Waves },
+      { path: '/payoff-ratio', label: 'Payoff Ratio', icon: ScaleIcon },
+      { path: '/cond-wr', label: 'WR Conditionnel', icon: Percent },
+      { path: '/loss-streak', label: 'Séries de Pertes', icon: AlertTriangle },
+      { path: '/recovery-needed', label: 'Recovery Requis', icon: RefreshCw },
+      { path: '/period-returns', label: 'Rendements M/Q/Y', icon: CalendarDays },
+      { path: '/hourly-wage', label: 'Salaire Horaire', icon: Clock },
     ]
   },
   {
@@ -334,7 +344,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v11.0</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v12.0</span></div>
           </div>
         </div>
       </div>
@@ -369,7 +379,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v11.0</span>
+          <span>System Status</span><span className="text-primary font-bold">v12.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
