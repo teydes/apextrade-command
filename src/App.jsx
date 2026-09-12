@@ -240,6 +240,16 @@ import TradeSignalQuality from '@/pages/TradeSignalQuality';
 import BenchmarkAlpha from '@/pages/BenchmarkAlpha';
 import BrinsonAttribution from '@/pages/BrinsonAttribution';
 import KellyMultiplier from '@/pages/KellyMultiplier';
+import KolmogorovSmirnovTest from '@/pages/KolmogorovSmirnovTest';
+import StationarityTest from '@/pages/StationarityTest';
+import RSquaredFit from '@/pages/RSquaredFit';
+import MeanAbsoluteDeviation from '@/pages/MeanAbsoluteDeviation';
+import SemiDeviation from '@/pages/SemiDeviation';
+import CorrelationStability from '@/pages/CorrelationStability';
+import BetaStability from '@/pages/BetaStability';
+import V2Ratio from '@/pages/V2Ratio';
+import MonteCarloVaR from '@/pages/MonteCarloVaR';
+import CostAdjustedSharpe from '@/pages/CostAdjustedSharpe';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -494,6 +504,16 @@ const AuthenticatedApp = () => {
         <Route path="/bench-alpha" element={<BenchmarkAlpha />} />
         <Route path="/brinson" element={<BrinsonAttribution />} />
         <Route path="/kelly-mult" element={<KellyMultiplier />} />
+        <Route path="/ks-test" element={<KolmogorovSmirnovTest />} />
+        <Route path="/adf-stationarity" element={<StationarityTest />} />
+        <Route path="/r-squared" element={<RSquaredFit />} />
+        <Route path="/mad" element={<MeanAbsoluteDeviation />} />
+        <Route path="/semi-deviation" element={<SemiDeviation />} />
+        <Route path="/corr-stability" element={<CorrelationStability />} />
+        <Route path="/beta-stability" element={<BetaStability />} />
+        <Route path="/v2-ratio" element={<V2Ratio />} />
+        <Route path="/mc-var" element={<MonteCarloVaR />} />
+        <Route path="/cost-sharpe" element={<CostAdjustedSharpe />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

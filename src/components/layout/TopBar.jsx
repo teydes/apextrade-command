@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Clock, TrendingUp, TrendingDown, Activity, Wifi } from 'lucide-react';
+import { Clock, TrendingUp, TrendingDown, Activity, Wifi, Search } from 'lucide-react';
 import NotificationCenter from '@/components/shared/NotificationCenter';
 import PushAlerts from '@/components/shared/PushAlerts';
+import CommandPalette from '@/components/shared/CommandPalette';
 
 const INSTRUMENTS = [
   { sym: 'NQ1!', base: 19847.25, vol: 15 },
@@ -11,6 +12,7 @@ const INSTRUMENTS = [
 
 export default function TopBar() {
   const [time, setTime] = useState(new Date());
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const [prices, setPrices] = useState(INSTRUMENTS.map(i => ({ ...i, price: i.base, change: 0, pct: 0 })));
 
   useEffect(() => {
@@ -77,8 +79,20 @@ export default function TopBar() {
         <span>{time.toLocaleTimeString('fr-FR')}</span>
       </div>
 
+      {/* Global search */}
+      <button
+        onClick={() => setPaletteOpen(true)}
+        className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-border bg-muted/50 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors flex-shrink-0"
+        title="Recherche globale (Ctrl+K)"
+      >
+        <Search className="w-3.5 h-3.5" />
+        <span className="hidden sm:inline text-xs">Rechercher</span>
+        <kbd className="hidden sm:inline font-mono text-[10px] px-1 py-0.5 bg-muted rounded">⌘K</kbd>
+      </button>
+
       <NotificationCenter />
       <PushAlerts />
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
     </div>
   );
 }

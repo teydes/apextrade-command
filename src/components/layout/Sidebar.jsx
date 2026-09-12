@@ -18,7 +18,7 @@ import {
   HeartCrack, SlidersHorizontal, Percent, BarChart2, CalendarClock, GitCompare, AlertTriangle
 } from 'lucide-react';
 
-const NAV_GROUPS = [
+export const NAV_GROUPS = [
   {
     label: 'Core',
     items: [
@@ -266,6 +266,16 @@ const NAV_GROUPS = [
       { path: '/robustness', label: 'Robustness', icon: ShieldCheck },
       { path: '/signal-quality', label: 'Signal Quality', icon: Crosshair },
       { path: '/bench-alpha', label: 'Bench. Alpha', icon: GitCompare },
+      { path: '/ks-test', label: 'Kolmog.-Smirnov', icon: BarChart2 },
+      { path: '/adf-stationarity', label: 'ADF Stationarity', icon: Waves },
+      { path: '/r-squared', label: 'R² Equity', icon: LineChartIcon2 },
+      { path: '/mad', label: 'MAD', icon: Sigma },
+      { path: '/semi-deviation', label: 'Semi-Deviation', icon: TrendingDown },
+      { path: '/corr-stability', label: 'Corr. Stability', icon: GitMerge },
+      { path: '/beta-stability', label: 'Beta Stability', icon: Activity },
+      { path: '/v2-ratio', label: 'V2 Ratio', icon: Gauge },
+      { path: '/mc-var', label: 'MC VaR', icon: Dices },
+      { path: '/cost-sharpe', label: 'Cost Sharpe', icon: Receipt },
     ]
   },
   {
@@ -324,7 +334,7 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-sm font-bold text-primary font-mono">GHOST TRADER</div>
-            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v10.0</span></div>
+            <div className="text-[10px] text-muted-foreground">Multi-Marchés · PropF+Perso · <span className="text-primary">v11.0</span></div>
           </div>
         </div>
       </div>
@@ -359,7 +369,7 @@ export default function Sidebar() {
       {/* System status */}
       <div className="p-3 border-t border-sidebar-border">
         <div className="text-[9px] text-muted-foreground mb-1.5 font-mono uppercase tracking-wide flex items-center justify-between">
-          <span>System Status</span><span className="text-primary font-bold">v10.0</span>
+          <span>System Status</span><span className="text-primary font-bold">v11.0</span>
         </div>
         <div className="space-y-1">
           <StatusRow label="Webhook TV" status="active" />
