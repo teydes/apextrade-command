@@ -9,6 +9,7 @@ import AppLayout from '@/components/layout/AppLayout';
 
 // Page imports
 import Dashboard from '@/pages/Dashboard';
+import PortfolioOverview from '@/pages/PortfolioOverview';
 import Backtest from '@/pages/Backtest';
 import Demo from '@/pages/Demo';
 import Live from '@/pages/Live';
@@ -284,6 +285,7 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/overview" element={<PortfolioOverview />} />
         <Route path="/backtest" element={<Backtest />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/live" element={<Live />} />
