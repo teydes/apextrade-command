@@ -6,6 +6,8 @@ import RiskMonitor from '@/components/shared/RiskMonitor';
 import DynamicTargets from '@/components/overview/DynamicTargets';
 import PreTradeRisk from '@/components/overview/PreTradeRisk';
 import GlobalEquityChart from '@/components/overview/GlobalEquityChart';
+import CapitalEvolution from '@/components/overview/CapitalEvolution';
+import TargetProgress from '@/components/overview/TargetProgress';
 import GlobalAIReview from '@/components/overview/GlobalAIReview';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
@@ -195,7 +197,9 @@ export default function PortfolioOverview() {
         <PreTradeRisk stats={stats} />
       </div>
 
+      <TargetProgress trades={trades} totalEquity={totalEquity} />
       <GlobalEquityChart trades={trades} />
+      <CapitalEvolution trades={trades} accounts={accounts} />
 
       <GlobalAIReview stats={stats} totalEquity={totalEquity} dailyPnl={dailyPnl} />
 
