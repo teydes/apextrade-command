@@ -51,6 +51,21 @@ export default function DynamicTargets({ stats }) {
         <p className="text-[10px] text-muted-foreground mb-2">
           Ajustés automatiquement à la taille du compte et à la règle de consistance — la cible ne peut jamais faire dépasser le % journalier autorisé sur le total.
         </p>
+        {totalGoal > 0 && (() => {
+          const dpnl = stats.reduce((a, r) => a + r.s.dailyPnl, 0);
+          const pct = Math.max(0, Math.min(100, (dpnl / totalGoal) * 100));
+          return (
+            <div className="mb-2">
+              <div className="flex justify-between text-[10px] mb-0.5">
+                <span className="text-muted-foreground">Progression de l'objectif du jour</span>
+                <span className="font-mono font-bold text-primary">{dpnl >= 0 ? '+' : ''}{Math.round(dpnl)}€ / {Math.round(totalGoal)}€</span>
+              </div>
+              <div className="h-1.5 rounded bg-secondary overflow-hidden">
+                <div className="h-full rounded bg-primary transition-all" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+          );
+        })()}
         {rows.length === 0 && <div className="text-xs text-muted-foreground">Aucun compte avec règle de consistance configurée.</div>}
         {rows.map((r) => (
           <Row key={r.account.id} name={r.account.name} balance={r.account.current_balance} goal={r.goal} cap={r.cap} blocked={r.blocked} />

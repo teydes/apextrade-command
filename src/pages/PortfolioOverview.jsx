@@ -5,6 +5,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import RiskMonitor from '@/components/shared/RiskMonitor';
 import DynamicTargets from '@/components/overview/DynamicTargets';
 import PreTradeRisk from '@/components/overview/PreTradeRisk';
+import GlobalEquityChart from '@/components/overview/GlobalEquityChart';
+import GlobalAIReview from '@/components/overview/GlobalAIReview';
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
 import { accountStats, computeAlerts, riskLevel, barColor } from '@/lib/portfolio';
 import { sum } from '@/lib/stats';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
@@ -50,6 +54,10 @@ const AccountCard = ({ account, s }) => (
           <div className={`text-[10px] font-mono ${s.dailyPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             Jour: {s.dailyPnl >= 0 ? '+' : ''}{Math.round(s.dailyPnl)}€
           </div>
+          <div className="text-[10px] text-muted-foreground font-mono">{s.dailyTradesCount} trades · WR {s.dailyWinRate.toFixed(0)}%</div>
+          {s.targetPct >= 100 && (
+            <div className="text-[9px] font-bold text-green-400 bg-green-500/10 rounded px-1.5 py-0.5 inline-block">PAYOUT PRÊT</div>
+          )}
         </div>
       </div>
       <div className="space-y-2">
@@ -113,6 +121,22 @@ export default function PortfolioOverview() {
   const accountsAtRisk = stats.filter((x) => Math.max(x.s.dailyUsedPct, x.s.ddUsedPct) >= 60).length;
   const pnlChart = stats.map((x) => ({ name: x.account.name, value: Math.round(x.s.totalPnl) }));
 
+  const exportCSV = () => {
+    const lines = ['Compte,Solde,PnL Jour,PnL Total,DD Jour %,DD Max %,Objectif %,Consistance %,Statut,Trades Jour,WR Jour %'];
+    stats.forEach(({ account, s }) => lines.push([
+      account.name, Math.round(account.current_balance || 0), Math.round(s.dailyPnl), Math.round(s.totalPnl),
+      s.dailyUsedPct.toFixed(1), s.ddUsedPct.toFixed(1), s.targetPct.toFixed(1), s.consistencyPct.toFixed(1),
+      s.consistencyStatus, s.dailyTradesCount, s.dailyWinRate.toFixed(1),
+    ].join(',')));
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `portefeuille_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (isLoading) {
     return <div className="p-6 flex items-center justify-center min-h-[400px] text-xs text-muted-foreground font-mono">Chargement du centre de contrôle…</div>;
   }
@@ -131,8 +155,13 @@ export default function PortfolioOverview() {
             <p className="text-xs text-muted-foreground">Performance, risque cumulé et consistance — un seul écran</p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground font-mono">
-          <span className="status-dot active" />TEMPS RÉEL · 30s
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground font-mono">
+            <span className="status-dot active" />TEMPS RÉEL · 30s
+          </div>
+          <Button size="sm" variant="outline" className="h-7 text-[10px]" onClick={exportCSV}>
+            <Download className="w-3 h-3" />Export CSV
+          </Button>
         </div>
       </div>
 
@@ -165,6 +194,10 @@ export default function PortfolioOverview() {
         <DynamicTargets stats={stats} />
         <PreTradeRisk stats={stats} />
       </div>
+
+      <GlobalEquityChart trades={trades} />
+
+      <GlobalAIReview stats={stats} totalEquity={totalEquity} dailyPnl={dailyPnl} />
 
       <Card className="bg-card border-border">
         <CardContent className="p-4">

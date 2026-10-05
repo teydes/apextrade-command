@@ -23,7 +23,8 @@ export const accountStats = (account, trades) => {
     rule > 0 && totalPnl > 0
       ? consistencyPct > rule ? 'violation' : consistencyPct > rule * 0.8 ? 'attention' : 'ok'
       : 'ok';
-  return { dailyPnl, totalPnl, currentDD, ddUsedPct, dailyUsedPct, targetPct, consistencyPct, consistencyStatus, peak, tradesCount: at.length };
+  const dailyTrades = at.filter((t) => (t.entry_time || '').slice(0, 10) === todayKey());
+  return { dailyPnl, totalPnl, currentDD, ddUsedPct, dailyUsedPct, targetPct, consistencyPct, consistencyStatus, peak, tradesCount: at.length, dailyTradesCount: dailyTrades.length, dailyWinRate: dailyTrades.length ? (dailyTrades.filter((t) => t.pnl > 0).length / dailyTrades.length) * 100 : 0 };
 };
 
 export const computeAlerts = (accounts, trades) => {
