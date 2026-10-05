@@ -3,6 +3,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent } from '@/components/ui/card';
 import RiskMonitor from '@/components/shared/RiskMonitor';
+import DynamicTargets from '@/components/overview/DynamicTargets';
+import PreTradeRisk from '@/components/overview/PreTradeRisk';
 import { accountStats, computeAlerts, riskLevel, barColor } from '@/lib/portfolio';
 import { sum } from '@/lib/stats';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
@@ -157,6 +159,11 @@ export default function PortfolioOverview() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {stats.map(({ account, s }) => <AccountCard key={account.id} account={account} s={s} />)}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <DynamicTargets stats={stats} />
+        <PreTradeRisk stats={stats} />
       </div>
 
       <Card className="bg-card border-border">

@@ -136,6 +136,11 @@ Navigation instantanée vers les 265+ modules : ouverte depuis le TopBar ou le r
 ### `src/lib/stats.js` — boîte à outils statistique
 Somme/moyenne/écart-type, tri chronologique, approximation d'Erf et CDF normale, survie du Chi² (Wilson-Hilferty), formatage monétaire — partagée par tous les modules de tests statistiques.
 
+### Modules dynamiques de la Vue Globale
+
+- **Objectifs journaliers dynamiques** (`src/components/overview/DynamicTargets.jsx`) — calcule pour chaque compte soumis à une règle de consistance la **cible de gain du jour garantie conforme** : le plafond est résolu exactement à partir de la formule `g_max = (r·PnL_total − PnL_jour) / (1 − r)` (avec `r` = règle de consistance), puis la cible prudente proposée est `min(plafond, 1% du solde, restant d'objectif global)`. Si le plafond est à zéro, le module affiche « STOP gains (consistance) » : tout gain supplémentaire violerait la règle. Recalculé en temps réel à chaque trade.
+- **Simulateur de risque pré-position** (`src/components/overview/PreTradeRisk.jsx`) — avant de prendre une position, sélectionnez un compte et saisissez (ou choisissez par raccourci 0,5 % / 1 % / 2 % du compte) une **perte potentielle** : le module projette le solde, l'utilisation du DD journalier, du DD max et du ratio de consistance *après* cette perte, avec barres avant → après et un verdict sans ambiguïté : **POSITION AUTORISÉE** (< 80 %), **RISQUE ÉLEVÉ** (≥ 80 %), **POSITION INTERDITE** (≥ 100 % d'une limite).
+
 ### Autres briques
 - `AuthContext` : état d'authentification global, gestion des erreurs (utilisateur non enregistré, auth requise).
 - `PnLGauge`, `StatCard`, `PreFlightChecklist`, `KillSwitchBanner`, `NotificationCenter`, `PushAlerts` : widgets transverses.
@@ -163,7 +168,7 @@ Chaque agent dispose d'un accès contrôlé aux entités (trades, comptes, plans
 | Page | Route | Contenu |
 |---|---|---|
 | **Dashboard** | `/` | Hub principal : cartes de statut des comptes, courbe d'equity, jauge PnL, trades récents, panneau multi-comptes, gestionnaire de risque, calendrier de news, biais de marché, signaux automatisés, widgets payouts/finance, missions du jour, sessions de marché actives. |
-| **Vue Globale** | `/overview` | Centre de contrôle multi-comptes : equity totale, PnL du jour, risque max, comptes à risque ; une carte par compte avec barres DD journalier / DD max / objectif / consistance ; bandeau d'alertes de limites ; graphique PnL par compte ; **surveillance temps réel avec alertes automatiques à 80%/95% des limites** (voir §4). |
+| **Vue Globale** | `/overview` | Centre de contrôle multi-comptes : equity totale, PnL du jour, risque max, comptes à risque ; une carte par compte affichant clairement le **solde actuel**, le **PnL du jour**, les barres DD journalier / DD max / objectif / **statut de consistance** (ok · attention · violation) ; bandeau d'alertes de limites ; **objectifs journaliers dynamiques** ajustés à la taille des comptes et à la règle de consistance ; **simulateur de risque pré-position** (impact d'une perte sur les drawdowns avant exécution) ; graphique PnL par compte ; **surveillance temps réel avec alertes automatiques à 80%/95% des limites** (voir §4). |
 | **Trading Live** | `/live` | Tableau de bord d'exécution sur comptes live : signaux optimisés, journal d'activité automatisé, positions ouvertes, tableaux de risque avec limites PropFirm, arrêt d'urgence (kill switch), synchronisation des trades, suivi de cohérence. |
 | **Trading OS** | `/trading-os` | Poste de travail opérationnel : routines, états de session, checklist d'exécution, raccourcis vers les outils du quotidien. |
 | **Ghost Coach IA** | `/coach` | Chat avec l'agent coach : questions/réponses sur vos données, plans d'action, retours disciplinés. |
@@ -257,6 +262,7 @@ Trade Grading (`/trade-grading`) notation A-F des trades · Daily Routine (`/dai
 | v11.0 | +10 modules quant avancés (KS, ADF, R², MAD, Semi-Deviation, Corr/Beta Stability, V2 Ratio, MC VaR, Cost Sharpe) + **palette de commandes ⌘K** sur 245+ modules. |
 | v12.0 | +10 modules statistiques (Bayésien, Runs, Chi², TUW, Payoff, WR Conditionnel, Séries de Pertes, Recovery, Périodes, Salaire Horaire) + lib statistique partagée `stats.js`. |
 | **v13.0** | **Vue Globale multi-comptes** : performance agrégée, risque cumulé, consistance journalière sur un écran ; **RiskMonitor temps réel** avec alertes automatiques à 80% et 95% des limites de drawdown, objectif atteint et violation de consistance ; abonnements temps réel + polling 30s. |
+| **v13.1** | Finalisation de la Vue Globale : **Objectifs journaliers dynamiques** (cible de gain recalculée en continu, garantie conforme à la règle de consistance et proportionnée à la taille du compte) et **Simulateur de risque pré-position** (projection d'une perte potentielle sur les limites de drawdown avant exécution, verdict autorisé/élevé/interdit). |
 
 ---
 
