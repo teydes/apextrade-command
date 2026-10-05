@@ -1,4 +1,4 @@
-# GHOST TRADER — Documentation Complète (v13.3)
+# GHOST TRADER — Documentation Complète (v13.4)
 
 > **ApexTrade Command / Ghost Trader** — La plateforme de commandement ultime pour traders professionnels et prop-traders : pilotage multi-comptes, journal automatisé, backtesting, gestion du risque, fiscalité, et un laboratoire quantitatif de **plus de 265 modules d'analyse**.
 
@@ -155,6 +155,10 @@ Somme/moyenne/écart-type, tri chronologique, approximation d'Erf et CDF normale
 - **Évolution du capital** (`CapitalEvolution.jsx`) — deux graphiques : l'**equity historique agrégée** de tous les comptes (reconstruite depuis le capital de départ, avec ligne de référence au capital initial et drawdown max historique affiché) et le **PnL mensuel agrégé** des 12 derniers mois (barres vertes/rouges).
 - **Objectif de capital** (`TargetProgress.jsx`) — jauge de progression vers le montant cible du plan Boule de Neige (1 M€ par défaut), avec estimation du temps restant **au rythme actuel** (moyenne des 3 derniers mois de PnL).
 
+### Suggestions intelligentes (v13.4)
+
+- **Panneau « Suggestions & Améliorations »** (`SmartSuggestions.jsx`) — analyse par règles de l'état du portefeuille, avec jusqu'à 12 recommandations priorisées par couleur : pertes consécutives (réduire la taille / pause), DD journalier ≥ 60% (réduire la taille) ou ≥ 85% (arrêter le compte), DD max consommé, consistance en violation (risque de refus de payout) ou en zone d'attention, objectif approché (90%) ou atteint (demander le payout), sur-trading vs max du plan, meilleur / pire contributeur du portefeuille. Si tout va bien, message de validation verte.
+
 ### Autres briques
 - `AuthContext` : état d'authentification global, gestion des erreurs (utilisateur non enregistré, auth requise).
 - `PnLGauge`, `StatCard`, `PreFlightChecklist`, `KillSwitchBanner`, `NotificationCenter`, `PushAlerts` : widgets transverses.
@@ -182,7 +186,7 @@ Chaque agent dispose d'un accès contrôlé aux entités (trades, comptes, plans
 | Page | Route | Contenu |
 |---|---|---|
 | **Dashboard** | `/` | Hub principal : cartes de statut des comptes, courbe d'equity, jauge PnL, trades récents, panneau multi-comptes, gestionnaire de risque, calendrier de news, biais de marché, signaux automatisés, widgets payouts/finance, missions du jour, sessions de marché actives. |
-| **Vue Globale** | `/overview` | Centre de contrôle multi-comptes : equity totale, PnL du jour, risque max, comptes à risque ; une carte par compte affichant clairement le **solde actuel**, le **PnL du jour**, les barres DD journalier / DD max / objectif / **statut de consistance** (ok · attention · violation) ; bandeau d'alertes de limites ; **objectifs journaliers dynamiques** ajustés à la taille des comptes et à la règle de consistance ; **simulateur de risque pré-position** (impact d'une perte sur les drawdowns avant exécution) ; jauge de progression vers l'**objectif de capital** (plan Boule de Neige) ; courbe **d'equity agrégée** 30 j ; **évolution du capital** historique tous comptes + **PnL mensuel agrégé** ; **analyse IA du portefeuille** (score, niveau de risque, recommandations) ; progression de l'objectif du jour ; stats journalières (trades, WR) et badge **« PAYOUT PRÊT »** par compte ; **export CSV** du rapport ; graphique PnL par compte ; **surveillance temps réel avec alertes automatiques à 80%/95% des limites** (voir §4). |
+| **Vue Globale** | `/overview` | Centre de contrôle multi-comptes : equity totale, PnL du jour, risque max, comptes à risque ; une carte par compte affichant clairement le **solde actuel**, le **PnL du jour**, les barres DD journalier / DD max / objectif / **statut de consistance** (ok · attention · violation) ; bandeau d'alertes de limites ; **objectifs journaliers dynamiques** ajustés à la taille des comptes et à la règle de consistance ; **simulateur de risque pré-position** (impact d'une perte sur les drawdowns avant exécution) ; jauge de progression vers l'**objectif de capital** (plan Boule de Neige) ; courbe **d'equity agrégée** 30 j ; **évolution du capital** historique tous comptes + **PnL mensuel agrégé** ; **suggestions intelligentes** (analyse par règles : pertes consécutives, drawdowns, consistance, sur-trading, objectif, meilleur/pire compte) ; **analyse IA du portefeuille** (score, niveau de risque, recommandations) ; progression de l'objectif du jour ; stats journalières (trades, WR) et badge **« PAYOUT PRÊT »** par compte ; **export CSV** du rapport ; graphique PnL par compte ; **surveillance temps réel avec alertes automatiques à 80%/95% des limites** (voir §4). |
 | **Trading Live** | `/live` | Tableau de bord d'exécution sur comptes live : signaux optimisés, journal d'activité automatisé, positions ouvertes, tableaux de risque avec limites PropFirm, arrêt d'urgence (kill switch), synchronisation des trades, suivi de cohérence. |
 | **Trading OS** | `/trading-os` | Poste de travail opérationnel : routines, états de session, checklist d'exécution, raccourcis vers les outils du quotidien. |
 | **Ghost Coach IA** | `/coach` | Chat avec l'agent coach : questions/réponses sur vos données, plans d'action, retours disciplinés. |
@@ -279,6 +283,7 @@ Trade Grading (`/trade-grading`) notation A-F des trades · Daily Routine (`/dai
 | **v13.1** | Finalisation de la Vue Globale : **Objectifs journaliers dynamiques** (cible de gain recalculée en continu, garantie conforme à la règle de consistance et proportionnée à la taille du compte) et **Simulateur de risque pré-position** (projection d'une perte potentielle sur les limites de drawdown avant exécution, verdict autorisé/élevé/interdit). |
 | **v13.2** | Enrichissements Vue Globale : **equity agrégée 30 j**, **analyse IA du portefeuille** (score/100, risque, recommandations priorisées), progression de l'objectif du jour, stats journalières par compte (trades, win rate), badge **« PAYOUT PRÊT »** à l'atteinte de l'objectif, **export CSV** du rapport multi-comptes. |
 | **v13.3** | **Évolution globale du capital** sur la Vue Globale : equity historique agrégée tous comptes (avec capital de départ et drawdown max historique), PnL mensuel agrégé 12 mois, et jauge de progression vers l'**objectif de capital** (plan Boule de Neige) avec projection du temps restant au rythme actuel. |
+| **v13.4** | **Suggestions intelligentes** sur la Vue Globale : panneau d'analyse par règles (pertes consécutives, utilisation des drawdowns, consistance, sur-trading, objectif/payout, meilleur & pire compte) avec recommandations priorisées par couleur. |
 
 ---
 
